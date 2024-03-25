@@ -1,0 +1,66 @@
+package ca.uqac.lif.cep.shaded;
+
+public class ShadedConstant implements ShadedFunction
+{
+	public static ShadedFunction wrap(Object o)
+	{
+		if (o instanceof ShadedFunction)
+		{
+			return (ShadedFunction) o;
+		}
+		else
+		{
+			return new ShadedConstant(o);
+		}
+	}
+	protected final Object m_value;
+	
+	public ShadedConstant(Object value)
+	{
+		super();
+		m_value = value;
+	}
+
+	@Override
+	public void update(Object event)
+	{
+		// Do nothing
+	}
+
+	@Override
+	public int getArity()
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public ShadedFunction getOperand(int index)
+	{
+		return null;
+	}
+
+	@Override
+	public ShadedConstant duplicate(boolean with_state)
+	{
+		return new ShadedConstant(m_value);
+	}
+
+	@Override
+	public ShadedConstant duplicate()
+	{
+		return duplicate(false);
+	}
+
+	@Override
+	public String getSymbol()
+	{
+		return m_value.toString();
+	}
+
+	@Override
+	public Object getValue()
+	{
+		return m_value;
+	}
+}
