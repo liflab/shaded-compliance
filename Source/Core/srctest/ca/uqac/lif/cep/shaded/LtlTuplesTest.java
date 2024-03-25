@@ -11,6 +11,8 @@ import static ca.uqac.lif.cep.shaded.ShadedComparison.eq;
 
 public class LtlTuplesTest
 {
+	public static TreeRenderer renderer = new TreeRenderer();
+	
 	@Test
 	public void test1()
 	{
@@ -21,6 +23,7 @@ public class LtlTuplesTest
 		System.out.println(phi.getValue());
 		phi.update(map("a", 2));
 		System.out.println(phi.getValue());
+		renderer.render(phi, System.out);
 	}
 	
 	public static Map<String,Object> map(Object ... objects)
