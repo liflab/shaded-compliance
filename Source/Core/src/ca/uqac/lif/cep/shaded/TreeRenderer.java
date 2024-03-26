@@ -11,7 +11,7 @@ public class TreeRenderer
 		super();
 	}
 
-	public void render(ShadedFunction f, PrintStream ps)
+	public static void render(ShadedFunction f, PrintStream ps)
 	{
 		ps.println("digraph G {");
 		ps.println("nodesep=0.125");
@@ -22,7 +22,7 @@ public class TreeRenderer
 		ps.println("}");
 	}
 
-	protected void renderRecursive(ShadedFunction n, PrintStream ps, long parent, NodeCounter c)
+	protected static void renderRecursive(ShadedFunction n, PrintStream ps, long parent, NodeCounter c)
 	{
 		long id = c.get();
 		ps.print(id + " [label=<" + n.getSymbol());
@@ -72,7 +72,7 @@ public class TreeRenderer
 		}
 	}
 
-	protected class NodeCounter
+	protected static class NodeCounter
 	{
 		protected long m_count = 0;
 

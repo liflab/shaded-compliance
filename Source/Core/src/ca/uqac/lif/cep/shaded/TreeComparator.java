@@ -63,15 +63,20 @@ public class TreeComparator
 			// a distinct element in children_2
 			return false;
 		}
-		CombinationPicker picker = new CombinationPicker(children_1.size(), children_2.size());
+		if (children_1.size() == 0)
+		{
+			// No sub-tree to map to the other tree: fine
+			return true;
+		}
+		InjectionPicker picker = new InjectionPicker(children_1.size(), children_2.size());
 		while (!picker.isDone())
 		{
-			List<Integer> mapping = picker.pick();
+			Integer[] mapping = picker.pick();
 			boolean subsumed = true;
-			for (int i = 0; i < mapping.size(); i++)
+			for (int i = 0; i < mapping.length; i++)
 			{
 				ShadedConnective child_1 = children_1.get(i);
-				ShadedConnective child_2 = children_2.get(mapping.get(i));
+				ShadedConnective child_2 = children_2.get(mapping[i]);
 				if (!isSubsumed(child_1, child_2))
 				{
 					subsumed = false;
@@ -85,6 +90,4 @@ public class TreeComparator
 		}
 		return false;
 	}
-	
-	
 }
