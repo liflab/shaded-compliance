@@ -1,7 +1,14 @@
 package ca.uqac.lif.cep.shaded;
 
+import static ca.uqac.lif.cep.shaded.ShadedConstant.wrap;
+
 public abstract class ShadedBinaryFunction implements ShadedFunction
 {
+	public static ShadedAbsoluteDifference delta(Object left, Object right)
+	{
+		return new ShadedAbsoluteDifference(wrap(left), wrap(right));
+	}
+	
 	protected ShadedFunction m_left;
 	
 	protected ShadedFunction m_right;
@@ -71,7 +78,7 @@ public abstract class ShadedBinaryFunction implements ShadedFunction
 		@Override
 		public String getSymbol()
 		{
-			return "delta";
+			return "&#x03b4;";
 		}
 
 		@Override

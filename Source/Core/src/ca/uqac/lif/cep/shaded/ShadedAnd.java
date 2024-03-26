@@ -80,6 +80,6 @@ public class ShadedAnd extends ShadedNaryConnective
 	@Override
 	public String getSymbol()
 	{
-		return "&";
+		return "&amp;";
 	}
 }

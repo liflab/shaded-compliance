@@ -16,6 +16,18 @@ public abstract class ShadedComparison extends ShadedConnective
     return e;
   }
 	
+	public static ShadedLessThanOrEqual leq(Object left, Object right)
+	{
+		return leq(Polarity.POSITIVE, wrap(left), wrap(right));
+	}
+	
+	protected static ShadedLessThanOrEqual leq(Polarity p, ShadedFunction left, ShadedFunction right)
+  {
+		ShadedLessThanOrEqual e = new ShadedLessThanOrEqual(left, right);
+    e.setPolarity(p);
+    return e;
+  }
+	
 	protected ShadedFunction m_left;
 	
 	protected ShadedFunction m_right;
@@ -76,7 +88,7 @@ public abstract class ShadedComparison extends ShadedConnective
 		@Override
 		public String getSymbol()
 		{
-			return "<=";
+			return "&#8804;";
 		}
 
 		@Override

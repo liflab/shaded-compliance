@@ -4,6 +4,11 @@ import java.util.Map;
 
 public class ShadedFetchAttribute implements ShadedFunction
 {
+	public static ShadedFetchAttribute fetch(String attribute)
+	{
+		return new ShadedFetchAttribute(attribute);
+	}
+	
 	protected final String m_attribute;
 	
 	protected Object m_value;

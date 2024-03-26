@@ -27,6 +27,7 @@ public class ShadedF extends ShadedLtlOperator
 	public void update(Object event)
 	{
 		ShadedConnective phi_copy = m_phi.duplicate();
+		phi_copy.setPolarity(m_polarity);
 		m_operands.add(phi_copy);
 		boolean has_green = false, has_null = false;
 		for (ShadedConnective op : m_operands)
