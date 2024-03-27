@@ -6,12 +6,12 @@ package ca.uqac.lif.cep.shaded;
  */
 public class ShadedG extends ShadedLtlOperator
 {
-	public static ShadedConnective G(ShadedConnective operand)
+	public static ShadedG G(ShadedConnective operand)
 	{
 		return G(Polarity.POSITIVE, operand);
 	}
 	
-	protected static ShadedConnective G(Polarity p, ShadedConnective operand)
+	protected static ShadedG G(Polarity p, ShadedConnective operand)
   {
 		ShadedG g = new ShadedG(operand);
     g.setPolarity(p);
