@@ -2,6 +2,7 @@ package ca.uqac.lif.cep.shaded;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,61 +16,35 @@ public class LatticeGenerator
 		super();
 	}
 	
-	public static Map<ShadedConnective,LatticeNode<ShadedConnective>> exploreLattice(List<ShadedConnective> elements)
+	public static ShadedGraph exploreLattice(List<ShadedConnective> elements)
 	{
-		return exploreLattice(elements.toArray(new ShadedConnective[elements.size()]));
-	}
-	
-	public static Map<ShadedConnective,LatticeNode<ShadedConnective>> exploreLattice(ShadedConnective ... elements)
-	{
-		Map<ShadedConnective,LatticeNode<ShadedConnective>> nodes = new HashMap<>();
-		for (int i = 0; i < elements.length; i++)
+		ShadedGraph g = new ShadedGraph(elements);
+		for (int i = 0; i < elements.size(); i++)
 		{
-			ShadedConnective element = elements[i];
-			LatticeNode<ShadedConnective> node = new LatticeNode<>(element, i);
-			nodes.put(element, node);
-		}
-		for (int i = 0; i < elements.length; i++)
-		{
-			LatticeNode<ShadedConnective> node = nodes.get(elements[i]);
-			for (int j = 0; j < elements.length; j++)
+			for (int j = 0; j < elements.size(); j++)
 			{
 				if (j == i)
 				{
 					continue;
 				}
-				if (TreeComparator.isSubsumed(elements[i], elements[j]))
+				if (TreeComparator.isSubsumed(elements.get(i), elements.get(j)))
 				{
-					node.addEdge(nodes.get(elements[j]));
+					g.addEdge(elements.get(i), elements.get(j));
 				}
 			}
 		}
-		return nodes;
+		return g;
+	}
+	
+	public static ShadedGraph exploreLattice(ShadedConnective ... elements)
+	{
+		return exploreLattice(Arrays.asList(elements));
 	}
 	
 	/* TODO:
 	 * 1. Merge edges that are mutually subsumed
 	 * 2. Calculate transitive closure
 	 */
-	
-	public static void render(Map<ShadedConnective,LatticeNode<ShadedConnective>> lattice, PrintStream ps)
-	{
-		ps.println("digraph G {");
-		ps.println("nodesep=0.125");
-		ps.println("ranksep=0.25;");
-		ps.println("node [shape=\"circle\",height=0.3,width=0.3,fixedsize=\"true\",style=\"filled\"];");
-		for (LatticeNode<ShadedConnective> node : lattice.values())
-		{
-			ShadedConnective connective = node.getValue();
-			Color color = connective.getValue();
-			ps.print(node.getId() + " [label=<" + node.getId() + ">,fillcolor=" + (color == Color.GREEN ? "\"green\"" : "\"red\"") + "];\n");
-			for (LatticeNode<ShadedConnective> edge : node.m_edges)
-			{
-				ps.println(node.getId() + " -> " + edge.getId() + ";");
-			}
-		}
-		ps.println("}");
-	}
 	
 	
 	public static class LatticeNode<T>
