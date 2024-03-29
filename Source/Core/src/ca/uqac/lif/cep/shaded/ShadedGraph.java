@@ -30,6 +30,11 @@ public class ShadedGraph
 			m_fromId.put(i, elements.get(i));
 		}
 	}
+	
+	public int size()
+	{
+		return m_adjacency.length;
+	}
 
 	/**
 	 * Adds an edge from one shaded connective to another in the graph.
