@@ -22,14 +22,15 @@ public class ShadedFetchAttribute implements ShadedFunction
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void update(Object event)
+	public ShadedFetchAttribute update(Object event)
 	{
 		if (m_value != null)
 		{
-			return;
+			return this;
 		}
 		Map<String,?> map = (Map<String,?>) event;
 		m_value = map.get(m_attribute);
+		return this;
 	}
 
 	@Override

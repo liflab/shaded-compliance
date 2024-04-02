@@ -42,7 +42,7 @@ public class ShadedAnd extends ShadedNaryConnective
 	}
 
 	@Override
-	public void update(Object event)
+	public ShadedAnd update(Object event)
 	{
 		boolean has_red = false, has_null = false;
 		for (ShadedConnective op : m_operands)
@@ -69,6 +69,7 @@ public class ShadedAnd extends ShadedNaryConnective
 		{
 			m_color = Color.GREEN;
 		}
+		return this;
 	}
 	
 	@Override

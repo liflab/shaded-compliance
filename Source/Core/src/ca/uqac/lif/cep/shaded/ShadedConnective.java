@@ -19,6 +19,9 @@ public abstract class ShadedConnective implements ShadedFunction, Polarized
 		m_color = null;
 	}
 	
+	@Override
+	public abstract ShadedConnective update(Object event);
+	
 	public void setPolarity(Polarity p)
 	{
 		m_polarity = p;

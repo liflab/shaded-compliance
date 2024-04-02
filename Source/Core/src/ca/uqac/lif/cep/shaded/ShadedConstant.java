@@ -22,9 +22,9 @@ public class ShadedConstant implements ShadedFunction
 	}
 
 	@Override
-	public void update(Object event)
+	public ShadedConstant update(Object event)
 	{
-		// Do nothing
+		return this;
 	}
 
 	@Override

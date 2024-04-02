@@ -41,7 +41,7 @@ public class ShadedOr extends ShadedNaryConnective
 	}
 
 	@Override
-	public void update(Object event)
+	public ShadedOr update(Object event)
 	{
 		boolean has_green = false, has_null = false;
 		for (ShadedConnective op : m_operands)
@@ -68,6 +68,7 @@ public class ShadedOr extends ShadedNaryConnective
 		{
 			m_color = Color.RED;
 		}
+		return this;
 	}
 	
 	@Override

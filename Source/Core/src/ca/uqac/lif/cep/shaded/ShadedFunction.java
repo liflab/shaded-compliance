@@ -2,7 +2,7 @@ package ca.uqac.lif.cep.shaded;
 
 public interface ShadedFunction
 {
-	public void update(Object event);
+	public ShadedFunction update(Object event);
 	
 	public int getArity();
 	

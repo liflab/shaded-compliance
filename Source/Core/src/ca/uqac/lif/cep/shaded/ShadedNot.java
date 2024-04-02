@@ -23,9 +23,10 @@ public class ShadedNot extends ShadedConnective
 	}
 	
 	@Override
-	public void update(Object event)
+	public ShadedNot update(Object event)
 	{
 		m_operand.update(event);
+		return this;
 	}
 
 	@Override

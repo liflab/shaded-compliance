@@ -24,7 +24,7 @@ public class ShadedG extends ShadedLtlOperator
 	}
 
 	@Override
-	public void update(Object event)
+	public ShadedG update(Object event)
 	{
 		ShadedConnective phi_copy = m_phi.duplicate();
 		phi_copy.setPolarity(m_polarity);
@@ -55,6 +55,7 @@ public class ShadedG extends ShadedLtlOperator
 		{
 			m_color = Color.GREEN;
 		}
+		return this;
 	}
 
 	@Override

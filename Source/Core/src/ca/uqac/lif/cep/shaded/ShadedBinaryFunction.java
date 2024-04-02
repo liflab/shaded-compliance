@@ -57,7 +57,7 @@ public abstract class ShadedBinaryFunction implements ShadedFunction
 		}
 		
 		@Override
-		public void update(Object event)
+		public ShadedAbsoluteDifference update(Object event)
 		{
 			m_left.update(event);
 			m_right.update(event);
@@ -73,6 +73,7 @@ public abstract class ShadedBinaryFunction implements ShadedFunction
 				Number n_right = (Number) right;
 				m_value = Math.abs(n_left.doubleValue() - n_right.doubleValue());
 			}
+			return this;
 		}
 
 		@Override

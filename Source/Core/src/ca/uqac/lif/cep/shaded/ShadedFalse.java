@@ -13,9 +13,9 @@ public class ShadedFalse extends ShadedConnective
 	}
 	
 	@Override
-	public void update(Object event)
+	public ShadedFalse update(Object event)
 	{
-		// Do nothing
+		return this;
 	}
 
 	@Override

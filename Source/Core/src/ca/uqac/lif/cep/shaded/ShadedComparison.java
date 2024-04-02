@@ -67,7 +67,7 @@ public abstract class ShadedComparison extends ShadedConnective
 		}
 		
 		@Override
-		public void update(Object event)
+		public ShadedLessThanOrEqual update(Object event)
 		{
 			m_left.update(event);
 			m_right.update(event);
@@ -83,6 +83,7 @@ public abstract class ShadedComparison extends ShadedConnective
 				Number n_right = (Number) right;
 				m_color = n_left.doubleValue() <= n_right.doubleValue() ? Color.GREEN : Color.RED;
 			}
+			return this;
 		}
 
 		@Override
@@ -118,13 +119,14 @@ public abstract class ShadedComparison extends ShadedConnective
 		}
 		
 		@Override
-		public void update(Object event)
+		public ShadedEquals update(Object event)
 		{
 			m_left.update(event);
 			m_right.update(event);
 			Object left = m_left.getValue();
 			Object right = m_right.getValue();
 			m_color = equals(left, right);
+			return this;
 		}
 		
 		protected static Color equals(Object left, Object right)
