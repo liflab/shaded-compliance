@@ -75,11 +75,17 @@ public class ShadedFetchAttribute implements ShadedFunction
 	{
 		return duplicate(false);
 	}
+	
+	@Override
+	public String toString()
+	{
+		return "?" + m_attribute;
+	}
 
 	@Override
 	public String getSymbol()
 	{
-		return "?" + m_attribute;
+		return "<i>" + m_attribute + "</i>";
 	}
 
 	@Override

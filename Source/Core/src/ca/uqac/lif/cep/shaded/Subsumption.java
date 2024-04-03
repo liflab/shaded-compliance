@@ -68,22 +68,22 @@ public class Subsumption implements TreeComparator
 
 	protected boolean isSubsumed(ShadedConnective f1, ShadedConnective f2, Color col)
 	{
-		List<ShadedConnective> children_1 = new ArrayList<ShadedConnective>();
-		List<ShadedConnective> children_2 = new ArrayList<ShadedConnective>();
+		List<ShadedFunction> children_1 = new ArrayList<>();
+		List<ShadedFunction> children_2 = new ArrayList<>();
 		for (int i = 0; i < f1.getArity(); i++)
 		{
 			ShadedFunction child = f1.getOperand(i);
-			if (child instanceof ShadedConnective && child.getValue() == col)
+			if (m_compareNonConnectives || (child instanceof ShadedConnective && child.getValue() == col))
 			{
-				children_1.add((ShadedConnective) child);
+				children_1.add(child);
 			}
 		}
 		for (int i = 0; i < f2.getArity(); i++)
 		{
 			ShadedFunction child = f2.getOperand(i);
-			if (child instanceof ShadedConnective && child.getValue() == col)
+			if (m_compareNonConnectives || (child instanceof ShadedConnective && child.getValue() == col))
 			{
-				children_2.add((ShadedConnective) child);
+				children_2.add(child);
 			}
 		}
 		if (children_1.size() > children_2.size())
@@ -104,8 +104,8 @@ public class Subsumption implements TreeComparator
 			boolean subsumed = true;
 			for (int i = 0; i < mapping.length; i++)
 			{
-				ShadedConnective child_1 = children_1.get(i);
-				ShadedConnective child_2 = children_2.get(mapping[i]);
+				ShadedFunction child_1 = children_1.get(i);
+				ShadedFunction child_2 = children_2.get(mapping[i]);
 				if (!inRelation(child_1, child_2))
 				{
 					subsumed = false;

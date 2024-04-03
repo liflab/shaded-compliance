@@ -106,12 +106,12 @@ public class ShadedNot extends ShadedConnective
 	@Override
 	public String toString()
 	{
-		return "!";
+		return "\u00ac";
 	}
 
 	@Override
 	public String getSymbol()
 	{
-		return "!";
+		return "\u00ac";
 	}
 }

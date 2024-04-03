@@ -109,6 +109,6 @@ public class ShadedF extends ShadedLtlOperator
 	@Override
 	public String getSymbol()
 	{
-		return "F";
+		return "<b>F</b>";
 	}
 }

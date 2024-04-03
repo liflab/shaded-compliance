@@ -53,12 +53,12 @@ public class ShadedFalse extends ShadedConnective
 	@Override
 	public String toString()
 	{
-		return "false";
+		return "\u22a5";
 	}
 
 	@Override
 	public String getSymbol()
 	{
-		return "F";
+		return "\u22a5";
 	}
 }

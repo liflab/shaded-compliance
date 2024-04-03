@@ -59,12 +59,12 @@ public class ShadedTrue extends ShadedConnective
 	@Override
 	public String toString()
 	{
-		return "true";
+		return "\u22a4";
 	}
 	
 	@Override
 	public String getSymbol()
 	{
-		return "T";
+		return "\u22a4";
 	}
 }

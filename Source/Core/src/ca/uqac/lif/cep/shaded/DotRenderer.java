@@ -25,7 +25,7 @@ public class DotRenderer
 	
 	protected static byte[] render(String dot_content)
 	{
-		CommandRunner runner = new CommandRunner(new String[] {"neato", "-Tpng"}, dot_content.getBytes());
+		CommandRunner runner = new CommandRunner(new String[] {"dot", "-Tpng"}, dot_content.getBytes());
 		runner.run();
 		return runner.getBytes();
 	}

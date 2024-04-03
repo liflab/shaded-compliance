@@ -103,12 +103,12 @@ public class ShadedAnd extends ShadedNaryConnective
 	@Override
 	public String toString()
 	{
-		return "&";
+		return "\u2227";
 	}
 	
 	@Override
 	public String getSymbol()
 	{
-		return "&amp;";
+		return "\u2227";
 	}
 }

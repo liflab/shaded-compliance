@@ -102,12 +102,12 @@ public class ShadedOr extends ShadedNaryConnective
 	@Override
 	public String toString()
 	{
-		return "|";
+		return "\u2228";
 	}
 	
 	@Override
 	public String getSymbol()
 	{
-		return "|";
+		return "\u2228";
 	}
 }
