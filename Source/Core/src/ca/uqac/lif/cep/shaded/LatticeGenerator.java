@@ -2,8 +2,10 @@ package ca.uqac.lif.cep.shaded;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class LatticeGenerator
@@ -39,7 +41,6 @@ public class LatticeGenerator
 						// If there's another path from i to j through k
 						if (k != i && k != j && transitiveClosure[i][k] && transitiveClosure[k][j]) 
 						{
-							System.out.println("REMOVE " + i + "," + j);
 							g.m_adjacency[i][j] = false; // Remove the direct edge from i to j
 							break; // No need to check further once an alternate path is found
 						}
@@ -77,15 +78,19 @@ public class LatticeGenerator
 	public static ShadedGraph mergeEdges(ShadedGraph g)
 	{
 		Set<Integer> redundant_edges = new HashSet<>();
+		Map<Integer,Integer> multiplicity = new HashMap<>();
 		for (int i = 0; i < g.size(); i++)
 		{
+			int mul = 1;
 			for (int j = i + 1; j < g.size(); j++)
 			{
 				if (g.m_adjacency[i][j] && g.m_adjacency[j][i])
 				{
 					redundant_edges.add(j);
+					mul++;
 				}
 			}
+			multiplicity.put(i, mul);
 		}
 		List<ShadedConnective> new_elems = new ArrayList<>();
 		for (int i = 0; i < g.size(); i++)
@@ -111,6 +116,7 @@ public class LatticeGenerator
 					continue;
 				}
 				r_g.m_adjacency[i_cnt][j_cnt] = g.m_adjacency[i][j];
+				r_g.m_multiplicity.put(i_cnt, multiplicity.get(i));
 				j_cnt++;
 			}
 			i_cnt++;

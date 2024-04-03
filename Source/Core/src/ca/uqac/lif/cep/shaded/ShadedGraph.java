@@ -7,6 +7,11 @@ import java.util.Map;
 
 import ca.uqac.lif.cep.shaded.ShadedConnective.Color;
 
+/**
+ * A graph representing the partial order between a set of shaded nodes.
+ * 
+ * @author Sylvain Hallé
+ */
 public class ShadedGraph
 {
 	protected List<ShadedConnective> m_orderedElements;
@@ -14,6 +19,8 @@ public class ShadedGraph
 	protected Map<ShadedConnective,Integer> m_toId;
 
 	protected Map<Integer,ShadedConnective> m_fromId;
+	
+	protected Map<Integer,Integer> m_multiplicity;
 
 	protected boolean[][] m_adjacency;
 
@@ -24,10 +31,12 @@ public class ShadedGraph
 		m_toId = new HashMap<>(elements.size());
 		m_fromId = new HashMap<>(elements.size());
 		m_adjacency = new boolean[elements.size()][elements.size()];
+		m_multiplicity = new HashMap<>(elements.size());
 		for (int i = 0; i < elements.size(); i++)
 		{
 			m_toId.put(elements.get(i), i);
 			m_fromId.put(i, elements.get(i));
+			m_multiplicity.put(i, 1);
 		}
 	}
 	
@@ -91,14 +100,15 @@ public class ShadedGraph
 	public void render(PrintStream ps)
 	{
 		ps.println("digraph G {");
-		ps.println("nodesep=0.125");
-		ps.println("ranksep=0.25;");
-		ps.println("node [shape=\"circle\",height=0.3,width=0.3,fixedsize=\"true\",style=\"filled\"];");
+		ps.println("  nodesep=0.125");
+		ps.println("  ranksep=0.25;");
+		ps.println("  node [shape=\"circle\",height=0.3,width=0.3,fixedsize=\"true\",style=\"filled\"];");
 		for (ShadedConnective connective : m_orderedElements)
 		{
 			Color color = connective.getValue();
 			int id = m_toId.get(connective);
-			ps.print(id + " [label=<" + id + ">,fillcolor=" + (color == Color.GREEN ? "\"green\"" : "\"red\"") + "];\n");
+			int multiplicity = m_multiplicity.get(id);
+			ps.print("  " + id + " [label=<" + multiplicity + ">,fillcolor=" + (color == Color.GREEN ? "\"green\"" : "\"red\"") + "];\n");
 		}
 		for (int i = 0; i < m_adjacency.length; i++)
 		{
@@ -106,7 +116,7 @@ public class ShadedGraph
 			{
 				if (m_adjacency[i][j])
 				{
-					ps.println(i + " -> " + j + ";");
+					ps.println("  " + i + " -> " + j + ";");
 				}
 			}
 		}
