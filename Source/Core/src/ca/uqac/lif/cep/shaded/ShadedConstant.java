@@ -1,5 +1,8 @@
 package ca.uqac.lif.cep.shaded;
 
+import ca.uqac.lif.cep.shaded.ShadedComparison.ShadedEquals;
+import ca.uqac.lif.cep.shaded.ShadedConnective.Color;
+
 public class ShadedConstant implements ShadedFunction
 {
 	public static ShadedFunction wrap(Object o)
@@ -19,6 +22,17 @@ public class ShadedConstant implements ShadedFunction
 	{
 		super();
 		m_value = value;
+	}
+	
+	@Override
+	public boolean sameAs(ShadedFunction o)
+	{
+		if (!(o instanceof ShadedConstant))
+		{
+			return false;
+		}
+		ShadedConstant sfa = (ShadedConstant) o;
+		return ShadedEquals.equals(m_value, sfa.m_value) == Color.GREEN;
 	}
 
 	@Override

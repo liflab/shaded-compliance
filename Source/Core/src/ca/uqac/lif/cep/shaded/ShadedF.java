@@ -22,6 +22,34 @@ public class ShadedF extends ShadedLtlOperator
 	{
 		super(phi);
 	}
+	
+	@Override
+	public int hashCode()
+	{
+		return "F".hashCode();
+	}
+	
+	@Override
+	public boolean sameAs(ShadedFunction o)
+	{
+		if (!(o instanceof ShadedF))
+		{
+			return false;
+		}
+		ShadedF c = (ShadedF) o;
+		if (m_color != c.m_color || m_polarity != c.m_polarity || !m_phi.equals(c.m_phi) || m_operands.size() != c.m_operands.size())
+		{
+			return false;
+		}
+		for (int i = 0; i < m_operands.size(); i++)
+		{
+			if (!m_operands.get(i).equals(c.m_operands.get(i)))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
 
 	@Override
 	public ShadedF update(Object event)

@@ -15,4 +15,6 @@ public interface ShadedFunction
 	public String getSymbol();
 	
 	public Object getValue();
+	
+	public boolean sameAs(ShadedFunction f);
 }

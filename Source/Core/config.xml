@@ -63,6 +63,14 @@
       <bundle>false</bundle>
     </dependency>
     <dependency>
+      <name>lif-fs</name>
+      <classname>ca.uqac.lif.fs.FileSystem</classname>
+      <files>
+        <jar>https://github.com/liflab/lif-fs/releases/download/v0.2.1/lif-fs-core-0.2.1.jar</jar>
+      </files>
+      <bundle>false</bundle>
+    </dependency>
+    <dependency>
       <name>Synthia Core</name>
       <classname>ca.uqac.lif.synthia.Picker</classname>
       <files>

@@ -1,5 +1,6 @@
 package ca.uqac.lif.cep.shaded;
 
+import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import ca.uqac.lif.cep.shaded.ShadedConnective.Color;
@@ -9,6 +10,13 @@ public class TreeRenderer
 	public TreeRenderer()
 	{
 		super();
+	}
+	
+	public static void toImage(ShadedFunction f, String filename)
+	{
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		render(f, new PrintStream(baos));
+		DotRenderer.toImage(baos.toString(), filename);
 	}
 
 	public static void render(ShadedFunction f, PrintStream ps)

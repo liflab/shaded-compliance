@@ -31,6 +31,34 @@ public class ShadedOr extends ShadedNaryConnective
 	{
 		super(operands);
 	}
+	
+	@Override
+	public int hashCode()
+	{
+		return "|".hashCode();
+	}
+	
+	@Override
+	public boolean sameAs(ShadedFunction o)
+	{
+		if (!(o instanceof ShadedOr))
+		{
+			return false;
+		}
+		ShadedOr c = (ShadedOr) o;
+		if (m_color != c.m_color || m_polarity != c.m_polarity || m_operands.size() != c.m_operands.size())
+		{
+			return false;
+		}
+		for (int i = 0; i < m_operands.size(); i++)
+		{
+			if (!m_operands.get(i).equals(c.m_operands.get(i)))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
 
 	@Override
 	public ShadedOr duplicate(boolean with_state)

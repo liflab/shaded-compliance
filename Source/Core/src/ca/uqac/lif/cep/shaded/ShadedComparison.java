@@ -8,30 +8,30 @@ public abstract class ShadedComparison extends ShadedConnective
 	{
 		return eq(Polarity.POSITIVE, wrap(left), wrap(right));
 	}
-	
+
 	protected static ShadedEquals eq(Polarity p, ShadedFunction left, ShadedFunction right)
-  {
+	{
 		ShadedEquals e = new ShadedEquals(left, right);
-    e.setPolarity(p);
-    return e;
-  }
-	
+		e.setPolarity(p);
+		return e;
+	}
+
 	public static ShadedLessThanOrEqual leq(Object left, Object right)
 	{
 		return leq(Polarity.POSITIVE, wrap(left), wrap(right));
 	}
-	
+
 	protected static ShadedLessThanOrEqual leq(Polarity p, ShadedFunction left, ShadedFunction right)
-  {
+	{
 		ShadedLessThanOrEqual e = new ShadedLessThanOrEqual(left, right);
-    e.setPolarity(p);
-    return e;
-  }
-	
+		e.setPolarity(p);
+		return e;
+	}
+
 	protected ShadedFunction m_left;
-	
+
 	protected ShadedFunction m_right;
-	
+
 	public ShadedComparison(ShadedFunction left, ShadedFunction right)
 	{
 		super();
@@ -58,14 +58,25 @@ public abstract class ShadedComparison extends ShadedConnective
 		}
 		return null;
 	}
-	
+
 	public static class ShadedLessThanOrEqual extends ShadedComparison
 	{
 		public ShadedLessThanOrEqual(ShadedFunction left, ShadedFunction right)
 		{
 			super(left, right);
 		}
-		
+
+		@Override
+		public boolean sameAs(ShadedFunction f)
+		{
+			if (!(f instanceof ShadedLessThanOrEqual))
+			{
+				return false;
+			}
+			ShadedLessThanOrEqual eq = (ShadedLessThanOrEqual) f;
+			return eq.m_color == m_color && eq.m_left.sameAs(m_left) && eq.m_right.sameAs(m_right);
+		}
+
 		@Override
 		public ShadedLessThanOrEqual update(Object event)
 		{
@@ -103,21 +114,32 @@ public abstract class ShadedComparison extends ShadedConnective
 			}
 			return s;
 		}
-		
+
 		@Override
 		public ShadedLessThanOrEqual duplicate()
 		{
 			return duplicate(false);
 		}
 	}
-	
+
 	public static class ShadedEquals extends ShadedComparison
 	{
 		public ShadedEquals(ShadedFunction left, ShadedFunction right)
 		{
 			super(left, right);
 		}
-		
+
+		@Override
+		public boolean sameAs(ShadedFunction f)
+		{
+			if (!(f instanceof ShadedEquals))
+			{
+				return false;
+			}
+			ShadedEquals eq = (ShadedEquals) f;
+			return eq.m_color == m_color && eq.m_left.sameAs(m_left) && eq.m_right.sameAs(m_right);
+		}
+
 		@Override
 		public ShadedEquals update(Object event)
 		{
@@ -128,8 +150,8 @@ public abstract class ShadedComparison extends ShadedConnective
 			m_color = equals(left, right);
 			return this;
 		}
-		
-		protected static Color equals(Object left, Object right)
+
+		public static Color equals(Object left, Object right)
 		{
 			if (left == null && right == null)
 			{
@@ -167,7 +189,7 @@ public abstract class ShadedComparison extends ShadedConnective
 			}
 			return d;
 		}
-		
+
 		@Override
 		public ShadedEquals duplicate()
 		{

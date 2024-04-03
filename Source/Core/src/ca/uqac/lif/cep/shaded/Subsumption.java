@@ -7,7 +7,18 @@ import ca.uqac.lif.cep.shaded.ShadedConnective.Color;
 
 public class Subsumption implements TreeComparator
 {
-	protected boolean m_compareNonConnectives = false;
+	protected final boolean m_compareNonConnectives;
+	
+	public Subsumption(boolean compare_non_connectives)
+	{
+		super();
+		m_compareNonConnectives = compare_non_connectives;
+	}
+	
+	public Subsumption()
+	{
+		this(false);
+	}
 	
 	@Override
 	public boolean inRelation(ShadedFunction f1, ShadedFunction f2)
@@ -36,7 +47,7 @@ public class Subsumption implements TreeComparator
 		}
 		if (m_compareNonConnectives)
 		{
-			return f1.equals(f2);
+			return f1.sameAs(f2);
 		}
 		return false;
 	}

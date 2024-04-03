@@ -2,6 +2,9 @@ package ca.uqac.lif.cep.shaded;
 
 import java.util.Map;
 
+import ca.uqac.lif.cep.shaded.ShadedComparison.ShadedEquals;
+import ca.uqac.lif.cep.shaded.ShadedConnective.Color;
+
 public class ShadedFetchAttribute implements ShadedFunction
 {
 	public static ShadedFetchAttribute fetch(String attribute)
@@ -18,6 +21,17 @@ public class ShadedFetchAttribute implements ShadedFunction
 		super();
 		m_attribute = attribute;
 		m_value = null;
+	}
+	
+	@Override
+	public boolean sameAs(ShadedFunction o)
+	{
+		if (!(o instanceof ShadedFetchAttribute))
+		{
+			return false;
+		}
+		ShadedFetchAttribute sfa = (ShadedFetchAttribute) o;
+		return m_attribute.compareTo(sfa.m_attribute) == 0 && ShadedEquals.equals(m_value, sfa.m_value) == Color.GREEN;
 	}
 
 	@SuppressWarnings("unchecked")

@@ -11,11 +11,17 @@ public class ShadedFalse extends ShadedConnective
 		super();
 		m_color = Color.RED;
 	}
-	
+
 	@Override
 	public ShadedFalse update(Object event)
 	{
 		return this;
+	}
+
+	@Override
+	public boolean sameAs(ShadedFunction o)
+	{
+		return o instanceof ShadedFalse;
 	}
 
 	@Override
@@ -37,19 +43,19 @@ public class ShadedFalse extends ShadedConnective
 		t.setPolarity(m_polarity);
 		return t;
 	}
-	
+
 	@Override
 	public ShadedFalse duplicate()
 	{
 		return duplicate(false);
 	}
-	
+
 	@Override
 	public String toString()
 	{
 		return "false";
 	}
-	
+
 	@Override
 	public String getSymbol()
 	{

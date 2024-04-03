@@ -14,7 +14,7 @@ import static ca.uqac.lif.cep.shaded.ShadedG.G;
 import static ca.uqac.lif.cep.shaded.ShadedOr.or;
 import static ca.uqac.lif.cep.shaded.LtlTuplesTest.map;
 
-public class TreeComparatorTest
+public class SubsumptionTest
 {
 	@Test
 	public void test1()

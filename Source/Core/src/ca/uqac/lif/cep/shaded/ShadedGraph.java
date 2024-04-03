@@ -1,5 +1,6 @@
 package ca.uqac.lif.cep.shaded;
 
+import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.List;
@@ -96,8 +97,15 @@ public class ShadedGraph
 		}
 		return closure;
 	}
+	
+	public void toImage(String filename)
+	{
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		toDot(new PrintStream(baos));
+		DotRenderer.toImage(baos.toString(), filename);
+	}
 
-	public void render(PrintStream ps)
+	public void toDot(PrintStream ps)
 	{
 		ps.println("digraph G {");
 		ps.println("  nodesep=0.125");

@@ -2,6 +2,9 @@ package ca.uqac.lif.cep.shaded;
 
 import static ca.uqac.lif.cep.shaded.ShadedConstant.wrap;
 
+import ca.uqac.lif.cep.shaded.ShadedComparison.ShadedEquals;
+import ca.uqac.lif.cep.shaded.ShadedConnective.Color;
+
 public abstract class ShadedBinaryFunction implements ShadedFunction
 {
 	public static ShadedAbsoluteDifference delta(Object left, Object right)
@@ -74,6 +77,17 @@ public abstract class ShadedBinaryFunction implements ShadedFunction
 				m_value = Math.abs(n_left.doubleValue() - n_right.doubleValue());
 			}
 			return this;
+		}
+		
+		@Override
+		public boolean sameAs(ShadedFunction f)
+		{
+			if (!(f instanceof ShadedAbsoluteDifference))
+			{
+				return false;
+			}
+			ShadedAbsoluteDifference eq = (ShadedAbsoluteDifference) f;
+			return ShadedEquals.equals(m_value, eq.m_value) == Color.GREEN && eq.m_left.sameAs(m_left) && eq.m_right.sameAs(m_right);
 		}
 
 		@Override

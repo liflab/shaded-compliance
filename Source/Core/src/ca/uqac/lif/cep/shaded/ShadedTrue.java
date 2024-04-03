@@ -17,6 +17,18 @@ public class ShadedTrue extends ShadedConnective
 	{
 		return this;
 	}
+	
+	@Override
+	public int hashCode()
+	{
+		return "T".hashCode();
+	}
+	
+	@Override
+	public boolean sameAs(ShadedFunction o)
+	{
+		return o instanceof ShadedTrue;
+	}
 
 	@Override
 	public int getArity()
