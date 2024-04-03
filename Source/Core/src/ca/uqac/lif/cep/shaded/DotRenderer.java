@@ -7,9 +7,11 @@ import ca.uqac.lif.fs.HardDisk;
 
 public class DotRenderer
 {
-	public static void toImage(String dot_content, String filename)
+	public static enum Algorithm {DOT, NEATO}
+	
+	public static void toImage(Algorithm alg, String dot_content, String filename)
 	{
-		byte[] image = render(dot_content);
+		byte[] image = render(alg, dot_content);
 		try
 		{
 			HardDisk hd = new HardDisk("/").open();
@@ -23,9 +25,9 @@ public class DotRenderer
 		}
 	}
 	
-	protected static byte[] render(String dot_content)
+	protected static byte[] render(Algorithm alg, String dot_content)
 	{
-		CommandRunner runner = new CommandRunner(new String[] {"dot", "-Tpng"}, dot_content.getBytes());
+		CommandRunner runner = new CommandRunner(new String[] {alg == Algorithm.DOT ? "dot" : "neato", "-Tpng"}, dot_content.getBytes());
 		runner.run();
 		return runner.getBytes();
 	}

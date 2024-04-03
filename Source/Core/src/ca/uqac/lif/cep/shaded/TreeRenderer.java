@@ -3,6 +3,7 @@ package ca.uqac.lif.cep.shaded;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
+import ca.uqac.lif.cep.shaded.DotRenderer.Algorithm;
 import ca.uqac.lif.cep.shaded.ShadedConnective.Color;
 
 public class TreeRenderer
@@ -16,7 +17,7 @@ public class TreeRenderer
 	{
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		render(f, new PrintStream(baos));
-		DotRenderer.toImage(baos.toString(), filename);
+		DotRenderer.toImage(Algorithm.DOT, baos.toString(), filename);
 	}
 
 	public static void render(ShadedFunction f, PrintStream ps)

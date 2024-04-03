@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ca.uqac.lif.cep.shaded.DotRenderer.Algorithm;
 import ca.uqac.lif.cep.shaded.ShadedConnective.Color;
 
 /**
@@ -102,14 +103,16 @@ public class ShadedGraph
 	{
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		toDot(new PrintStream(baos));
-		DotRenderer.toImage(baos.toString(), filename);
+		DotRenderer.toImage(Algorithm.DOT, baos.toString(), filename);
 	}
 
 	public void toDot(PrintStream ps)
 	{
 		ps.println("digraph G {");
-		ps.println("  nodesep=0.125");
-		ps.println("  ranksep=0.25;");
+		//ps.println("  nodesep=0.125");
+		//ps.println("  ranksep=0.25;");
+		ps.println("  edge [dir=none,tailport=\"s\",headport=\"n\"];");
+		ps.println("  splines=false;");
 		ps.println("  node [shape=\"circle\",height=0.3,width=0.3,fixedsize=\"true\",style=\"filled\"];");
 		for (ShadedConnective connective : m_orderedElements)
 		{

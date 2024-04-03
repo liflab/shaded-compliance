@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ca.uqac.lif.cep.shaded.ShadedConnective;
+import ca.uqac.lif.cep.shaded.Subsumption;
 import ca.uqac.lif.cep.shaded.TreeComparator;
 import ca.uqac.lif.cep.shaded.TreeRenderer;
 
@@ -28,7 +29,7 @@ import ca.uqac.lif.cep.shaded.TreeRenderer;
  * <li>the winning condition itself makes no explicit mention of counting</li>
  * </ol>
  */
-public class CompareBoards
+public class CompareBoards2
 {
 	public static void main(String[] args)
 	{
@@ -41,12 +42,13 @@ public class CompareBoards
 				and(eq(fetch("A3"), "X"), eq(fetch("B3"), "X"), eq(fetch("C3"), "X")),
 				and(eq(fetch("A1"), "X"), eq(fetch("B2"), "X"), eq(fetch("C3"), "X")),
 				and(eq(fetch("A3"), "X"), eq(fetch("B2"), "X"), eq(fetch("C1"), "X")));
-		ShadedConnective grid1 = condition.duplicate().update(grid("XOXOXOXOX"));
-		ShadedConnective grid2 = condition.duplicate().update(grid("XOXXOOXXO"));
-		TreeRenderer.render(grid1, System.out);
-		TreeRenderer.render(grid2, System.out);
-		System.out.println(TreeComparator.isSubsumed(grid1, grid2));
-		System.out.println(TreeComparator.isSubsumed(grid2, grid1));
+		ShadedConnective grid1 = condition.duplicate().update(grid("OXOXOXOXO"));
+		ShadedConnective grid2 = condition.duplicate().update(grid("OXOOXXOOX"));
+		TreeRenderer.toImage(grid1, "/tmp/grid3.png");
+		TreeRenderer.toImage(grid2, "/tmp/grid4.png");
+		Subsumption comp = new Subsumption(false);
+		System.out.println(comp.inRelation(grid1, grid2));
+		System.out.println(comp.inRelation(grid2, grid1));
 	}
 	
 	/**
@@ -57,7 +59,7 @@ public class CompareBoards
 	public static Map<String,Object> grid(String s)
 	{
 		s = s.toUpperCase();
-		s = s.replaceAll("[^XO]", "");
+		s = s.replaceAll("[^XO ]", "");
 		Map<String, Object> map = new HashMap<String,Object>();
 		map.put("A1", s.substring(0, 1));
 		map.put("A2", s.substring(1, 2));
