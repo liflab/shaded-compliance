@@ -45,7 +45,8 @@ public class LatticeGeneratorTest
 			phi_prime.update(map("a", 1));
 			phi_prime.update(map("a", 0));
 		}
-		ShadedGraph g = LatticeGenerator.getLattice(nodes);
+		LatticeGenerator gen = new LatticeGenerator(new Subsumption());
+		ShadedGraph g = gen.getLattice(nodes);
 		g.render(System.out);
 	}
 }

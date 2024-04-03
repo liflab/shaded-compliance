@@ -10,12 +10,15 @@ import java.util.Set;
 
 public class LatticeGenerator
 {
-	public LatticeGenerator()
+	protected final TreeComparator m_relation;
+	
+	public LatticeGenerator(TreeComparator relation)
 	{
 		super();
+		m_relation = relation;
 	}
 
-	public static ShadedGraph getLattice(List<ShadedConnective> elements)
+	public ShadedGraph getLattice(List<ShadedConnective> elements)
 	{
 		ShadedGraph g = exploreLattice(elements);
 		ShadedGraph g_merged = mergeEdges(g);
@@ -50,7 +53,7 @@ public class LatticeGenerator
 		}
 	}
 
-	public static ShadedGraph exploreLattice(List<ShadedConnective> elements)
+	public ShadedGraph exploreLattice(List<ShadedConnective> elements)
 	{
 		ShadedGraph g = new ShadedGraph(elements);
 		for (int i = 0; i < elements.size(); i++)
@@ -61,7 +64,7 @@ public class LatticeGenerator
 				{
 					continue;
 				}
-				if (TreeComparator.isSubsumed(elements.get(i), elements.get(j)))
+				if (m_relation.inRelation(elements.get(i), elements.get(j)))
 				{
 					g.addEdge(elements.get(i), elements.get(j));
 				}
@@ -70,7 +73,7 @@ public class LatticeGenerator
 		return g;
 	}
 
-	public static ShadedGraph exploreLattice(ShadedConnective ... elements)
+	public ShadedGraph exploreLattice(ShadedConnective ... elements)
 	{
 		return exploreLattice(Arrays.asList(elements));
 	}

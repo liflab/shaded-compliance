@@ -27,8 +27,9 @@ public class TreeComparatorTest
 		phi2.update(map("a", 1));
 		phi2.update(map("a", 1));
 		phi2.update(map("a", 2));
-		assertTrue(TreeComparator.isSubsumed(phi2, phi1));
-		assertTrue(TreeComparator.isSubsumed(phi1, phi2));
+		Subsumption comp = new Subsumption();
+		assertTrue(comp.inRelation(phi2, phi1));
+		assertTrue(comp.inRelation(phi1, phi2));
 	}
 	
 	@Test
@@ -42,8 +43,9 @@ public class TreeComparatorTest
 		phi2.update(map("a", 1));
 		phi2.update(map("a", 2));
 		phi2.update(map("a", 2));
-		assertTrue(TreeComparator.isSubsumed(phi2, phi1));
-		assertFalse(TreeComparator.isSubsumed(phi1, phi2));
+		Subsumption comp = new Subsumption();
+		assertTrue(comp.inRelation(phi2, phi1));
+		assertFalse(comp.inRelation(phi1, phi2));
 	}
 	
 	@Test
@@ -57,8 +59,9 @@ public class TreeComparatorTest
 		phi2.update(map("a", 1));
 		phi2.update(map("a", 1));
 		phi2.update(map("a", 2));
-		assertTrue(TreeComparator.isSubsumed(phi2, phi1));
-		assertTrue(TreeComparator.isSubsumed(phi1, phi2));
+		Subsumption comp = new Subsumption();
+		assertTrue(comp.inRelation(phi2, phi1));
+		assertTrue(comp.inRelation(phi1, phi2));
 	}
 	
 	@Test
@@ -72,8 +75,9 @@ public class TreeComparatorTest
 		phi2.update(map("a", 1));
 		phi2.update(map("a", 2));
 		phi2.update(map("a", 2));
-		assertTrue(TreeComparator.isSubsumed(phi2, phi1));
-		assertFalse(TreeComparator.isSubsumed(phi1, phi2));
+		Subsumption comp = new Subsumption();
+		assertTrue(comp.inRelation(phi2, phi1));
+		assertFalse(comp.inRelation(phi1, phi2));
 	}
 	
 	@Test
@@ -93,8 +97,9 @@ public class TreeComparatorTest
 		phi2.update(map("a", 1));
 		phi2.update(map("b", 0));
 		phi2.update(map("c", 1));
-		assertTrue(TreeComparator.isSubsumed(phi2, phi1));
-		assertFalse(TreeComparator.isSubsumed(phi1, phi2));
+		Subsumption comp = new Subsumption();
+		assertTrue(comp.inRelation(phi2, phi1));
+		assertFalse(comp.inRelation(phi1, phi2));
 	}
 	
 	@Test
@@ -105,9 +110,10 @@ public class TreeComparatorTest
 		ShadedConnective phi2 = phi1.duplicate();
 		phi2.setPolarity(Polarity.NEGATIVE);
 		phi2.update(map("a", 1));
+		Subsumption comp = new Subsumption();
 		// None is subsumed because of different polarity
-		assertFalse(TreeComparator.isSubsumed(phi2, phi1));
-		assertFalse(TreeComparator.isSubsumed(phi1, phi2));
+		assertFalse(comp.inRelation(phi2, phi1));
+		assertFalse(comp.inRelation(phi1, phi2));
 	}
 	
 	@Test
@@ -117,7 +123,8 @@ public class TreeComparatorTest
 		phi1.update(map("a", 1));
 		ShadedConnective phi2 = phi1.duplicate();
 		phi2.update(map("a", 0));
-		assertTrue(TreeComparator.isSubsumed(phi2, phi1));
-		assertFalse(TreeComparator.isSubsumed(phi1, phi2));
+		Subsumption comp = new Subsumption();
+		assertTrue(comp.inRelation(phi2, phi1));
+		assertFalse(comp.inRelation(phi1, phi2));
 	}
 }
