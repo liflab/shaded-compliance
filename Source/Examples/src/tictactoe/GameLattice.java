@@ -49,6 +49,7 @@ public class GameLattice
 		LatticeGenerator gen = new LatticeGenerator(new Subsumption(false));
 		ShadedGraph g = gen.getLattice(elements);
 		g.toImage("/tmp/ttt1.png");
+		g.dumpNodes("/tmp/G1_");
 	}
 
 }

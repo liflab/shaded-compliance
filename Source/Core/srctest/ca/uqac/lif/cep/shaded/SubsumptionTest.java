@@ -149,6 +149,43 @@ public class SubsumptionTest
 	}
 	
 	@Test
+	public void test8()
+	{
+		// (a = 1 && b = 1) || (a = 2 && b = 2)
+		ShadedConnective phi1 = or(
+				and(eq(fetch("a"), 1), eq(fetch("b"), 1)),
+				and(eq(fetch("a"), 2), eq(fetch("b"), 2)));
+		phi1.update(map("a", 1));
+		phi1.update(map("b", 3));
+		ShadedConnective phi2 = phi1.duplicate();
+		phi2.update(map("a", 3));
+		phi2.update(map("b", 3));
+		TreeRenderer.toImage(phi1, "/tmp/phi1.png");
+		TreeRenderer.toImage(phi2, "/tmp/phi2.png");
+		Subsumption comp = new Subsumption();
+		assertTrue(comp.inRelation(phi2, phi1));
+		assertFalse(comp.inRelation(phi1, phi2));
+	}
+	
+	@Test
+	public void test9()
+	{
+		//a = 1 && b = 1
+		ShadedConnective phi1 = and(
+				eq(fetch("a"), 1), eq(fetch("b"), 1));
+		phi1.update(map("a", 1));
+		phi1.update(map("b", 3));
+		ShadedConnective phi2 = phi1.duplicate();
+		phi2.update(map("a", 3));
+		phi2.update(map("b", 3));
+		TreeRenderer.toImage(phi1, "/tmp/phi1.png");
+		TreeRenderer.toImage(phi2, "/tmp/phi2.png");
+		Subsumption comp = new Subsumption();
+		assertTrue(comp.inRelation(phi2, phi1));
+		assertFalse(comp.inRelation(phi1, phi2));
+	}
+	
+	@Test
 	public void testPolarity1()
 	{
 		ShadedConnective phi1 = G(eq(fetch("a"), 1));

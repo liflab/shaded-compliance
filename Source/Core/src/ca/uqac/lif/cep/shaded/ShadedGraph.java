@@ -105,13 +105,22 @@ public class ShadedGraph
 		toDot(new PrintStream(baos));
 		DotRenderer.toImage(Algorithm.DOT, baos.toString(), filename);
 	}
+	
+	public void dumpNodes(String prefix)
+	{
+		for (int i = 0; i < m_orderedElements.size(); i++)
+		{
+			ShadedConnective s = m_orderedElements.get(i);
+			TreeRenderer.toImage(s, prefix + i + ".png");
+		}
+	}
 
 	public void toDot(PrintStream ps)
 	{
 		ps.println("digraph G {");
 		//ps.println("  nodesep=0.125");
 		//ps.println("  ranksep=0.25;");
-		ps.println("  edge [dir=none,tailport=\"s\",headport=\"n\"];");
+		ps.println("  edge [dir=none];"); //,tailport=\"s\",headport=\"n\"];");
 		ps.println("  splines=false;");
 		ps.println("  node [shape=\"circle\",height=0.3,width=0.3,fixedsize=\"true\",style=\"filled\"];");
 		for (ShadedConnective connective : m_orderedElements)
@@ -119,7 +128,7 @@ public class ShadedGraph
 			Color color = connective.getValue();
 			int id = m_toId.get(connective);
 			int multiplicity = m_multiplicity.get(id);
-			ps.print("  " + id + " [label=<" + multiplicity + ">,fillcolor=" + (color == Color.GREEN ? "\"green\"" : "\"red\"") + "];\n");
+			ps.print("  " + id + " [label=<" + id + "\u00d7" + multiplicity + ">,fillcolor=" + (color == Color.GREEN ? "\"green\"" : "\"red\"") + "];\n");
 		}
 		for (int i = 0; i < m_adjacency.length; i++)
 		{

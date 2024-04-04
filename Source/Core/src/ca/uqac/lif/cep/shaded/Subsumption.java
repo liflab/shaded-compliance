@@ -3,6 +3,7 @@ package ca.uqac.lif.cep.shaded;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.uqac.lif.cep.shaded.Polarized.Polarity;
 import ca.uqac.lif.cep.shaded.ShadedConnective.Color;
 
 public class Subsumption implements TreeComparator
@@ -39,11 +40,7 @@ public class Subsumption implements TreeComparator
 				// Comparing trees with different polarity is meaningless
 				return false;
 			}
-			if (pol_1 == Polarized.Polarity.POSITIVE)
-			{
-				return isSubsumedPositive(c1, c2);
-			}
-			return isSubsumedNegative(c1, c2);
+			return isSubsumed(c1, c2, pol_1);
 		}
 		if (m_compareNonConnectives)
 		{
@@ -51,101 +48,98 @@ public class Subsumption implements TreeComparator
 		}
 		return false;
 	}
-
-	protected boolean isSubsumedPositive(ShadedConnective f1, ShadedConnective f2)
+	
+	protected boolean isSubsumed(ShadedFunction f1, ShadedFunction f2, Polarity pol)
 	{
-		if (f1.getValue() == Color.GREEN && f2.getValue() != Color.GREEN)
+		// In the following, all color references in comments are for the positive polarity
+		// Invert the colors to reason about the negative polarity
+		Color col1, col2;
+		if (pol == Polarity.POSITIVE)
 		{
+			col1 = Color.GREEN;
+			col2 = Color.RED;
+		}
+		else
+		{
+			col1 = Color.RED;
+			col2 = Color.GREEN;
+		}
+		if (f1.getValue() == col1 && f2.getValue() == col2)
+		{
+			// Color mismatch: f1 is green and f2 is red
 			return false;
 		}
-		if (f1.getValue() == Color.RED && f2.getValue() == Color.GREEN)
+		if (f1.getValue() == col1)
 		{
-			return true;
+			// All green children of f1 must be subsumed by some child of f2
+			return hasMapping(f1, f2, col1, false);
 		}
-		if (f1.getValue() == Color.GREEN)
+		else
 		{
-			return hasMapping(f1, f2, Color.GREEN);
+			// All red children of f2 must subsume some child of f1
+			return hasMapping(f2, f1, col2, true);
 		}
-		// f1 and f2 are both red: we expect f2 to have "fewer" red nodes
-		// than f1
-		return hasMapping(f2, f1, Color.RED);
 	}
 
-	protected boolean isSubsumedNegative(ShadedConnective f1, ShadedConnective f2)
+	protected boolean hasMapping(ShadedFunction f1, ShadedFunction f2, Color col, boolean inverted)
 	{
-		if (f2.getValue() == Color.GREEN && f1.getValue() != Color.GREEN)
-		{
-			return false;
-		}
-		if (f2.getValue() == Color.RED && f1.getValue() == Color.GREEN)
-		{
-			return true;
-		}
-		if (f2.getValue() == Color.GREEN)
-		{
-			return hasMapping(f2, f1, Color.GREEN);
-		}
-		return hasMapping(f1, f2, Color.RED);
-	}
-
-	protected boolean hasMapping(ShadedConnective f1, ShadedConnective f2, Color col)
-	{
-		List<ShadedFunction> children_1 = new ArrayList<>();
-		List<ShadedFunction> children_2 = new ArrayList<>();
+		List<ShadedFunction> children_from = new ArrayList<>();
+		List<ShadedFunction> children_to = new ArrayList<>();
+		ShadedFunction from = f1, to = f2;
 		boolean has_white = false;
-		for (int i = 0; i < f1.getArity(); i++)
+		for (int i = 0; i < from.getArity(); i++)
 		{
-			ShadedFunction child = f1.getOperand(i);
+			ShadedFunction child = from.getOperand(i);
 			has_white |= m_compareNonConnectives && !(child instanceof ShadedConnective);
 			if ((m_compareNonConnectives && !(child instanceof ShadedConnective)) || (child instanceof ShadedConnective && child.getValue() == col))
 			{
-				children_1.add(child);
+				children_from.add(child);
 			}
 		}
-		for (int i = 0; i < f2.getArity(); i++)
+		for (int i = 0; i < to.getArity(); i++)
 		{
-			ShadedFunction child = f2.getOperand(i);
-			if ((m_compareNonConnectives && !(child instanceof ShadedConnective)) || (child instanceof ShadedConnective && child.getValue() == col))
+			ShadedFunction child = to.getOperand(i);
+			if ((m_compareNonConnectives && !(child instanceof ShadedConnective)) || (child instanceof ShadedConnective /*&& child.getValue() == col*/))
 			{
-				children_2.add(child);
+				children_to.add(child);
 			}
 		}
-		if (children_1.size() > children_2.size())
+		if (children_from.size() > children_to.size())
 		{
 			// Impossible: every element of children_1 must be associated to
 			// a distinct element in children_2
 			return false;
 		}
-		if (children_1.size() == 0)
+		if (children_from.size() == 0)
 		{
 			// No sub-tree to map to the other tree: fine
 			return true;
 		}
 		if (has_white)
 		{
-			if (children_1.size() != children_2.size())
+			if (children_from.size() != children_to.size())
 			{
 				return false;
 			}
-			for (int i = 0; i < children_1.size(); i++)
+			for (int i = 0; i < children_from.size(); i++)
 			{
-				if (!children_1.get(i).sameAs(children_2.get(i)))
+				if (!children_from.get(i).sameAs(children_to.get(i)))
 				{
 					return false;
 				}
 			}
 			return true;
 		}
-		InjectionPicker picker = new InjectionPicker(children_1.size(), children_2.size());
+		InjectionPicker picker = new InjectionPicker(children_from.size(), children_to.size());
 		while (!picker.isDone())
 		{
 			Integer[] mapping = picker.pick();
 			boolean subsumed = true;
 			for (int i = 0; i < mapping.length; i++)
 			{
-				ShadedFunction child_1 = children_1.get(i);
-				ShadedFunction child_2 = children_2.get(mapping[i]);
-				if (!inRelation(child_1, child_2))
+				ShadedFunction child_1 = children_from.get(i);
+				ShadedFunction child_2 = children_to.get(mapping[i]);
+				if ((!inverted && !inRelation(child_1, child_2)) || (inverted && !inRelation(child_2, child_1)))
 				{
 					subsumed = false;
 					break;

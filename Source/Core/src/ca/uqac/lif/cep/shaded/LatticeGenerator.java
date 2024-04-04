@@ -20,11 +20,113 @@ public class LatticeGenerator
 
 	public ShadedGraph getLattice(List<ShadedConnective> elements)
 	{
-		ShadedGraph g = exploreLattice(elements);
-		ShadedGraph g_merged = mergeEdges(g);
-		ShadedGraph g_trans = g_merged.getTransitiveClosure();
-		removeTransitiveEdges(g_merged, g_trans);
-		return g_merged;
+		ShadedGraph g_unique = createLattice(elements);
+		ShadedGraph g_trans = g_unique.getTransitiveClosure();
+		removeTransitiveEdges(g_unique, g_trans);
+		return g_unique;
+	}
+	
+	protected ShadedGraph createLattice(List<ShadedConnective> elements)
+	{
+		boolean[][] adj = new boolean[elements.size()][elements.size()];
+		Set<Integer> to_remove = new HashSet<>();
+		Map<Integer,Integer> multiplicity = new HashMap<>();
+		for (int i = 0; i < elements.size(); i++)
+		{
+			int mul = 1;
+			if (to_remove.contains(i))
+			{
+				continue;
+			}
+			ShadedFunction f1 = elements.get(i);
+			for (int j = i + 1; j < elements.size(); j++)
+			{
+				if (to_remove.contains(j))
+				{
+					continue;
+				}
+				ShadedFunction f2 = elements.get(j);
+				adj[i][j] = m_relation.inRelation(f1, f2);
+				adj[j][i] = m_relation.inRelation(f2, f1);
+				if (adj[i][j] && adj[j][i])
+				{
+					to_remove.add(j);
+					mul++;
+				}
+			}
+			multiplicity.put(i, mul);
+		}
+		List<ShadedConnective> new_elements = new ArrayList<>();
+		for (int i = 0; i < elements.size(); i++)
+		{
+			if (!to_remove.contains(i))
+			{
+				new_elements.add(elements.get(i));
+			}
+		}
+		ShadedGraph new_g = new ShadedGraph(new_elements);
+		int i_cnt = 0;
+		for (int i = 0; i < elements.size(); i++)
+		{
+			if (to_remove.contains(i))
+			{
+				continue;
+			}
+			new_g.m_multiplicity.put(i_cnt, multiplicity.get(i));
+			int j_cnt = 0;
+			for (int j = 0; j < elements.size(); j++)
+			{
+				if (to_remove.contains(j))
+				{
+					continue;
+				}
+				new_g.m_adjacency[i_cnt][j_cnt] = adj[i][j];
+				j_cnt++;
+			}
+			i_cnt++;
+		}
+		return new_g;
+	}
+	
+	protected ShadedGraph removeEquivalents(ShadedGraph g)
+	{
+		Map<Integer,Integer> multiplicity = new HashMap<>();
+		List<ShadedConnective> new_elements = new ArrayList<>();
+		int cnt = 0;
+		new_elements.add(g.m_orderedElements.get(0));
+		Set<Integer> to_remove = new HashSet<>();
+		for (int i = 0; i < g.m_orderedElements.size(); i++)
+		{
+			if (to_remove.contains(i))
+			{
+				continue;
+			}
+			int mul = 1;
+			ShadedFunction f1 = g.m_orderedElements.get(i);
+			for (int j = i + 1; j < g.m_orderedElements.size(); j++)
+			{
+				ShadedFunction f2 = g.m_orderedElements.get(j);
+				if (!to_remove.contains(j) && m_relation.inRelation(f1, f2) && m_relation.inRelation(f2, f1))
+				{
+					// f2 is equivalent to f1
+					mul++;
+					to_remove.add(j);
+				}
+			}
+			multiplicity.put(cnt, mul);
+			cnt++;
+		}
+		for (int i = 0; i < g.m_orderedElements.size(); i++)
+		{
+			if (!to_remove.contains(i))
+			{
+				new_elements.add(g.m_orderedElements.get(i));
+			}
+		}
+		ShadedGraph new_g = new ShadedGraph(new_elements);
+		System.out.println("Elements after duplicates removed: " + new_elements.size());
+		new_g.m_multiplicity.putAll(multiplicity);
+		return new_g;
 	}
 
 	public static void removeTransitiveEdges(ShadedGraph g, ShadedGraph g_trans)
@@ -75,6 +177,28 @@ public class LatticeGenerator
 			}
 		}
 		return g;
+	}
+	
+	public void exploreLattice(ShadedGraph g)
+	{
+		for (int i = 0; i < g.m_orderedElements.size(); i++)
+		{
+			if (i % 10 == 0)
+			{
+				System.out.println("Processing element " + i + " of " + g.m_orderedElements.size());
+			}
+			for (int j = 0; j < g.m_orderedElements.size(); j++)
+			{
+				if (j == i)
+				{
+					continue;
+				}
+				if (m_relation.inRelation(g.m_orderedElements.get(i), g.m_orderedElements.get(j)))
+				{
+					g.addEdge(g.m_orderedElements.get(i), g.m_orderedElements.get(j));
+				}
+			}
+		}
 	}
 
 	public ShadedGraph exploreLattice(ShadedConnective ... elements)
