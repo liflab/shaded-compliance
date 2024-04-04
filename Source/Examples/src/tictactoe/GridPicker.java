@@ -22,14 +22,15 @@ public class GridPicker extends PickIf<String>
 			cnt_x += s.charAt(i) == 'X' ? 1 : 0;
 			cnt_o += s.charAt(i) == 'O' ? 1 : 0;
 		}
-		return cnt_x == 5 && cnt_o == 4;
-		/*
+		//return cnt_x == 5 && cnt_o == 4;
+		
 		if (Math.abs(cnt_x - cnt_o) > 1)
 		{
 			return false;
 		}
-		return won(s, 'X') || won(s, 'O');
-		*/
+		return true;
+		//return won(s, 'X') || won(s, 'O');
+		
 	}
 	
 	protected static boolean won(String s, char player)

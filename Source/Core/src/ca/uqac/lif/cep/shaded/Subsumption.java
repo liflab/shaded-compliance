@@ -58,15 +58,37 @@ public class Subsumption implements TreeComparator
 		{
 			return false;
 		}
-		return isSubsumed(f1, f2, Color.GREEN);
+		if (f1.getValue() == Color.RED && f2.getValue() == Color.GREEN)
+		{
+			return true;
+		}
+		if (f1.getValue() == Color.GREEN)
+		{
+			return hasMapping(f1, f2, Color.GREEN);
+		}
+		// f1 and f2 are both red: we expect f2 to have "fewer" red nodes
+		// than f1
+		return hasMapping(f2, f1, Color.RED);
 	}
 
 	protected boolean isSubsumedNegative(ShadedConnective f1, ShadedConnective f2)
 	{
-		return isSubsumed(f2, f1, Color.RED);
+		if (f2.getValue() == Color.GREEN && f1.getValue() != Color.GREEN)
+		{
+			return false;
+		}
+		if (f2.getValue() == Color.RED && f1.getValue() == Color.GREEN)
+		{
+			return true;
+		}
+		if (f2.getValue() == Color.GREEN)
+		{
+			return hasMapping(f2, f1, Color.GREEN);
+		}
+		return hasMapping(f1, f2, Color.RED);
 	}
 
-	protected boolean isSubsumed(ShadedConnective f1, ShadedConnective f2, Color col)
+	protected boolean hasMapping(ShadedConnective f1, ShadedConnective f2, Color col)
 	{
 		List<ShadedFunction> children_1 = new ArrayList<>();
 		List<ShadedFunction> children_2 = new ArrayList<>();

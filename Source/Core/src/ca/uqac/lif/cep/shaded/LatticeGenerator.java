@@ -58,6 +58,10 @@ public class LatticeGenerator
 		ShadedGraph g = new ShadedGraph(elements);
 		for (int i = 0; i < elements.size(); i++)
 		{
+			if (i % 10 == 0)
+			{
+				System.out.println("Processing element " + i + " of " + elements.size());
+			}
 			for (int j = 0; j < elements.size(); j++)
 			{
 				if (j == i)

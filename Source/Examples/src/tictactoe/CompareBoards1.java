@@ -19,13 +19,14 @@ import ca.uqac.lif.cep.shaded.TreeRenderer;
  * and both are winning configurations for "X". However, the first
  * configuration has two winning lines (both diagonals), while the second
  * configuration has only one winning line (one vertical line). As a
- * result, the evaluation tree for the first configuration subsumes the
- * evaluation tree for the second configuration.
+ * result, the evaluation tree for the second configuration is subsumed by the
+ * evaluation tree for the first configuration.
  * <p>
- * One can observe that:
+ * The subsumption relation used is the <em>relaxed</em> one. One can observe 
+ * that:
  * <ol>
  * <li>subsumption is independent on the actual lines that are winning, but
- * only on the number of such lines</li>
+ * depends only on the number of such lines</li>
  * <li>the winning condition itself makes no explicit mention of counting</li>
  * </ol>
  */
