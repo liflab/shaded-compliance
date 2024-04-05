@@ -7,7 +7,7 @@ public class ShadedForAll extends ShadedQuantifier
 {
 	public static ShadedForAll all(String x, String pi, ShadedConnective phi) throws XPathParseException
 	{
-		return new ShadedForAll(x, XPathExpression.parse(pi), phi);
+		return new ShadedForAll(x, XPathExpression.parse(pi + "/text()"), phi);
 	}
 	
 	public ShadedForAll(String x, XPathExpression pi, ShadedConnective phi)

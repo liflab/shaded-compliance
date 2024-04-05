@@ -31,7 +31,7 @@ public class QuantifiersTest
 	@Test
 	public void test2() throws XPathParseException, XmlParseException
 	{
-		ShadedConnective phi = all("x", "m/foo/text()", leq(v("x"), 3));
+		ShadedConnective phi = all("x", "m/foo", leq(v("x"), 3));
 		phi.update(XmlElement.parse("<m><foo>2</foo><foo>10</foo></m>"));
 		assertEquals(Color.RED, phi.getValue());
 		// Further updates do not change the result
@@ -42,11 +42,11 @@ public class QuantifiersTest
 	@Test
 	public void testSubsumption1() throws XPathParseException, XmlParseException
 	{
-		ShadedConnective phi = all("x", "m/foo/text()", leq(v("x"), 3));
+		ShadedConnective phi = all("x", "m/foo", leq(v("x"), 3));
 		ShadedConnective phi1 = phi.duplicate().update(XmlElement.parse("<m><foo>2</foo><foo>10</foo></m>"));
 		ShadedConnective phi2 = phi.duplicate().update(XmlElement.parse("<m><foo>20</foo><foo>10</foo></m>"));
-		s_renderer.toImage(phi1, "/tmp/phil1.png", Format.PNG);
-		s_renderer.toImage(phi2, "/tmp/phil2.png", Format.PNG);
+		s_renderer.toImage(phi1, "/tmp/phi1.png", Format.PNG);
+		s_renderer.toImage(phi2, "/tmp/phi2.png", Format.PNG);
 		Subsumption rel = new Subsumption(false);
 		assertTrue(rel.inRelation(phi2, phi1));
 		assertFalse(rel.inRelation(phi1, phi2));
@@ -55,13 +55,28 @@ public class QuantifiersTest
 	@Test
 	public void testSubsumption2() throws XPathParseException, XmlParseException
 	{
-		ShadedConnective phi = all("x", "m/foo/text()", or(leq(v("x"), 3), even(v("x"))));
+		ShadedConnective phi = all("x", "m/foo", or(leq(v("x"), 3), even(v("x"))));
 		ShadedConnective phi1 = phi.duplicate().update(XmlElement.parse("<m><foo>2</foo><foo>10</foo></m>"));
 		ShadedConnective phi2 = phi.duplicate().update(XmlElement.parse("<m><foo>20</foo><foo>10</foo></m>"));
 		s_renderer.toImage(phi1, "/tmp/phi1.png", Format.PNG);
 		s_renderer.toImage(phi2, "/tmp/phi2.png", Format.PNG);
 		Subsumption rel = new Subsumption(false);
 		assertTrue(rel.inRelation(phi2, phi1));
+		assertFalse(rel.inRelation(phi1, phi2));
+	}
+	
+	@Test
+	public void testSubsumption3() throws XPathParseException, XmlParseException
+	{
+		ShadedConnective phi = all("x", "m/foo", or(leq(v("x"), 3), even(v("x"))));
+		ShadedConnective phi1 = phi.duplicate().update(XmlElement.parse("<m><foo>1</foo><foo>11</foo></m>"));
+		ShadedConnective phi2 = phi.duplicate().update(XmlElement.parse("<m><foo>15</foo><foo>10</foo></m>"));
+		s_renderer.toImage(phi1, "/tmp/phi1.png", Format.PNG);
+		s_renderer.toImage(phi2, "/tmp/phi2.png", Format.PNG);
+		Subsumption rel = new Subsumption(true);
+		System.out.println(rel.inRelation(phi2, phi1));
+		System.out.println(rel.inRelation(phi1, phi2));
+		assertFalse(rel.inRelation(phi2, phi1));
 		assertFalse(rel.inRelation(phi1, phi2));
 	}
 }

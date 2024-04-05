@@ -7,7 +7,7 @@ public class ShadedExists extends ShadedQuantifier
 {
 	public static ShadedExists exists(String x, String pi, ShadedConnective phi) throws XPathParseException
 	{
-		return new ShadedExists(x, XPathExpression.parse(pi), phi);
+		return new ShadedExists(x, XPathExpression.parse(pi + "/text()"), phi);
 	}
 	
 	public ShadedExists(String x, XPathExpression pi, ShadedConnective phi)
