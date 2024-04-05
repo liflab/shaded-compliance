@@ -2,6 +2,7 @@ package ca.uqac.lif.cep.shaded;
 
 import org.junit.Test;
 
+import ca.uqac.lif.cep.shaded.Polarized.Polarity;
 import ca.uqac.lif.cep.shaded.ShadedConnective.Color;
 import ca.uqac.lif.xml.XPathExpression.XPathParseException;
 import ca.uqac.lif.xml.XmlElement;
@@ -32,5 +33,16 @@ public class QuantifiersTest
 		// Further updates do not change the result
 		phi.update(XmlElement.parse("<m><foo>0</foo><foo>1</foo></m>"));
 		assertEquals(Color.RED, phi.getValue());
+	}
+	
+	@Test
+	public void testSubsumption1() throws XPathParseException, XmlParseException
+	{
+		ShadedConnective phi = all("x", "m/foo/text()", leq(v("x"), 3));
+		ShadedConnective phi1 = phi.duplicate().update(XmlElement.parse("<m><foo>2</foo><foo>10</foo></m>"));
+		ShadedConnective phi2 = phi.duplicate().update(XmlElement.parse("<m><foo>20</foo><foo>10</foo></m>"));
+		Subsumption rel = new Subsumption(false);
+		assertTrue(rel.inRelation(phi2, phi1));
+		assertFalse(rel.inRelation(phi1, phi2));
 	}
 }
