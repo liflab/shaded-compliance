@@ -99,11 +99,11 @@ public class ShadedGraph
 		return closure;
 	}
 	
-	public void toImage(String filename)
+	public void toImage(String filename, DotRenderer.Format format)
 	{
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		toDot(new PrintStream(baos));
-		DotRenderer.toImage(Algorithm.DOT, baos.toString(), filename);
+		DotRenderer.toImage(Algorithm.DOT, baos.toString(), filename, format);
 	}
 	
 	public void dumpNodes(String prefix)
@@ -111,7 +111,7 @@ public class ShadedGraph
 		for (int i = 0; i < m_orderedElements.size(); i++)
 		{
 			ShadedConnective s = m_orderedElements.get(i);
-			TreeRenderer.toImage(s, prefix + i + ".png");
+			TreeRenderer.toImage(s, prefix + i + ".png", DotRenderer.Format.PNG);
 		}
 	}
 

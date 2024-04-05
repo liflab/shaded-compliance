@@ -8,9 +8,9 @@ import static ca.uqac.lif.cep.shaded.ShadedOr.or;
 import java.util.HashMap;
 import java.util.Map;
 
+import ca.uqac.lif.cep.shaded.DotRenderer;
 import ca.uqac.lif.cep.shaded.ShadedConnective;
 import ca.uqac.lif.cep.shaded.Subsumption;
-import ca.uqac.lif.cep.shaded.TreeComparator;
 import ca.uqac.lif.cep.shaded.TreeRenderer;
 
 /**
@@ -45,8 +45,8 @@ public class CompareBoards1
 				and(eq(fetch("A3"), "X"), eq(fetch("B2"), "X"), eq(fetch("C1"), "X")));
 		ShadedConnective grid1 = condition.duplicate().update(grid("XOXOXOXOX"));
 		ShadedConnective grid2 = condition.duplicate().update(grid("XOXXOOXXO"));
-		TreeRenderer.toImage(grid1, "/tmp/grid1.png");
-		TreeRenderer.toImage(grid2, "/tmp/grid2.png");
+		TreeRenderer.toImage(grid1, "/tmp/grid1.png", DotRenderer.Format.PNG);
+		TreeRenderer.toImage(grid2, "/tmp/grid2.png", DotRenderer.Format.PNG);
 		Subsumption comp = new Subsumption(false);
 		System.out.println(comp.inRelation(grid1, grid2));
 		System.out.println(comp.inRelation(grid2, grid1));

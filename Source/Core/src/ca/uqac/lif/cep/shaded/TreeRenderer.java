@@ -4,20 +4,21 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import ca.uqac.lif.cep.shaded.DotRenderer.Algorithm;
+import ca.uqac.lif.cep.shaded.DotRenderer.Format;
 import ca.uqac.lif.cep.shaded.ShadedConnective.Color;
 
 public class TreeRenderer
-{
+{	
 	public TreeRenderer()
 	{
 		super();
 	}
 	
-	public static void toImage(ShadedFunction f, String filename)
+	public static void toImage(ShadedFunction f, String filename, Format format)
 	{
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		render(f, new PrintStream(baos));
-		DotRenderer.toImage(Algorithm.DOT, baos.toString(), filename);
+		DotRenderer.toImage(Algorithm.DOT, baos.toString(), filename, format);
 	}
 
 	public static void render(ShadedFunction f, PrintStream ps)

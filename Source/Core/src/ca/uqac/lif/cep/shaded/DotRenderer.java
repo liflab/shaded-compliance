@@ -8,10 +8,12 @@ import ca.uqac.lif.fs.HardDisk;
 public class DotRenderer
 {
 	public static enum Algorithm {DOT, NEATO}
-	
-	public static void toImage(Algorithm alg, String dot_content, String filename)
+
+	public static enum Format {PNG, PDF, SVG}
+
+	public static void toImage(Algorithm alg, String dot_content, String filename, Format format)
 	{
-		byte[] image = render(alg, dot_content);
+		byte[] image = render(alg, dot_content, format);
 		try
 		{
 			HardDisk hd = new HardDisk("/").open();
@@ -24,10 +26,26 @@ public class DotRenderer
 			e.printStackTrace();
 		}
 	}
-	
-	protected static byte[] render(Algorithm alg, String dot_content)
+
+	protected static byte[] render(Algorithm alg, String dot_content, Format format)
 	{
-		CommandRunner runner = new CommandRunner(new String[] {alg == Algorithm.DOT ? "dot" : "neato", "-Tpng"}, dot_content.getBytes());
+		String fmt;
+		switch (format)
+		{
+			case PNG:
+				fmt = "png";
+				break;
+			case PDF:
+				fmt = "pdf";
+				break;
+			case SVG:
+				fmt = "svg";
+				break;
+			default:
+				fmt = "png";
+				break;
+		}
+		CommandRunner runner = new CommandRunner(new String[] {alg == Algorithm.DOT ? "dot" : "neato", "-T" + fmt}, dot_content.getBytes());
 		runner.run();
 		return runner.getBytes();
 	}

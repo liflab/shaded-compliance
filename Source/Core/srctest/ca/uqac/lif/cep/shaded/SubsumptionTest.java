@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import ca.uqac.lif.cep.shaded.DotRenderer.Format;
 import ca.uqac.lif.cep.shaded.Polarized.Polarity;
 
 import static ca.uqac.lif.cep.shaded.ShadedAnd.and;
@@ -19,14 +20,16 @@ public class SubsumptionTest
 	@Test
 	public void test1()
 	{
-		ShadedConnective phi1 = G(eq(fetch("a"), 1));
+		ShadedConnective phi1 = F(eq(fetch("a"), 1));
 		phi1.update(map("a", 1));
+		phi1.update(map("a", 2));
 		phi1.update(map("a", 2));
 		phi1.update(map("a", 1));
 		ShadedConnective phi2 = phi1.duplicate();
-		phi2.update(map("a", 1));
-		phi2.update(map("a", 1));
 		phi2.update(map("a", 2));
+		phi2.update(map("a", 1));
+		TreeRenderer.toImage(phi1, "/tmp/phi1.svg", Format.SVG);
+		TreeRenderer.toImage(phi2, "/tmp/phi2.svg", Format.SVG);
 		Subsumption comp = new Subsumption();
 		assertTrue(comp.inRelation(phi2, phi1));
 		assertTrue(comp.inRelation(phi1, phi2));
@@ -127,12 +130,12 @@ public class SubsumptionTest
 	@Test
 	public void test7()
 	{
-		// a = 1 && (b = 1 || c = 1)
-		ShadedConnective phi1 = and(
-				eq(fetch("a"), 1),
-				or(
-						eq(fetch("b"), 1),
-						eq(fetch("c"), 1))
+		// a = 1 || (b = 1 && c = 1)
+		ShadedConnective phi1 = or(
+				eq(fetch("a"), 0),
+				and(
+						eq(fetch("b"), 0),
+						eq(fetch("c"), 0))
 				);
 		phi1.update(map("a", 1));
 		phi1.update(map("b", 0));
@@ -142,8 +145,8 @@ public class SubsumptionTest
 		phi2.update(map("b", 1));
 		phi2.update(map("c", 0));
 		Subsumption comp = new Subsumption(true);
-		TreeRenderer.toImage(phi1, "/tmp/phi1.png");
-		TreeRenderer.toImage(phi2, "/tmp/phi2.png");
+		TreeRenderer.toImage(phi1, "/tmp/phi1.svg", Format.SVG);
+		TreeRenderer.toImage(phi2, "/tmp/phi2.svg", Format.SVG);
 		assertFalse(comp.inRelation(phi2, phi1));
 		assertFalse(comp.inRelation(phi1, phi2));
 	}
@@ -160,8 +163,8 @@ public class SubsumptionTest
 		ShadedConnective phi2 = phi1.duplicate();
 		phi2.update(map("a", 3));
 		phi2.update(map("b", 3));
-		TreeRenderer.toImage(phi1, "/tmp/phi1.png");
-		TreeRenderer.toImage(phi2, "/tmp/phi2.png");
+		TreeRenderer.toImage(phi1, "/tmp/phi1.png", Format.PNG);
+		TreeRenderer.toImage(phi2, "/tmp/phi2.png", Format.PNG);
 		Subsumption comp = new Subsumption();
 		assertTrue(comp.inRelation(phi2, phi1));
 		assertFalse(comp.inRelation(phi1, phi2));
@@ -170,16 +173,16 @@ public class SubsumptionTest
 	@Test
 	public void test9()
 	{
-		//a = 1 && b = 1
-		ShadedConnective phi1 = and(
+		//a = 1 || b = 1
+		ShadedConnective phi1 = or(
 				eq(fetch("a"), 1), eq(fetch("b"), 1));
 		phi1.update(map("a", 1));
 		phi1.update(map("b", 3));
 		ShadedConnective phi2 = phi1.duplicate();
-		phi2.update(map("a", 3));
-		phi2.update(map("b", 3));
-		TreeRenderer.toImage(phi1, "/tmp/phi1.png");
-		TreeRenderer.toImage(phi2, "/tmp/phi2.png");
+		phi2.update(map("a", 1));
+		phi2.update(map("b", 1));
+		TreeRenderer.toImage(phi1, "/tmp/phi1.svg", Format.SVG);
+		TreeRenderer.toImage(phi2, "/tmp/phi2.svg", Format.SVG);
 		Subsumption comp = new Subsumption();
 		assertTrue(comp.inRelation(phi2, phi1));
 		assertFalse(comp.inRelation(phi1, phi2));

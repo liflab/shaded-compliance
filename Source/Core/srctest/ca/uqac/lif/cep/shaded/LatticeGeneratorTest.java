@@ -47,6 +47,6 @@ public class LatticeGeneratorTest
 		}
 		LatticeGenerator gen = new LatticeGenerator(new Subsumption());
 		ShadedGraph g = gen.getLattice(nodes);
-		g.toImage("/tmp/lattice.png");
+		g.toImage("/tmp/lattice.png", DotRenderer.Format.PNG);
 	}
 }
