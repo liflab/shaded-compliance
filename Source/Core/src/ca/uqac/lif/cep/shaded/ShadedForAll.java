@@ -1,9 +1,15 @@
 package ca.uqac.lif.cep.shaded;
 
 import ca.uqac.lif.xml.XPathExpression;
+import ca.uqac.lif.xml.XPathExpression.XPathParseException;
 
 public class ShadedForAll extends ShadedQuantifier
 {
+	public static ShadedForAll all(String x, String pi, ShadedConnective phi) throws XPathParseException
+	{
+		return new ShadedForAll(x, XPathExpression.parse(pi), phi);
+	}
+	
 	public ShadedForAll(String x, XPathExpression pi, ShadedConnective phi)
 	{
 		super(x, pi, phi);

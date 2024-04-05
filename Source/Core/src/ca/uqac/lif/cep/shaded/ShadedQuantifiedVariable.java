@@ -2,6 +2,11 @@ package ca.uqac.lif.cep.shaded;
 
 public class ShadedQuantifiedVariable implements ShadedFunction
 {
+	public static ShadedQuantifiedVariable v(String name)
+	{
+		return new ShadedQuantifiedVariable(name);
+	}
+	
 	protected final String m_name;
 	
 	protected Object m_value;
@@ -33,8 +38,12 @@ public class ShadedQuantifiedVariable implements ShadedFunction
 	@Override
 	public ShadedQuantifiedVariable duplicate(boolean with_state)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		ShadedQuantifiedVariable sqv = new ShadedQuantifiedVariable(m_name);
+		if (with_state)
+		{
+			sqv.m_value = m_value;
+		}
+		return sqv;
 	}
 
 	@Override
@@ -46,7 +55,13 @@ public class ShadedQuantifiedVariable implements ShadedFunction
 	@Override
 	public String getSymbol()
 	{
-		return m_name;
+		return m_name + (m_value != null ? "[" + m_value + "]" : "");
+	}
+	
+	@Override
+	public String toString()
+	{
+		return getSymbol();
 	}
 
 	@Override
@@ -62,7 +77,20 @@ public class ShadedQuantifiedVariable implements ShadedFunction
 		{
 			return false;
 		}
-		return m_name.compareTo(((ShadedQuantifiedVariable) f).m_name) == 0;
+		ShadedQuantifiedVariable sqv = (ShadedQuantifiedVariable) f;
+		if (m_name.compareTo(sqv.m_name) != 0)
+		{
+			return false;
+		}
+		if ((m_value == null) != (sqv.m_value == null))
+		{
+			return false;
+		}
+		if (m_value == null)
+		{
+			return true;
+		}
+		return m_value.equals(sqv.m_value);
 	}
 
 	@Override

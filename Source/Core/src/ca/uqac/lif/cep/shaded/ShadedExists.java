@@ -1,9 +1,15 @@
 package ca.uqac.lif.cep.shaded;
 
 import ca.uqac.lif.xml.XPathExpression;
+import ca.uqac.lif.xml.XPathExpression.XPathParseException;
 
 public class ShadedExists extends ShadedQuantifier
 {
+	public static ShadedExists exists(String x, String pi, ShadedConnective phi) throws XPathParseException
+	{
+		return new ShadedExists(x, XPathExpression.parse(pi), phi);
+	}
+	
 	public ShadedExists(String x, XPathExpression pi, ShadedConnective phi)
 	{
 		super(x, pi, phi);
