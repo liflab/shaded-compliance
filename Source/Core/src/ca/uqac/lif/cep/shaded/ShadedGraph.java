@@ -108,19 +108,18 @@ public class ShadedGraph
 	
 	public void dumpNodes(String prefix)
 	{
+		TreeRenderer tr = new TreeRenderer(false);
 		for (int i = 0; i < m_orderedElements.size(); i++)
 		{
 			ShadedConnective s = m_orderedElements.get(i);
-			TreeRenderer.toImage(s, prefix + i + ".png", DotRenderer.Format.PNG);
+			tr.toImage(s, prefix + i + ".png", DotRenderer.Format.PNG);
 		}
 	}
 
 	public void toDot(PrintStream ps)
 	{
 		ps.println("digraph G {");
-		//ps.println("  nodesep=0.125");
-		//ps.println("  ranksep=0.25;");
-		ps.println("  edge [dir=none];"); //,tailport=\"s\",headport=\"n\"];");
+		ps.println("  edge [dir=none];");
 		ps.println("  splines=false;");
 		ps.println("  node [shape=\"circle\",height=0.3,width=0.3,fixedsize=\"true\",style=\"filled\"];");
 		for (ShadedConnective connective : m_orderedElements)

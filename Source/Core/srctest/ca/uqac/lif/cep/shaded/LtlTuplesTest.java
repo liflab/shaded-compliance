@@ -15,6 +15,8 @@ import java.util.Map;
 
 public class LtlTuplesTest
 {	
+	protected static final TreeRenderer s_renderer = new TreeRenderer(false);
+	
 	@Test
 	public void test1()
 	{
@@ -25,7 +27,7 @@ public class LtlTuplesTest
 		System.out.println(phi.getValue());
 		phi.update(map("a", 2));
 		System.out.println(phi.getValue());
-		TreeRenderer.render(phi, System.out);
+		s_renderer.render(phi, System.out);
 	}
 	
 	@Test
@@ -36,7 +38,7 @@ public class LtlTuplesTest
 				leq(delta(fetch("a"), 1), 1),
 				leq(delta(fetch("a"), 1), 2));
 		phi.update(map("a", 1.5));
-		TreeRenderer.render(phi, System.out);
+		s_renderer.render(phi, System.out);
 	}
 	
 	public static Map<String,Object> map(Object ... objects)

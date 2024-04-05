@@ -8,35 +8,41 @@ import ca.uqac.lif.cep.shaded.DotRenderer.Format;
 import ca.uqac.lif.cep.shaded.ShadedConnective.Color;
 
 public class TreeRenderer
-{	
-	public TreeRenderer()
+{
+	/**
+	 * A flag determining if the polarity of a node is displayed in the tree.
+	 */
+	protected final boolean m_showPolarity;
+	
+	public TreeRenderer(boolean show_polarity)
 	{
 		super();
+		m_showPolarity = show_polarity;
 	}
 	
-	public static void toImage(ShadedFunction f, String filename, Format format)
+	public void toImage(ShadedFunction f, String filename, Format format)
 	{
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		render(f, new PrintStream(baos));
 		DotRenderer.toImage(Algorithm.DOT, baos.toString(), filename, format);
 	}
 
-	public static void render(ShadedFunction f, PrintStream ps)
+	public void render(ShadedFunction f, PrintStream ps)
 	{
 		ps.println("digraph G {");
-		ps.println("nodesep=0.125");
-		ps.println("ranksep=0.25;");
-		ps.println("node [shape=\"rectangle\",height=0.3,width=0.3,fixedsize=\"true\",style=\"filled\"];");
-		ps.println("edge [arrowhead=\"none\"];");
+		ps.println("  nodesep=0.125");
+		ps.println("  ranksep=0.25;");
+		ps.println("  node [shape=\"rectangle\",height=0.3,width=0.3,fixedsize=\"true\",style=\"filled\"];");
+		ps.println("  edge [arrowhead=\"none\"];");
 		renderRecursive(f, ps, -1, new NodeCounter());
 		ps.println("}");
 	}
 
-	protected static void renderRecursive(ShadedFunction n, PrintStream ps, long parent, NodeCounter c)
+	protected void renderRecursive(ShadedFunction n, PrintStream ps, long parent, NodeCounter c)
 	{
 		long id = c.get();
-		ps.print(id + " [label=<" + n.getSymbol());
-		if (n instanceof Polarized)
+		ps.print("  " + id + " [label=<" + n.getSymbol());
+		if (m_showPolarity && n instanceof Polarized)
 		{
 			Polarized p = (Polarized) n;
 			if (p.getPolarity() == Polarized.Polarity.NEGATIVE)

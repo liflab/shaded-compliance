@@ -17,6 +17,8 @@ import static ca.uqac.lif.cep.shaded.LtlTuplesTest.map;
 
 public class SubsumptionTest
 {
+	protected static final TreeRenderer s_renderer = new TreeRenderer(false);
+	
 	@Test
 	public void test1()
 	{
@@ -28,8 +30,8 @@ public class SubsumptionTest
 		ShadedConnective phi2 = phi1.duplicate();
 		phi2.update(map("a", 2));
 		phi2.update(map("a", 1));
-		TreeRenderer.toImage(phi1, "/tmp/phi1.svg", Format.SVG);
-		TreeRenderer.toImage(phi2, "/tmp/phi2.svg", Format.SVG);
+		s_renderer.toImage(phi1, "/tmp/phi1.svg", Format.SVG);
+		s_renderer.toImage(phi2, "/tmp/phi2.svg", Format.SVG);
 		Subsumption comp = new Subsumption();
 		assertTrue(comp.inRelation(phi2, phi1));
 		assertTrue(comp.inRelation(phi1, phi2));
@@ -145,8 +147,8 @@ public class SubsumptionTest
 		phi2.update(map("b", 1));
 		phi2.update(map("c", 0));
 		Subsumption comp = new Subsumption(true);
-		TreeRenderer.toImage(phi1, "/tmp/phi1.svg", Format.SVG);
-		TreeRenderer.toImage(phi2, "/tmp/phi2.svg", Format.SVG);
+		s_renderer.toImage(phi1, "/tmp/phi1.svg", Format.SVG);
+		s_renderer.toImage(phi2, "/tmp/phi2.svg", Format.SVG);
 		assertFalse(comp.inRelation(phi2, phi1));
 		assertFalse(comp.inRelation(phi1, phi2));
 	}
@@ -163,8 +165,8 @@ public class SubsumptionTest
 		ShadedConnective phi2 = phi1.duplicate();
 		phi2.update(map("a", 3));
 		phi2.update(map("b", 3));
-		TreeRenderer.toImage(phi1, "/tmp/phi1.png", Format.PNG);
-		TreeRenderer.toImage(phi2, "/tmp/phi2.png", Format.PNG);
+		s_renderer.toImage(phi1, "/tmp/phi1.png", Format.PNG);
+		s_renderer.toImage(phi2, "/tmp/phi2.png", Format.PNG);
 		Subsumption comp = new Subsumption();
 		assertTrue(comp.inRelation(phi2, phi1));
 		assertFalse(comp.inRelation(phi1, phi2));
@@ -181,8 +183,8 @@ public class SubsumptionTest
 		ShadedConnective phi2 = phi1.duplicate();
 		phi2.update(map("a", 1));
 		phi2.update(map("b", 1));
-		TreeRenderer.toImage(phi1, "/tmp/phi1.svg", Format.SVG);
-		TreeRenderer.toImage(phi2, "/tmp/phi2.svg", Format.SVG);
+		s_renderer.toImage(phi1, "/tmp/phi1.svg", Format.SVG);
+		s_renderer.toImage(phi2, "/tmp/phi2.svg", Format.SVG);
 		Subsumption comp = new Subsumption();
 		assertTrue(comp.inRelation(phi2, phi1));
 		assertFalse(comp.inRelation(phi1, phi2));

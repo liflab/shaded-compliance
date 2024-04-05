@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import ca.uqac.lif.cep.shaded.DotRenderer.Format;
 import ca.uqac.lif.cep.shaded.LatticeGenerator;
 import ca.uqac.lif.cep.shaded.ShadedConnective;
 import ca.uqac.lif.cep.shaded.ShadedGraph;
@@ -48,7 +49,7 @@ public class GameLattice
 		System.out.println(elements.size());
 		LatticeGenerator gen = new LatticeGenerator(new Subsumption(false));
 		ShadedGraph g = gen.getLattice(elements);
-		g.toImage("/tmp/ttt1.png");
+		g.toImage("/tmp/ttt1.png", Format.PNG);
 		g.dumpNodes("/tmp/G1_");
 	}
 

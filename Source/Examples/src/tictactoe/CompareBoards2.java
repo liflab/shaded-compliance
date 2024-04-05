@@ -31,6 +31,8 @@ import ca.uqac.lif.cep.shaded.TreeRenderer;
  */
 public class CompareBoards2
 {
+	protected static final TreeRenderer s_renderer = new TreeRenderer(false);
+	
 	public static void main(String[] args)
 	{
 		ShadedConnective condition = or(
@@ -44,8 +46,8 @@ public class CompareBoards2
 				and(eq(fetch("A3"), "X"), eq(fetch("B2"), "X"), eq(fetch("C1"), "X")));
 		ShadedConnective grid1 = condition.duplicate().update(grid("OXOOXXXOX"));
 		ShadedConnective grid2 = condition.duplicate().update(grid("XXOOOXXOX"));
-		TreeRenderer.toImage(grid1, "/tmp/grid3.png", DotRenderer.Format.PNG);
-		TreeRenderer.toImage(grid2, "/tmp/grid4.png", DotRenderer.Format.PNG);
+		s_renderer.toImage(grid1, "/tmp/grid3.png", DotRenderer.Format.PNG);
+		s_renderer.toImage(grid2, "/tmp/grid4.png", DotRenderer.Format.PNG);
 		Subsumption comp = new Subsumption(false);
 		System.out.println(comp.inRelation(grid1, grid2));
 		System.out.println(comp.inRelation(grid2, grid1));
