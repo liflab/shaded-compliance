@@ -17,4 +17,6 @@ public interface ShadedFunction
 	public Object getValue();
 	
 	public boolean sameAs(ShadedFunction f);
+	
+	public void setValue(String name, Object value);
 }

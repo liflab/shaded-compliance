@@ -18,6 +18,15 @@ public abstract class ShadedNaryConnective extends ShadedConnective
 	}
 	
 	@Override
+	public void setValue(String name, Object value)
+	{
+		for (ShadedConnective c : m_operands)
+		{
+			c.setValue(name, value);
+		}
+	}
+	
+	@Override
 	public void setPolarity(Polarity p)
 	{
 		super.setPolarity(p);

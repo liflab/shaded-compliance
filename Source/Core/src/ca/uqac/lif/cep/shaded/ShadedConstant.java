@@ -25,6 +25,12 @@ public class ShadedConstant implements ShadedFunction
 	}
 	
 	@Override
+	public void setValue(String name, Object value)
+	{
+		// Do nothing
+	}
+	
+	@Override
 	public boolean sameAs(ShadedFunction o)
 	{
 		if (!(o instanceof ShadedConstant))

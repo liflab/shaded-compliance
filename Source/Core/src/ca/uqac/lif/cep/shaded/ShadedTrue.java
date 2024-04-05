@@ -13,6 +13,12 @@ public class ShadedTrue extends ShadedConnective
 	}
 	
 	@Override
+	public void setValue(String name, Object value)
+	{
+		// Do nothing
+	}
+	
+	@Override
 	public ShadedTrue update(Object event)
 	{
 		return this;

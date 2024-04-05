@@ -22,11 +22,13 @@ public abstract class ShadedConnective implements ShadedFunction, Polarized
 	@Override
 	public abstract ShadedConnective update(Object event);
 	
+	@Override
 	public void setPolarity(Polarity p)
 	{
 		m_polarity = p;
 	}
 	
+	@Override
 	public Polarity getPolarity()
 	{
 		return m_polarity;

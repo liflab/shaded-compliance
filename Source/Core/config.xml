@@ -78,5 +78,13 @@
       </files>
       <bundle>false</bundle>
     </dependency>
+    <dependency>
+      <name>xml-lif</name>
+      <classname>ca.uqac.lif.xml.XmlElement</classname>
+      <files>
+        <zip>https://github.com/liflab/xml-lif/releases/download/v1.2.2/xml-lif-1.2.2.zip</zip>
+      </files>
+      <bundle>false</bundle>
+    </dependency>
   </dependencies>
 </build>

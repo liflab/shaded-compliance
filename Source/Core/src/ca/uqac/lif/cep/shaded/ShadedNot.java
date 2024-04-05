@@ -21,6 +21,12 @@ public class ShadedNot extends ShadedConnective
 		super();
 		m_operand = operand;
 	}
+	
+	@Override
+	public void setValue(String name, Object value)
+	{
+		m_operand.setValue(name, value);
+	}
 
 	@Override
 	public int hashCode()

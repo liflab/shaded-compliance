@@ -38,6 +38,13 @@ public abstract class ShadedComparison extends ShadedConnective
 		m_left = left;
 		m_right = right;
 	}
+	
+	@Override
+	public void setValue(String name, Object value)
+	{
+		m_left.setValue(name, value);
+		m_right.setValue(name, value);
+	}
 
 	@Override
 	public int getArity()

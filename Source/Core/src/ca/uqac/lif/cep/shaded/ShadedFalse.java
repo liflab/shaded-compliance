@@ -11,6 +11,12 @@ public class ShadedFalse extends ShadedConnective
 		super();
 		m_color = Color.RED;
 	}
+	
+	@Override
+	public void setValue(String name, Object value)
+	{
+		// Do nothing
+	}
 
 	@Override
 	public ShadedFalse update(Object event)
