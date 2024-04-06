@@ -50,7 +50,7 @@ public abstract class ShadedNaryConnective extends ShadedConnective
 
 	protected void copyInto(ShadedNaryConnective other, boolean with_state)
 	{
-		m_polarity = other.m_polarity;
+		other.m_polarity = m_polarity;
 		if (with_state)
 		{
 			other.m_color = m_color;
