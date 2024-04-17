@@ -116,7 +116,7 @@ public abstract class ShadedQuantifier extends ShadedConnective
 		return vals;
 	}
 
-	protected static Object cast(XmlElement xe)
+	public static Object cast(XmlElement xe)
 	{
 		if (!(xe instanceof TextElement))
 		{

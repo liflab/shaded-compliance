@@ -1,0 +1,131 @@
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>ItemSearch</Action>
+  <Keyword>dummy</Keyword>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>ItemSearchResponse</Action>
+  <Items>
+    <Item>
+      <ItemId>23</ItemId>
+      <Price>23</Price>
+    </Item>
+    <Item>
+      <ItemId>6</ItemId>
+      <Price>17</Price>
+    </Item>
+    <Item>
+      <ItemId>11</ItemId>
+      <Price>11</Price>
+    </Item>
+    <Item>
+      <ItemId>93</ItemId>
+      <Price>29</Price>
+    </Item>
+    <Item>
+      <ItemId>28</ItemId>
+      <Price>20</Price>
+    </Item>
+    <Item>
+      <ItemId>53</ItemId>
+      <Price>40</Price>
+    </Item>
+    <Item>
+      <ItemId>24</ItemId>
+      <Price>17</Price>
+    </Item>
+    <Item>
+      <ItemId>41</ItemId>
+      <Price>34</Price>
+    </Item>
+    <Item>
+      <ItemId>91</ItemId>
+      <Price>31</Price>
+    </Item>
+    <Item>
+      <ItemId>25</ItemId>
+      <Price>5</Price>
+    </Item>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>CartCreate</Action>
+  <Items>
+    <Item>
+      <ItemId>50</ItemId>
+      <Quantity>1</Quantity>
+    </Item>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>CartCreateResponse</Action>
+  <CartId>0</CartId>
+  <Items>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>ItemSearch</Action>
+  <Keyword>dummy</Keyword>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>ItemSearchResponse</Action>
+  <Items>
+    <Item>
+      <ItemId>51</ItemId>
+      <Price>14</Price>
+    </Item>
+    <Item>
+      <ItemId>73</ItemId>
+      <Price>5</Price>
+    </Item>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>CartCreate</Action>
+  <Items>
+    <Item>
+      <ItemId>88</ItemId>
+      <Quantity>1</Quantity>
+    </Item>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>CartCreateResponse</Action>
+  <CartId>1</CartId>
+  <Items>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>CartCreate</Action>
+  <Items>
+    <Item>
+      <ItemId>18</ItemId>
+      <Quantity>1</Quantity>
+    </Item>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>CartCreateResponse</Action>
+  <CartId>2</CartId>
+  <Items>
+  </Items>
+</Message>
+

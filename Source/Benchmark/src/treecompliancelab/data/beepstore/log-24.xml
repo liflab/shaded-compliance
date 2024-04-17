@@ -1,0 +1,619 @@
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>ItemSearch</Action>
+  <Keyword>dummy</Keyword>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>ItemSearchResponse</Action>
+  <Items>
+    <Item>
+      <ItemId>85</ItemId>
+      <Price>38</Price>
+    </Item>
+    <Item>
+      <ItemId>96</ItemId>
+      <Price>23</Price>
+    </Item>
+    <Item>
+      <ItemId>87</ItemId>
+      <Price>16</Price>
+    </Item>
+    <Item>
+      <ItemId>74</ItemId>
+      <Price>17</Price>
+    </Item>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>ItemSearch</Action>
+  <Keyword>dummy</Keyword>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>ItemSearchResponse</Action>
+  <Items>
+    <Item>
+      <ItemId>7</ItemId>
+      <Price>35</Price>
+    </Item>
+    <Item>
+      <ItemId>46</ItemId>
+      <Price>16</Price>
+    </Item>
+    <Item>
+      <ItemId>47</ItemId>
+      <Price>17</Price>
+    </Item>
+    <Item>
+      <ItemId>58</ItemId>
+      <Price>38</Price>
+    </Item>
+    <Item>
+      <ItemId>23</ItemId>
+      <Price>19</Price>
+    </Item>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>ItemSearch</Action>
+  <Keyword>dummy</Keyword>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>ItemSearchResponse</Action>
+  <Items>
+    <Item>
+      <ItemId>25</ItemId>
+      <Price>21</Price>
+    </Item>
+    <Item>
+      <ItemId>97</ItemId>
+      <Price>25</Price>
+    </Item>
+    <Item>
+      <ItemId>98</ItemId>
+      <Price>9</Price>
+    </Item>
+    <Item>
+      <ItemId>72</ItemId>
+      <Price>24</Price>
+    </Item>
+    <Item>
+      <ItemId>95</ItemId>
+      <Price>35</Price>
+    </Item>
+    <Item>
+      <ItemId>58</ItemId>
+      <Price>38</Price>
+    </Item>
+    <Item>
+      <ItemId>26</ItemId>
+      <Price>5</Price>
+    </Item>
+    <Item>
+      <ItemId>98</ItemId>
+      <Price>9</Price>
+    </Item>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>CartCreate</Action>
+  <Items>
+    <Item>
+      <ItemId>67</ItemId>
+      <Quantity>1</Quantity>
+    </Item>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>CartCreateResponse</Action>
+  <CartId>0</CartId>
+  <Items>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>CartCreate</Action>
+  <Items>
+    <Item>
+      <ItemId>68</ItemId>
+      <Quantity>1</Quantity>
+    </Item>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>CartCreateResponse</Action>
+  <CartId>1</CartId>
+  <Items>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>CartCreate</Action>
+  <Items>
+    <Item>
+      <ItemId>73</ItemId>
+      <Quantity>1</Quantity>
+    </Item>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>CartCreateResponse</Action>
+  <CartId>2</CartId>
+  <Items>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>ItemSearch</Action>
+  <Keyword>dummy</Keyword>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>ItemSearchResponse</Action>
+  <Items>
+    <Item>
+      <ItemId>70</ItemId>
+      <Price>10</Price>
+    </Item>
+    <Item>
+      <ItemId>86</ItemId>
+      <Price>11</Price>
+    </Item>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>CartCreate</Action>
+  <Items>
+    <Item>
+      <ItemId>65</ItemId>
+      <Quantity>1</Quantity>
+    </Item>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>CartCreateResponse</Action>
+  <CartId>3</CartId>
+  <Items>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>CartCreate</Action>
+  <Items>
+    <Item>
+      <ItemId>6</ItemId>
+      <Quantity>1</Quantity>
+    </Item>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>CartCreateResponse</Action>
+  <CartId>4</CartId>
+  <Items>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>ItemSearch</Action>
+  <Keyword>dummy</Keyword>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>ItemSearchResponse</Action>
+  <Items>
+    <Item>
+      <ItemId>68</ItemId>
+      <Price>3</Price>
+    </Item>
+    <Item>
+      <ItemId>90</ItemId>
+      <Price>17</Price>
+    </Item>
+    <Item>
+      <ItemId>40</ItemId>
+      <Price>26</Price>
+    </Item>
+    <Item>
+      <ItemId>23</ItemId>
+      <Price>19</Price>
+    </Item>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>CartCreate</Action>
+  <Items>
+    <Item>
+      <ItemId>3</ItemId>
+      <Quantity>1</Quantity>
+    </Item>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>CartCreateResponse</Action>
+  <CartId>5</CartId>
+  <Items>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>ItemSearch</Action>
+  <Keyword>dummy</Keyword>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>ItemSearchResponse</Action>
+  <Items>
+    <Item>
+      <ItemId>57</ItemId>
+      <Price>15</Price>
+    </Item>
+    <Item>
+      <ItemId>24</ItemId>
+      <Price>7</Price>
+    </Item>
+    <Item>
+      <ItemId>6</ItemId>
+      <Price>23</Price>
+    </Item>
+    <Item>
+      <ItemId>26</ItemId>
+      <Price>5</Price>
+    </Item>
+    <Item>
+      <ItemId>50</ItemId>
+      <Price>14</Price>
+    </Item>
+    <Item>
+      <ItemId>72</ItemId>
+      <Price>24</Price>
+    </Item>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>ItemSearch</Action>
+  <Keyword>dummy</Keyword>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>ItemSearchResponse</Action>
+  <Items>
+    <Item>
+      <ItemId>11</ItemId>
+      <Price>24</Price>
+    </Item>
+    <Item>
+      <ItemId>4</ItemId>
+      <Price>14</Price>
+    </Item>
+    <Item>
+      <ItemId>5</ItemId>
+      <Price>9</Price>
+    </Item>
+    <Item>
+      <ItemId>36</ItemId>
+      <Price>14</Price>
+    </Item>
+    <Item>
+      <ItemId>34</ItemId>
+      <Price>2</Price>
+    </Item>
+    <Item>
+      <ItemId>56</ItemId>
+      <Price>32</Price>
+    </Item>
+    <Item>
+      <ItemId>15</ItemId>
+      <Price>4</Price>
+    </Item>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>ItemSearch</Action>
+  <Keyword>dummy</Keyword>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>ItemSearchResponse</Action>
+  <Items>
+    <Item>
+      <ItemId>98</ItemId>
+      <Price>9</Price>
+    </Item>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>CartCreate</Action>
+  <Items>
+    <Item>
+      <ItemId>31</ItemId>
+      <Quantity>1</Quantity>
+    </Item>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>CartCreateResponse</Action>
+  <CartId>6</CartId>
+  <Items>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>CartCreate</Action>
+  <Items>
+    <Item>
+      <ItemId>38</ItemId>
+      <Quantity>1</Quantity>
+    </Item>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>CartCreateResponse</Action>
+  <CartId>7</CartId>
+  <Items>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>CartCreate</Action>
+  <Items>
+    <Item>
+      <ItemId>28</ItemId>
+      <Quantity>1</Quantity>
+    </Item>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>CartCreateResponse</Action>
+  <CartId>8</CartId>
+  <Items>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>CartCreate</Action>
+  <Items>
+    <Item>
+      <ItemId>95</ItemId>
+      <Quantity>1</Quantity>
+    </Item>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>CartCreateResponse</Action>
+  <CartId>9</CartId>
+  <Items>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>CartCreate</Action>
+  <Items>
+    <Item>
+      <ItemId>80</ItemId>
+      <Quantity>1</Quantity>
+    </Item>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>CartCreateResponse</Action>
+  <CartId>10</CartId>
+  <Items>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>ItemSearch</Action>
+  <Keyword>dummy</Keyword>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>ItemSearchResponse</Action>
+  <Items>
+    <Item>
+      <ItemId>25</ItemId>
+      <Price>21</Price>
+    </Item>
+    <Item>
+      <ItemId>99</ItemId>
+      <Price>28</Price>
+    </Item>
+    <Item>
+      <ItemId>27</ItemId>
+      <Price>28</Price>
+    </Item>
+    <Item>
+      <ItemId>51</ItemId>
+      <Price>23</Price>
+    </Item>
+    <Item>
+      <ItemId>61</ItemId>
+      <Price>32</Price>
+    </Item>
+    <Item>
+      <ItemId>82</ItemId>
+      <Price>34</Price>
+    </Item>
+    <Item>
+      <ItemId>78</ItemId>
+      <Price>27</Price>
+    </Item>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>CartCreate</Action>
+  <Items>
+    <Item>
+      <ItemId>55</ItemId>
+      <Quantity>1</Quantity>
+    </Item>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>CartCreateResponse</Action>
+  <CartId>11</CartId>
+  <Items>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>CartCreate</Action>
+  <Items>
+    <Item>
+      <ItemId>20</ItemId>
+      <Quantity>1</Quantity>
+    </Item>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>CartCreateResponse</Action>
+  <CartId>12</CartId>
+  <Items>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>ItemSearch</Action>
+  <Keyword>dummy</Keyword>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>ItemSearchResponse</Action>
+  <Items>
+    <Item>
+      <ItemId>1</ItemId>
+      <Price>10</Price>
+    </Item>
+    <Item>
+      <ItemId>50</ItemId>
+      <Price>14</Price>
+    </Item>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>ItemSearch</Action>
+  <Keyword>dummy</Keyword>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>ItemSearchResponse</Action>
+  <Items>
+    <Item>
+      <ItemId>5</ItemId>
+      <Price>9</Price>
+    </Item>
+    <Item>
+      <ItemId>27</ItemId>
+      <Price>28</Price>
+    </Item>
+    <Item>
+      <ItemId>99</ItemId>
+      <Price>28</Price>
+    </Item>
+  </Items>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>ItemSearch</Action>
+  <Keyword>dummy</Keyword>
+</Message>
+
+<Message>
+  <SessionKey>0</SessionKey>
+  <Action>ItemSearchResponse</Action>
+  <Items>
+    <Item>
+      <ItemId>88</ItemId>
+      <Price>16</Price>
+    </Item>
+    <Item>
+      <ItemId>74</ItemId>
+      <Price>17</Price>
+    </Item>
+    <Item>
+      <ItemId>81</ItemId>
+      <Price>20</Price>
+    </Item>
+    <Item>
+      <ItemId>8</ItemId>
+      <Price>25</Price>
+    </Item>
+    <Item>
+      <ItemId>4</ItemId>
+      <Price>14</Price>
+    </Item>
+  </Items>
+</Message>
+
