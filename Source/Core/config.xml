@@ -74,7 +74,23 @@
       <name>Synthia Core</name>
       <classname>ca.uqac.lif.synthia.Picker</classname>
       <files>
-        <jar>https://github.com/liflab/synthia/releases/download/v0.3.2/synthia-core-0.3.2.jar</jar>
+        <jar>https://github.com/liflab/synthia/releases/download/v0.3.3/synthia-core-0.3.3.jar</jar>
+      </files>
+      <bundle>false</bundle>
+    </dependency>
+    <dependency>
+      <name>Petit Poucet Core</name>
+      <classname>ca.uqac.lif.petitpoucet.Part</classname>
+      <files>
+        <jar>https://github.com/liflab/petitpoucet/releases/download/v2.3.2/petitpoucet-core-2.3.2.jar</jar>
+      </files>
+      <bundle>false</bundle>
+    </dependency>
+    <dependency>
+      <name>Petit Poucet Functions</name>
+      <classname>ca.uqac.lif.petitpoucet.function.RelationNode</classname>
+      <files>
+        <jar>https://github.com/liflab/petitpoucet/releases/download/v2.3.2/petitpoucet-functions-2.3.2.jar</jar>
       </files>
       <bundle>false</bundle>
     </dependency>
