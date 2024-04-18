@@ -7,12 +7,12 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
-public class InjectionPickerTest
+public class NewInjectionPickerTest
 {
 	@Test
 	public void test1()
 	{
-		InjectionPicker picker = new InjectionPicker(2, 3);
+		NewInjectionPicker picker = new NewInjectionPicker(2, 3);
 		int num = 0;
 		while (!picker.isDone())
 		{
@@ -26,7 +26,7 @@ public class InjectionPickerTest
 	@Test
 	public void test2()
 	{
-		InjectionPicker picker = new InjectionPicker(2, 4);
+		NewInjectionPicker picker = new NewInjectionPicker(2, 4);
 		int num = 0;
 		while (!picker.isDone())
 		{

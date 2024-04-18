@@ -1,15 +1,13 @@
 package ca.uqac.lif.cep.shaded;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Queue;
 
 import ca.uqac.lif.synthia.Bounded;
-import ca.uqac.lif.synthia.NoMoreElementException;
 import ca.uqac.lif.synthia.enumerative.AllBooleans;
 import ca.uqac.lif.synthia.enumerative.AllPickers;
+import ca.uqac.lif.synthia.util.BoundedBufferedPicker;
 
 /**
  * Enumerates all possible injections from a set of <i>k</i> elements to a set of
@@ -24,7 +22,7 @@ import ca.uqac.lif.synthia.enumerative.AllPickers;
  * C(<i>n</i>,<i>k</i>) ways of picking <i>k</i> elements from a set of
  * <i>n</i>, and  <i>k</i>! ways of ordering each of them.
  */
-public class InjectionPicker implements Bounded<Integer[]>
+public class InjectionPicker extends BoundedBufferedPicker<Integer[]>
 {
 	/**
 	 * Number of elements to choose from.
@@ -42,10 +40,7 @@ public class InjectionPicker implements Bounded<Integer[]>
 	 */
 	protected final List<Integer[]> m_templates;
 
-	/**
-	 * Queue of combinations to enumerate.
-	 */
-	protected final Queue<Integer[]> m_toEnumerate;
+	protected final AllPickers m_allBools;
 
 	public InjectionPicker(int k, int n)
 	{
@@ -56,9 +51,13 @@ public class InjectionPicker implements Bounded<Integer[]>
 		}
 		m_n = n;
 		m_k = k;
-		m_toEnumerate = new ArrayDeque<>();
 		m_templates = populateTemplates(m_k);
-		populate();
+		Bounded<?>[] bools = new Bounded[m_n];
+		for (int i = 0; i < m_n; i++)
+		{
+			bools[i] = new AllBooleans();
+		}
+		m_allBools = new AllPickers(bools);
 	}
 
 	@Override
@@ -68,39 +67,15 @@ public class InjectionPicker implements Bounded<Integer[]>
 	}
 
 	@Override
-	public Integer[] pick()
+	protected void fillQueue()
 	{
-		if (m_toEnumerate.isEmpty())
+		if (m_allBools.isDone())
 		{
-			throw new NoMoreElementException("No more elements to enumerate");
+			return;
 		}
-		return m_toEnumerate.remove();
-	}
-
-	@Override
-	public void reset()
-	{
-		populate();
-	}
-
-	@Override
-	public boolean isDone()
-	{
-		return m_toEnumerate.isEmpty();
-	}
-
-	protected void populate()
-	{
-		m_toEnumerate.clear();
-		Bounded<?>[] bools = new Bounded[m_n];
-		for (int i = 0; i < m_n; i++)
+		while (!m_allBools.isDone())
 		{
-			bools[i] = new AllBooleans();
-		}
-		AllPickers all = new AllPickers(bools);
-		while (!all.isDone())
-		{
-			Object[] subset = all.pick();
+			Object[] subset = m_allBools.pick();
 			List<Integer> l_subset = new ArrayList<>();
 			for (int i = 0; i < subset.length; i++)
 			{
@@ -114,6 +89,7 @@ public class InjectionPicker implements Bounded<Integer[]>
 				continue;
 			}
 			addPermutations(l_subset);
+			break;
 		}
 	}
 
@@ -185,8 +161,9 @@ public class InjectionPicker implements Bounded<Integer[]>
 			{
 				mapping[i] = c.get(template[i]);
 			}
-			m_toEnumerate.add(mapping);
+			m_queue.add(mapping);
 		}
+		System.out.println(m_templates.size() + " " + this);
 	}
 
 	/**
