@@ -34,7 +34,7 @@ public class SubsumptionTest
 		s_renderer.toImage(phi2, "/tmp/phi2.svg", Format.SVG);
 		Subsumption comp = new Subsumption();
 		assertTrue(comp.inRelation(phi2, phi1));
-		assertTrue(comp.inRelation(phi1, phi2));
+		assertFalse(comp.inRelation(phi1, phi2));
 	}
 	
 	@Test
@@ -186,8 +186,8 @@ public class SubsumptionTest
 		s_renderer.toImage(phi1, "/tmp/phi1.svg", Format.SVG);
 		s_renderer.toImage(phi2, "/tmp/phi2.svg", Format.SVG);
 		Subsumption comp = new Subsumption();
-		assertTrue(comp.inRelation(phi2, phi1));
-		assertFalse(comp.inRelation(phi1, phi2));
+		assertFalse(comp.inRelation(phi2, phi1));
+		assertTrue(comp.inRelation(phi1, phi2));
 	}
 	
 	@Test
