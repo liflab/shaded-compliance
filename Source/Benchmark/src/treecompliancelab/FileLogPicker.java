@@ -27,27 +27,27 @@ public class FileLogPicker implements LogPicker
 	 * The index of the next input stream to read from.
 	 */
 	protected int m_index;
-	
+
 	/**
 	 * The names of the files to read from
 	 */
 	protected final String[] m_filenames;
-	
+
 	/**
 	 * The file system giving access to the files to read from.
 	 */
 	protected final FileSystem m_fs;
-	
+
 	/**
 	 * The regular expression that indicates the beginning of an event.
 	 */
 	protected final String m_start;
-	
+
 	/**
 	 * The regular expression that indicates the end of an event.
 	 */
 	protected final String m_end;
-	
+
 	/**
 	 * Creates a new file log picker.
 	 * @param start The regular expression that indicates the beginning of an
@@ -64,7 +64,7 @@ public class FileLogPicker implements LogPicker
 		m_end = end;
 		m_fs = fs;
 	}
-	
+
 	/**
 	 * Creates a new file log picker.
 	 * @param start The regular expression that indicates the beginning of an
@@ -117,7 +117,7 @@ public class FileLogPicker implements LogPicker
 			throw new PickerException(e);
 		}
 	}
-	
+
 	/**
 	 * Reads a log file from an input stream.
 	 * @param is The input stream to read from

@@ -6,6 +6,7 @@ import ca.uqac.lif.cep.shaded.Subsumption;
 import ca.uqac.lif.fs.Chroot;
 import ca.uqac.lif.fs.FileSystem;
 import ca.uqac.lif.fs.FileSystemException;
+import ca.uqac.lif.fs.FileUtils;
 import ca.uqac.lif.fs.JarFile;
 import ca.uqac.lif.labpal.Laboratory;
 
@@ -21,8 +22,10 @@ public class MainLab extends Laboratory
 			// Beep Store
 			{
 				FileSystem fs = new Chroot(main_fs, "data/beepstore");
-				List<String> filenames = fs.ls();
-				LogPairPicker picker = new LogPairPicker(new FileLogPicker("<Message>", "</Message>", fs, "log-0.xml", "log-1.xml"));
+				List<String> filenames = FileUtils.ls(fs, "", "log-1.\\.xml");
+				System.out.println(filenames);
+				//List<String> filenames = fs.ls();
+				LogPairPicker picker = new LogPairPicker(new FileLogPicker("<Message>", "</Message>", fs, filenames));
 				TreeComparisonExperiment experiment = new TreeComparisonExperiment(
 						BeepStoreProperty.ONCE_LOGIN, BeepStoreProperty.get(
 								BeepStoreProperty.ONCE_LOGIN), new Subsumption(), picker);
