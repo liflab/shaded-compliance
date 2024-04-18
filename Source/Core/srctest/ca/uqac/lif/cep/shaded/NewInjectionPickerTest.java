@@ -1,6 +1,6 @@
 package ca.uqac.lif.cep.shaded;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -35,6 +35,35 @@ public class NewInjectionPickerTest
 			System.out.println(Arrays.toString(injection));
 		}
 		assertEquals(numInjections(2, 4), num);
+	}
+	
+	@Test
+	public void testSkip0()
+	{
+		/* By asking skip 1 after the first call to pick, we effectively eliminate
+		 * the enumeration of [2, 0] and [3, 0].
+		 */
+		NewInjectionPicker picker = new NewInjectionPicker(2, 2);
+		assertArrayEquals(new Object[] {1, 0}, picker.pick());
+		picker.increment(1);
+		assertArrayEquals(new Object[] {0, 1}, picker.pick());
+	}
+	
+	/* The following tests check the behavior of increment(). They expect
+	 * mappings to be enumerated in this order:
+	 * [1, 0], [2, 0], [3, 0], [0, 1], [2, 1], [3, 1], [0, 2], [1, 2], [3, 2],
+	 * [0, 3], [1, 3], [2, 3]. */
+	
+	@Test
+	public void testSkip1()
+	{
+		/* By asking skip 1 after the first call to pick, we effectively eliminate
+		 * the enumeration of [2, 0] and [3, 0].
+		 */
+		NewInjectionPicker picker = new NewInjectionPicker(2, 4);
+		assertArrayEquals(new Object[] {1, 0}, picker.pick());
+		picker.increment(1);
+		assertArrayEquals(new Object[] {0, 1}, picker.pick());
 	}
 	
 	protected static int numInjections(final int n, final int m)

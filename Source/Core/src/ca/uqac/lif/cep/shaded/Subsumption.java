@@ -1,6 +1,7 @@
 package ca.uqac.lif.cep.shaded;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import ca.uqac.lif.cep.shaded.Polarized.Polarity;
@@ -48,7 +49,7 @@ public class Subsumption implements TreeComparator
 		}
 		return false;
 	}
-	
+
 	protected boolean isSubsumed(ShadedFunction f1, ShadedFunction f2, Polarity pol)
 	{
 		// In the following, all color references in comments are for the positive polarity
@@ -135,19 +136,21 @@ public class Subsumption implements TreeComparator
 		{
 			Integer[] mapping = picker.pick();
 			boolean subsumed = true;
-			for (int i = 0; i < mapping.length; i++)
+			System.out.println(Arrays.toString(mapping));
+			for (int i = mapping.length - 1; i >= 0; i--)
 			{
 				ShadedFunction child_1 = children_from.get(i);
 				ShadedFunction child_2 = children_to.get(mapping[i]);
 				if ((!inverted && !inRelation(child_1, child_2)) || (inverted && !inRelation(child_2, child_1)))
 				{
 					subsumed = false;
+					System.out.println("Increment " + i);
+					picker.increment(i);
 					break;
 				}
 			}
 			if (subsumed)
 			{
-				//System.out.println("Mapping: " + Arrays.toString(mapping));
 				return true;
 			}
 		}

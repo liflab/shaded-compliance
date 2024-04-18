@@ -19,11 +19,11 @@ public class NewInjectionPicker implements Bounded<Integer[]>
 	 * Number of elements to choose.
 	 */
 	protected final int m_k;
-	
-	protected final AllPickers m_indexPicker;
-	
+
+	protected final SkippableAllPickers m_indexPicker;
+
 	protected Integer[] m_nextInjection;
-	
+
 	protected final BitSet m_bitset;
 
 	public NewInjectionPicker(int k, int n)
@@ -41,7 +41,7 @@ public class NewInjectionPicker implements Bounded<Integer[]>
 		{
 			indices[i] = new AllIntegers(0, m_n - 1);
 		}
-		m_indexPicker = new AllPickers(indices);
+		m_indexPicker = new SkippableAllPickers(indices);
 		m_nextInjection = new Integer[m_k];
 		findNextInjection();
 	}
@@ -80,7 +80,18 @@ public class NewInjectionPicker implements Bounded<Integer[]>
 		findNextInjection();
 		return m_nextInjection == null;
 	}
-	
+
+	public void increment(int index)
+	{
+		m_indexPicker.skip(index);
+		if (index > 0)
+		{
+			// We find the next injection only when we don't skip the last counter
+			// (i.e. position 0)
+			findNextInjection();
+		}
+	}
+
 	protected void findNextInjection()
 	{
 		while (!m_indexPicker.isDone())
@@ -109,5 +120,39 @@ public class NewInjectionPicker implements Bounded<Integer[]>
 			}
 		}
 		m_nextInjection = null;
+	}
+
+	/**
+	 * A special type of {@link AllPickers} that allows the enumeration to skip
+	 * some combinations.
+	 */
+	protected static class SkippableAllPickers extends AllPickers
+	{
+		public SkippableAllPickers(Bounded<?>[] enum_pickers)
+		{
+			super(enum_pickers);
+		}
+
+		public void skip(int index)
+		{
+			if (index == 0)
+			{
+				return;
+			}
+			for (int i = 0; i < index; i++)
+			{
+				exhaust(i);
+			}
+		}
+		
+		protected void exhaust(int index)
+		{
+			Bounded<?> p = m_enumPickers[index];
+			while (!p.isDone())
+			{
+				p.pick();
+			}
+		}
+
 	}
 }
