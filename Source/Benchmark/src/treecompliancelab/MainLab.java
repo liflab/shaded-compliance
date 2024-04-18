@@ -22,7 +22,7 @@ public class MainLab extends Laboratory
 			// Beep Store
 			{
 				FileSystem fs = new Chroot(main_fs, "data/beepstore");
-				List<String> filenames = FileUtils.ls(fs, "", "log-1.\\.xml");
+				List<String> filenames = FileUtils.ls(fs, "", "log-\\d\\.xml");
 				System.out.println(filenames);
 				//List<String> filenames = fs.ls();
 				LogPairPicker picker = new LogPairPicker(new FileLogPicker("<Message>", "</Message>", fs, filenames));

@@ -14,6 +14,8 @@ public class TreeComparisonExperiment extends Experiment
 	public static final String CONDITION = "Condition";
 
 	public static final String LOG_SIZE = "Log size";
+	
+	public static final String TREE_SIZE = "Tree size";
 
 	public static final String TIME = "Time";
 
@@ -31,7 +33,8 @@ public class TreeComparisonExperiment extends Experiment
 		super();
 		describe(CONDITION, "The condition evaluated on each event trace");
 		describe(LOG_SIZE, "The cumulative size of the compared logs");
-		describe(TIME, "The time taken to compare the evaluation trees of a log pair");
+		describe(TREE_SIZE, "The cumulative size of the compared evaluation trees");
+		describe(TIME, "The time taken to compare the evaluation trees of a log pair (in ms)");
 		writeInput(CONDITION, condition_name);
 		m_condition = condition;
 		m_comparator = comparator;
@@ -42,10 +45,10 @@ public class TreeComparisonExperiment extends Experiment
 	public void execute()
 	{
 		Stopwatch sw = new Stopwatch();
-		JsonList l_time = new JsonList();
-		JsonList l_log_size = new JsonList();
+		JsonList l_time = new JsonList(), l_log_size = new JsonList(), l_tree_size = new JsonList();
 		writeOutput(TIME, l_time);
 		writeOutput(LOG_SIZE, l_log_size);
+		writeOutput(TREE_SIZE, l_tree_size);
 		while (!m_picker.isDone())
 		{
 			List<XmlElement>[] pair = m_picker.pick();
@@ -60,12 +63,14 @@ public class TreeComparisonExperiment extends Experiment
 			{
 				tree2.update(e);
 			}
-			m_comparator.inRelation(tree1, tree2);
+			boolean b = m_comparator.inRelation(tree1, tree2);
 			sw.stop();
 			long time = sw.getDuration();
 			int log_size = pair[0].size() + pair[1].size();
+			int tree_size = tree1.size() + tree2.size();
 			l_time.add(time);
 			l_log_size.add(log_size);
+			l_tree_size.add(tree_size);
 		}
 	}
 }
