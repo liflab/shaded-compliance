@@ -23,6 +23,12 @@ public class ShadedNot extends ShadedConnective
 	}
 	
 	@Override
+	public int size()
+	{
+		return 1 + m_operand.size();
+	}
+	
+	@Override
 	public void setValue(String name, Object value)
 	{
 		m_operand.setValue(name, value);

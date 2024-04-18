@@ -15,6 +15,12 @@ public abstract class ShadedUnaryPredicate extends ShadedConnective
 		m_argument = arg;
 		m_color = null;
 	}
+	
+	@Override
+	public int size()
+	{
+		return 1 + m_argument.size();
+	}
 
 	@Override
 	public int getArity()

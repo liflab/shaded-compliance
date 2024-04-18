@@ -25,6 +25,12 @@ public class ShadedConstant implements ShadedFunction
 	}
 	
 	@Override
+	public int size()
+	{
+		return 1;
+	}
+	
+	@Override
 	public void setValue(String name, Object value)
 	{
 		// Do nothing

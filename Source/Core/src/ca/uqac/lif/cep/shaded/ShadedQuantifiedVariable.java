@@ -18,6 +18,12 @@ public class ShadedQuantifiedVariable implements ShadedFunction
 	}
 	
 	@Override
+	public int size()
+	{
+		return 1;
+	}
+	
+	@Override
 	public ShadedFunction update(Object event)
 	{
 		return this;

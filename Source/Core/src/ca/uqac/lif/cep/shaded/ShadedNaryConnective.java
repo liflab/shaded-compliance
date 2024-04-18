@@ -18,6 +18,17 @@ public abstract class ShadedNaryConnective extends ShadedConnective
 	}
 	
 	@Override
+	public int size()
+	{
+		int size = 1;
+		for (ShadedConnective op : m_operands)
+		{
+			size += op.size();
+		}
+		return size;
+	}
+	
+	@Override
 	public void setValue(String name, Object value)
 	{
 		for (ShadedConnective c : m_operands)

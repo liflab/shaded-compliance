@@ -27,6 +27,12 @@ public abstract class ShadedBinaryFunction implements ShadedFunction
 	}
 	
 	@Override
+	public int size()
+	{
+		return 1 + m_left.size() + m_right.size();
+	}
+	
+	@Override
 	public void setValue(String name, Object value)
 	{
 		m_left.setValue(name, value);

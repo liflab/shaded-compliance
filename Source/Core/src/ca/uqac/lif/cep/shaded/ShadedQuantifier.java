@@ -26,6 +26,17 @@ public abstract class ShadedQuantifier extends ShadedConnective
 		m_phi = phi;
 		m_instances = null;
 	}
+	
+	@Override
+	public int size()
+	{
+		int size = 1;
+		for (ShadedConnective op : m_instances)
+		{
+			size += op.size();
+		}
+		return size;
+	}
 
 	@Override
 	public int getArity()

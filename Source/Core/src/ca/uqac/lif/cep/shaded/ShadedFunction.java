@@ -19,4 +19,6 @@ public interface ShadedFunction
 	public boolean sameAs(ShadedFunction f);
 	
 	public void setValue(String name, Object value);
+	
+	public int size();
 }
