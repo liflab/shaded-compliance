@@ -138,7 +138,7 @@ public class Subsumption implements TreeComparator
 			Integer[] mapping = picker.pick();
 			boolean subsumed = true;
 			System.out.println(Arrays.toString(mapping));
-			for (int i = 0; i < mapping.length - 1; i++)
+			for (int i = 0; i < mapping.length; i++)
 			{
 				ShadedFunction child_1 = children_from.get(i);
 				ShadedFunction child_2 = children_to.get(mapping[i]);
@@ -146,7 +146,7 @@ public class Subsumption implements TreeComparator
 				{
 					subsumed = false;
 					//System.out.println("Forbid " + i + " " + mapping[i]);
-					picker.forbid(i, mapping[i]);
+					//picker.forbid(i, mapping[i]);
 					break;
 				}
 			}
@@ -162,11 +162,11 @@ public class Subsumption implements TreeComparator
 	{
 		if (!inverted)
 		{
-			return c1 != Color.GREEN || c2 != Color.GREEN;
+			return c1 != Color.GREEN || c2 == Color.GREEN;
 		}
 		else
 		{
-			return c2 != Color.GREEN || c1 != Color.GREEN;
+			return c2 != Color.GREEN || c1 == Color.GREEN;
 		}
 	}
 }
