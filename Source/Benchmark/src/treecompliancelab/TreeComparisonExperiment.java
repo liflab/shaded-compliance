@@ -2,8 +2,11 @@ package treecompliancelab;
 
 import java.util.List;
 
+import ca.uqac.lif.cep.shaded.DotRenderer.Format;
 import ca.uqac.lif.cep.shaded.ShadedConnective;
+import ca.uqac.lif.cep.shaded.ShadedConnective.Color;
 import ca.uqac.lif.cep.shaded.TreeComparator;
+import ca.uqac.lif.cep.shaded.TreeRenderer;
 import ca.uqac.lif.json.JsonList;
 import ca.uqac.lif.labpal.experiment.Experiment;
 import ca.uqac.lif.labpal.util.Stopwatch;
@@ -18,6 +21,8 @@ public class TreeComparisonExperiment extends Experiment
 	public static final String TREE_SIZE = "Tree size";
 
 	public static final String TIME = "Time";
+	
+	public static final String SUBSUMED = "Subsumed";
 
 	protected final LogPairPicker m_picker;
 
@@ -32,9 +37,10 @@ public class TreeComparisonExperiment extends Experiment
 	{
 		super();
 		describe(CONDITION, "The condition evaluated on each event trace");
-		describe(LOG_SIZE, "The cumulative size of the compared logs");
+		describe(LOG_SIZE, "The cumulative size of the compared traces");
 		describe(TREE_SIZE, "The cumulative size of the compared evaluation trees");
 		describe(TIME, "The time taken to compare the evaluation trees of a log pair (in ms)");
+		describe(SUBSUMED, "Whether the subsumption relation holds for the pair of traces");
 		writeInput(CONDITION, condition_name);
 		m_condition = condition;
 		m_comparator = comparator;
@@ -45,14 +51,14 @@ public class TreeComparisonExperiment extends Experiment
 	public void execute()
 	{
 		Stopwatch sw = new Stopwatch();
-		JsonList l_time = new JsonList(), l_log_size = new JsonList(), l_tree_size = new JsonList();
+		JsonList l_time = new JsonList(), l_log_size = new JsonList(), l_tree_size = new JsonList(), l_subsumed = new JsonList();
 		writeOutput(TIME, l_time);
 		writeOutput(LOG_SIZE, l_log_size);
 		writeOutput(TREE_SIZE, l_tree_size);
+		int pair_nb = 0;
 		while (!m_picker.isDone())
 		{
 			List<XmlElement>[] pair = m_picker.pick();
-			sw.start();
 			ShadedConnective tree1 = m_condition.duplicate();
 			for (XmlElement e : pair[0])
 			{
@@ -63,6 +69,12 @@ public class TreeComparisonExperiment extends Experiment
 			{
 				tree2.update(e);
 			}
+			if (tree1.getValue() == Color.GREEN && tree2.getValue() == Color.RED)
+			{
+				// No point in comparing them, the result is instantaneous
+				continue;
+			}
+			sw.start();
 			boolean b = m_comparator.inRelation(tree1, tree2);
 			sw.stop();
 			long time = sw.getDuration();
@@ -71,6 +83,11 @@ public class TreeComparisonExperiment extends Experiment
 			l_time.add(time);
 			l_log_size.add(log_size);
 			l_tree_size.add(tree_size);
+			l_subsumed.add(b ? 1 : 0);
+			TreeRenderer tr = new TreeRenderer(false);
+			tr.toImage(tree1, "/tmp/" + pair_nb + "-1.png", Format.PNG);
+			tr.toImage(tree1, "/tmp/" + pair_nb + "-2.png", Format.PNG);
+			pair_nb++;
 		}
 	}
 }

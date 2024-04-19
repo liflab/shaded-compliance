@@ -8,6 +8,8 @@ import ca.uqac.lif.xml.XmlElement;
 
 public class ShadedFetchPath implements ShadedFunction
 {
+	protected static boolean s_compareValues = false;
+	
 	public static ShadedFetchPath path(String path)
 	{
 		return new ShadedFetchPath(path);
@@ -56,7 +58,7 @@ public class ShadedFetchPath implements ShadedFunction
 			return false;
 		}
 		ShadedFetchPath sfa = (ShadedFetchPath) o;
-		return m_path.compareTo(sfa.m_path) == 0 && ShadedEquals.equals(m_value, sfa.m_value) == Color.GREEN;
+		return m_path.compareTo(sfa.m_path) == 0 && (!s_compareValues || ShadedEquals.equals(m_value, sfa.m_value) == Color.GREEN);
 	}
 
 	@Override

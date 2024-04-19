@@ -100,7 +100,7 @@ public class Subsumption implements TreeComparator
 		for (int i = 0; i < to.getArity(); i++)
 		{
 			ShadedFunction child = to.getOperand(i);
-			if ((m_compareNonConnectives && !(child instanceof ShadedConnective)) || (child instanceof ShadedConnective /*&& child.getValue() == col*/))
+			if ((m_compareNonConnectives && !(child instanceof ShadedConnective)) || ((child instanceof ShadedConnective) && colorSubsumes(col, (Color) child.getValue(), inverted)))
 			{
 				children_to.add(child);
 			}
@@ -116,6 +116,7 @@ public class Subsumption implements TreeComparator
 			// No sub-tree to map to the other tree: fine
 			return true;
 		}
+		System.out.println(children_from.size() + "->" + children_to.size());
 		if (has_white)
 		{
 			if (children_from.size() != children_to.size())
@@ -155,5 +156,17 @@ public class Subsumption implements TreeComparator
 			}
 		}
 		return false;
+	}
+	
+	protected static boolean colorSubsumes(Color c1, Color c2, boolean inverted)
+	{
+		if (!inverted)
+		{
+			return c1 != Color.GREEN || c2 != Color.GREEN;
+		}
+		else
+		{
+			return c2 != Color.GREEN || c1 != Color.GREEN;
+		}
 	}
 }

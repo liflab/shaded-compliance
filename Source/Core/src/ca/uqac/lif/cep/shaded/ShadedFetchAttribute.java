@@ -7,6 +7,8 @@ import ca.uqac.lif.cep.shaded.ShadedConnective.Color;
 
 public class ShadedFetchAttribute implements ShadedFunction
 {
+	protected static boolean s_compareValues = false;
+	
 	public static ShadedFetchAttribute fetch(String attribute)
 	{
 		return new ShadedFetchAttribute(attribute);
@@ -43,7 +45,7 @@ public class ShadedFetchAttribute implements ShadedFunction
 			return false;
 		}
 		ShadedFetchAttribute sfa = (ShadedFetchAttribute) o;
-		return m_attribute.compareTo(sfa.m_attribute) == 0 && ShadedEquals.equals(m_value, sfa.m_value) == Color.GREEN;
+		return m_attribute.compareTo(sfa.m_attribute) == 0 && (!s_compareValues || ShadedEquals.equals(m_value, sfa.m_value) == Color.GREEN);
 	}
 
 	@SuppressWarnings("unchecked")

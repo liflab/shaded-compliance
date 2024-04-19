@@ -25,7 +25,7 @@ public class MainLab extends Laboratory
 				List<String> filenames = FileUtils.ls(fs, "", "log-\\d\\.xml");
 				System.out.println(filenames);
 				//List<String> filenames = fs.ls();
-				LogPairPicker picker = new LogPairPicker(new FileLogPicker("<Message>", "</Message>", fs, filenames));
+				LogPairPicker picker = new LogPairPicker(new FileLogPicker("<Message>", "</Message>", fs, "log-0.xml", "log-1.xml", "log-2.xml"));
 				TreeComparisonExperiment experiment = new TreeComparisonExperiment(
 						BeepStoreProperty.ONCE_LOGIN, BeepStoreProperty.get(
 								BeepStoreProperty.ONCE_LOGIN), new Subsumption(), picker);
