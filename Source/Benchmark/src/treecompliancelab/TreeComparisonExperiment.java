@@ -55,6 +55,7 @@ public class TreeComparisonExperiment extends Experiment
 		writeOutput(TIME, l_time);
 		writeOutput(LOG_SIZE, l_log_size);
 		writeOutput(TREE_SIZE, l_tree_size);
+		writeOutput(SUBSUMED, l_subsumed);
 		int pair_nb = 0;
 		while (!m_picker.isDone())
 		{

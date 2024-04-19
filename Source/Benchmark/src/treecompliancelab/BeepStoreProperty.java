@@ -12,7 +12,9 @@ import ca.uqac.lif.cep.shaded.ShadedConnective;
 @SuppressWarnings("unused")
 public class BeepStoreProperty
 {
-	public static final String ONCE_LOGIN = "Once login";
+	public static final String ONCE_LOGIN = "Once Login";
+	
+	public static final String ONCE_ITEM_SEARCH = "Once ItemSearch";
 
 	public static ShadedConnective get(String name)
 	{
@@ -20,6 +22,8 @@ public class BeepStoreProperty
 		{
 			case ONCE_LOGIN:
 				return onceLogin();
+			case ONCE_ITEM_SEARCH:
+				return onceItemSearch();
 			default:
 				return null;
 		}
@@ -27,6 +31,11 @@ public class BeepStoreProperty
 	
 	protected static ShadedConnective onceLogin()
 	{
-		return F(eq(path("Message/Action"), "Login"));
+		return F(eq(path("Message/Action/text()"), "Login"));
+	}
+	
+	protected static ShadedConnective onceItemSearch()
+	{
+		return F(eq(path("Message/Action/text()"), "ItemSearch"));
 	}
 }

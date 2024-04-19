@@ -22,13 +22,13 @@ public class MainLab extends Laboratory
 			// Beep Store
 			{
 				FileSystem fs = new Chroot(main_fs, "data/beepstore");
-				List<String> filenames = FileUtils.ls(fs, "", "log-\\d\\.xml");
+				List<String> filenames = FileUtils.ls(fs, "", "log-4\\d\\.xml");
 				System.out.println(filenames);
 				//List<String> filenames = fs.ls();
-				LogPairPicker picker = new LogPairPicker(new FileLogPicker("<Message>", "</Message>", fs, "log-0.xml", "log-1.xml", "log-2.xml"));
+				LogPairPicker picker = new LogPairPicker(new FileLogPicker("<Message>", "</Message>", fs, "log-11.xml", "log-12.xml", "log-13.xml"));
 				TreeComparisonExperiment experiment = new TreeComparisonExperiment(
-						BeepStoreProperty.ONCE_LOGIN, BeepStoreProperty.get(
-								BeepStoreProperty.ONCE_LOGIN), new Subsumption(), picker);
+						BeepStoreProperty.ONCE_ITEM_SEARCH, BeepStoreProperty.get(
+								BeepStoreProperty.ONCE_ITEM_SEARCH), new Subsumption(), picker);
 				add(experiment);
 			}
 		}

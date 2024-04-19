@@ -132,21 +132,21 @@ public class Subsumption implements TreeComparator
 			}
 			return true;
 		}
-		NewInjectionPicker picker = new NewInjectionPicker(children_from.size(), children_to.size());
+		NewerInjectionPicker picker = new NewerInjectionPicker(children_from.size(), children_to.size());
 		while (!picker.isDone())
 		{
 			Integer[] mapping = picker.pick();
 			boolean subsumed = true;
 			System.out.println(Arrays.toString(mapping));
-			for (int i = mapping.length - 1; i >= 0; i--)
+			for (int i = 0; i < mapping.length - 1; i++)
 			{
 				ShadedFunction child_1 = children_from.get(i);
 				ShadedFunction child_2 = children_to.get(mapping[i]);
 				if ((!inverted && !inRelation(child_1, child_2)) || (inverted && !inRelation(child_2, child_1)))
 				{
 					subsumed = false;
-					System.out.println("Increment " + i);
-					picker.increment(i);
+					//System.out.println("Forbid " + i + " " + mapping[i]);
+					picker.forbid(i, mapping[i]);
 					break;
 				}
 			}
