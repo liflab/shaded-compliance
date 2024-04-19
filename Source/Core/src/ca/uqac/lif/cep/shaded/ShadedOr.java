@@ -6,6 +6,11 @@ package ca.uqac.lif.cep.shaded;
  */
 public class ShadedOr extends ShadedNaryConnective
 {
+	public static ShadedConnective implies(ShadedConnective left, ShadedConnective right)
+	{
+		return or(new ShadedNot(left), right);
+	}
+	
 	public static ShadedConnective or(ShadedConnective... operands)
 	{
 		return or(Polarity.POSITIVE, operands);
