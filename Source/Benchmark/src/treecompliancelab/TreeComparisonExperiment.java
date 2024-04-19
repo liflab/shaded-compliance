@@ -85,10 +85,13 @@ public class TreeComparisonExperiment extends Experiment
 			l_log_size.add(log_size);
 			l_tree_size.add(tree_size);
 			l_subsumed.add(b ? 1 : 0);
+			
 			TreeRenderer tr = new TreeRenderer(false);
 			tr.toImage(tree1, "/tmp/" + pair_nb + "-1.png", Format.PNG);
 			tr.toImage(tree1, "/tmp/" + pair_nb + "-2.png", Format.PNG);
+			
 			pair_nb++;
+			break;
 		}
 	}
 }
