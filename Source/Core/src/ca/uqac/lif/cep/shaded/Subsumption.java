@@ -116,7 +116,7 @@ public class Subsumption implements TreeComparator
 			// No sub-tree to map to the other tree: fine
 			return true;
 		}
-		System.out.println(children_from.size() + "->" + children_to.size());
+		//System.out.println(children_from.size() + "->" + children_to.size());
 		if (has_white)
 		{
 			if (children_from.size() != children_to.size())
@@ -137,7 +137,7 @@ public class Subsumption implements TreeComparator
 		{
 			Integer[] mapping = picker.pick();
 			boolean subsumed = true;
-			System.out.println(Arrays.toString(mapping));
+			//System.out.println(Arrays.toString(mapping));
 			for (int i = 0; i < mapping.length; i++)
 			{
 				ShadedFunction child_1 = children_from.get(i);
