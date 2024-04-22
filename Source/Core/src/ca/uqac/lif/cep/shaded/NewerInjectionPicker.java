@@ -104,6 +104,11 @@ public class NewerInjectionPicker implements Bounded<Integer[]>
 					for (int j = i + 1; j < m_k; j++)
 					{
 						m_stack[j] = m_stack[j - 1].nextNeighbor();
+						if (m_stack[j] == null)
+						{
+							m_done = true;
+							break;
+						}
 					}
 					break;
 				}
@@ -119,6 +124,10 @@ public class NewerInjectionPicker implements Bounded<Integer[]>
 		}
 		for (int i = 0; i < m_k; i++)
 		{
+			if (m_stack[i] == null)
+			{
+				return false;
+			}
 			if (m_forbidden[i].contains(m_stack[i].getValue()))
 			{
 				return false;

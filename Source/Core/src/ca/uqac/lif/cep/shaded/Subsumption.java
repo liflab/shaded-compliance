@@ -116,7 +116,7 @@ public class Subsumption implements TreeComparator
 			// No sub-tree to map to the other tree: fine
 			return true;
 		}
-		System.out.println(children_from.size() + "->" + children_to.size());
+		//System.out.println(children_from.size() + "->" + children_to.size());
 		if (has_white)
 		{
 			if (children_from.size() != children_to.size())
@@ -137,7 +137,7 @@ public class Subsumption implements TreeComparator
 		{
 			Integer[] mapping = picker.pick();
 			boolean subsumed = true;
-			System.out.println(Arrays.toString(mapping));
+			//System.out.println(Arrays.toString(mapping));
 			for (int i = 0; i < mapping.length; i++)
 			{
 				ShadedFunction child_1 = children_from.get(i);
@@ -146,7 +146,7 @@ public class Subsumption implements TreeComparator
 				{
 					subsumed = false;
 					//System.out.println("Forbid " + i + " " + mapping[i]);
-					//picker.forbid(i, mapping[i]);
+					picker.forbid(i, mapping[i]);
 					break;
 				}
 			}
@@ -154,9 +154,21 @@ public class Subsumption implements TreeComparator
 			{
 				return true;
 			}
+			if (isBoolean(f1) || isBoolean(f2))
+			{
+				// The only mapping to consider for Boolean nodes is the one where
+				// the n-th child of f1 is mapped to the n-th child of f2. If this
+				// mapping does not work, we stop there.
+				break;
+			}
 		}
-		System.out.println("None");
+		//System.out.println("None");
 		return false;
+	}
+	
+	protected static boolean isBoolean(ShadedFunction f)
+	{
+		return f instanceof ShadedOr || f instanceof ShadedAnd || f instanceof ShadedNot;
 	}
 	
 	protected static boolean colorSubsumes(Color c1, Color c2, boolean inverted)

@@ -119,6 +119,7 @@ public class ShadedGraph
 	public void toDot(PrintStream ps)
 	{
 		ps.println("digraph G {");
+		ps.println("  rankdir=BT;");
 		ps.println("  edge [dir=none];");
 		ps.println("  splines=false;");
 		ps.println("  node [shape=\"circle\",height=0.3,width=0.3,fixedsize=\"true\",style=\"filled\"];");

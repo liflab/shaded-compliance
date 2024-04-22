@@ -75,15 +75,15 @@ public class TreeComparisonExperiment extends Experiment
 				// No point in comparing them, the result is instantaneous
 				continue;
 			}
+			int tree_size = tree1.size() + tree2.size();
+			l_tree_size.add(tree_size);
+			int log_size = pair[0].size() + pair[1].size();
+			l_log_size.add(log_size);
 			sw.start();
 			boolean b = m_comparator.inRelation(tree1, tree2);
 			sw.stop();
 			long time = sw.getDuration();
-			int log_size = pair[0].size() + pair[1].size();
-			int tree_size = tree1.size() + tree2.size();
 			l_time.add(time);
-			l_log_size.add(log_size);
-			l_tree_size.add(tree_size);
 			l_subsumed.add(b ? 1 : 0);
 			
 			TreeRenderer tr = new TreeRenderer(false);
@@ -91,7 +91,7 @@ public class TreeComparisonExperiment extends Experiment
 			tr.toImage(tree1, "/tmp/" + pair_nb + "-2.png", Format.PNG);
 			
 			pair_nb++;
-			break;
+			//break;
 		}
 	}
 }

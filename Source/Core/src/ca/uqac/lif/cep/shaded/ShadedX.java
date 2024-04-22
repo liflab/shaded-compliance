@@ -24,7 +24,7 @@ public class ShadedX extends ShadedConnective
 	@Override
 	public int getArity()
 	{
-		return 1;
+		return m_operand == null ? 0 : 1;
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class ShadedX extends ShadedConnective
 		{
 			return 1;
 		}
-		return 1 + m_phi.size();
+		return 1 + m_operand.size();
 	}
 
 	@Override

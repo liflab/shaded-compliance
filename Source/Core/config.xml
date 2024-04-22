@@ -55,20 +55,12 @@
   -->
   <dependencies>
     <dependency>
-      <name>BeepBeep 3 Core</name>
-      <classname>ca.uqac.lif.cep.Processor</classname>
-      <files>
-        <jar>https://github.com/liflab/beepbeep-3/releases/download/v0.11.1/beepbeep-3-0.11.1.jar</jar>
-      </files>
-      <bundle>false</bundle>
-    </dependency>
-    <dependency>
       <name>lif-fs</name>
       <classname>ca.uqac.lif.fs.FileSystem</classname>
       <files>
         <jar>https://github.com/liflab/lif-fs/releases/download/v0.2.2/lif-fs-core-0.2.2.jar</jar>
       </files>
-      <bundle>false</bundle>
+      <bundle>true</bundle>
     </dependency>
     <dependency>
       <name>Synthia Core</name>
@@ -76,7 +68,7 @@
       <files>
         <jar>https://github.com/liflab/synthia/releases/download/v0.3.3/synthia-core-0.3.3.jar</jar>
       </files>
-      <bundle>false</bundle>
+      <bundle>true</bundle>
     </dependency>
     <dependency>
       <name>Petit Poucet Core</name>
@@ -84,7 +76,7 @@
       <files>
         <jar>https://github.com/liflab/petitpoucet/releases/download/v2.3.2/petitpoucet-core-2.3.2.jar</jar>
       </files>
-      <bundle>false</bundle>
+      <bundle>true</bundle>
     </dependency>
     <dependency>
       <name>Petit Poucet Functions</name>
@@ -92,7 +84,7 @@
       <files>
         <jar>https://github.com/liflab/petitpoucet/releases/download/v2.3.2/petitpoucet-functions-2.3.2.jar</jar>
       </files>
-      <bundle>false</bundle>
+      <bundle>true</bundle>
     </dependency>
     <dependency>
       <name>xml-lif</name>
@@ -100,7 +92,15 @@
       <files>
         <zip>https://github.com/liflab/xml-lif/releases/download/v1.2.2/xml-lif-1.2.2.zip</zip>
       </files>
-      <bundle>false</bundle>
+      <bundle>true</bundle>
+    </dependency>
+    <dependency>
+      <name>Bullwinkle</name>
+      <classname>ca.uqac.lif.bullwinkle.BnfParser</classname>
+      <files>
+        <zip>https://github.com/sylvainhalle/Bullwinkle/releases/download/v1.4.6/bullwinkle-1.4.6.zip</zip>
+      </files>
+      <bundle>true</bundle>
     </dependency>
   </dependencies>
 </build>

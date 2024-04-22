@@ -1,5 +1,8 @@
 package treecompliancelab;
 
+import static ca.uqac.lif.labpal.region.ProductRegion.product;
+import static ca.uqac.lif.labpal.region.ExtensionDomain.extension;
+
 import java.util.List;
 
 import ca.uqac.lif.cep.shaded.Subsumption;
@@ -9,6 +12,7 @@ import ca.uqac.lif.fs.FileSystemException;
 import ca.uqac.lif.fs.FileUtils;
 import ca.uqac.lif.fs.JarFile;
 import ca.uqac.lif.labpal.Laboratory;
+import ca.uqac.lif.labpal.region.Region;
 
 public class MainLab extends Laboratory
 {
@@ -22,12 +26,16 @@ public class MainLab extends Laboratory
 			// Beep Store
 			{
 				FileSystem fs = new Chroot(main_fs, "data/beepstore");
-				List<String> filenames = FileUtils.ls(fs, "", "log-.*\\.xml");
-				LogPairPicker picker = new LogPairPicker(new FileLogPicker("<Message>", "</Message>", fs, filenames));
-				TreeComparisonExperiment experiment = new TreeComparisonExperiment(
-						BeepStoreProperty.MAX_CARTS, BeepStoreProperty.get(
-								BeepStoreProperty.MAX_CARTS), new Subsumption(), picker);
-				add(experiment);
+				List<String> filenames = FileUtils.ls(fs, "", "log.*\\.xml");
+				Region big_r = product(extension("Property", BeepStoreProperty.ONCE_ITEM_SEARCH, BeepStoreProperty.MAX_CARTS, BeepStoreProperty.NO_DUPLICATE_ITEM));
+				for (Region r : big_r.all("Property"))
+				{
+					String property = r.asPoint().getString("Property");
+					LogPairPicker picker = new LogPairPicker(new FileLogPicker("<Message>", "</Message>", fs, filenames));
+					TreeComparisonExperiment experiment = new TreeComparisonExperiment(
+							property, BeepStoreProperty.get(property), new Subsumption(), picker);
+					add(experiment);
+				}
 			}
 		}
 		catch (FileSystemException e)

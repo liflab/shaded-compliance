@@ -17,6 +17,11 @@ public abstract class ShadedNaryConnective extends ShadedConnective
 		}
 	}
 	
+	public void addOperand(ShadedConnective op)
+	{
+		m_operands.add(op);
+	}
+	
 	@Override
 	public int size()
 	{

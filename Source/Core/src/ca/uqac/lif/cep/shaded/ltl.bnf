@@ -1,0 +1,28 @@
+<phi> := <F> | <G> | <X> | <and> | <or> | <implies> | <not> | <atom> ;
+
+# Temporal operators
+
+<F>        := F ( <phi> ) | F <atom> ;
+<G>        := G ( <phi> ) | G <atom> ;
+<X>        := X ( <phi> ) | X <atom> ;
+
+# Boolean connectives
+
+<and>      := <atom> \u2227 <atom> | <atom> \u2227 ( <phi> ) | ( <phi> ) \u2227 <atom> | ( <phi> ) \u2227 ( <phi> ) | <land> \u2227 <atom> ;
+<land>     := <atom> | <and> ;
+<or>       := <atom> \u2228 <lor> | <atom> \u2228 ( <phi> ) | ( <phi> ) \u2228 <atom> | ( <phi> ) \u2228 ( <phi> ) | <lor> \u2228 <atom> ;
+<lor>      := <atom> | <or> ;
+<implies>  := <atom> \u2192 <atom> | <atom> \u2192 ( <phi> ) | ( <phi> ) \u2192 <atom> | ( <phi> ) \u2192 ( <phi> ) ;
+<not>      := \u00ac <atom> | \u00ac ( <phi> ) ;
+
+# Atoms
+
+<atom>     := <eq> ;
+<eq>       := <val> = <val> ;
+
+# Values
+
+<val>      := <string> | <num> | <param> ;
+<string>   := ^"[^"]*";
+<num>      := ^[0-9]+;
+<param>      := ^[A-Za-z0-9]+;

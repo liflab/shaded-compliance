@@ -1,6 +1,5 @@
 package ca.uqac.lif.cep.shaded;
 
-import ca.uqac.lif.cep.io.CommandRunner;
 import ca.uqac.lif.fs.FileSystemException;
 import ca.uqac.lif.fs.FileUtils;
 import ca.uqac.lif.fs.HardDisk;

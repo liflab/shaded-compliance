@@ -7,6 +7,8 @@ public class ShadedQuantifiedVariable implements ShadedFunction
 		return new ShadedQuantifiedVariable(name);
 	}
 	
+	protected static boolean s_compareValues = false;
+	
 	protected final String m_name;
 	
 	protected Object m_value;
@@ -45,7 +47,7 @@ public class ShadedQuantifiedVariable implements ShadedFunction
 	public ShadedQuantifiedVariable duplicate(boolean with_state)
 	{
 		ShadedQuantifiedVariable sqv = new ShadedQuantifiedVariable(m_name);
-		if (with_state)
+		//if (with_state)
 		{
 			sqv.m_value = m_value;
 		}
@@ -87,6 +89,10 @@ public class ShadedQuantifiedVariable implements ShadedFunction
 		if (m_name.compareTo(sqv.m_name) != 0)
 		{
 			return false;
+		}
+		if (!s_compareValues)
+		{
+			return true;
 		}
 		if ((m_value == null) != (sqv.m_value == null))
 		{
