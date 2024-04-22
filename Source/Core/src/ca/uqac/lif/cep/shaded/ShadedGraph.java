@@ -21,7 +21,7 @@ public class ShadedGraph
 	protected Map<ShadedConnective,Integer> m_toId;
 
 	protected Map<Integer,ShadedConnective> m_fromId;
-	
+
 	protected Map<Integer,Integer> m_multiplicity;
 
 	protected boolean[][] m_adjacency;
@@ -41,7 +41,7 @@ public class ShadedGraph
 			m_multiplicity.put(i, 1);
 		}
 	}
-	
+
 	public int size()
 	{
 		return m_adjacency.length;
@@ -101,11 +101,16 @@ public class ShadedGraph
 	
 	public void toImage(String filename, DotRenderer.Format format)
 	{
+		toImage(filename, format, null);
+	}
+
+	public void toImage(String filename, DotRenderer.Format format, String title)
+	{
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		toDot(new PrintStream(baos));
+		toDot(new PrintStream(baos), title);
 		DotRenderer.toImage(Algorithm.DOT, baos.toString(), filename, format);
 	}
-	
+
 	public void dumpNodes(String prefix)
 	{
 		TreeRenderer tr = new TreeRenderer(false);
@@ -116,10 +121,15 @@ public class ShadedGraph
 		}
 	}
 
-	public void toDot(PrintStream ps)
+	public void toDot(PrintStream ps, String title)
 	{
 		ps.println("digraph G {");
 		ps.println("  rankdir=BT;");
+		if (title != null)
+		{
+			ps.println("  labelloc=\"t\";");
+			ps.println("  label=\"" + title + "\";");
+		}
 		ps.println("  edge [dir=none];");
 		ps.println("  splines=false;");
 		ps.println("  node [shape=\"circle\",height=0.3,width=0.3,fixedsize=\"true\",style=\"filled\"];");

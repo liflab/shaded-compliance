@@ -22,14 +22,29 @@ public class TreeRenderer
 	
 	public void toImage(ShadedFunction f, String filename, Format format)
 	{
+		toImage(f, filename, format, null);
+	}
+	
+	public void toImage(ShadedFunction f, String filename, Format format, String title)
+	{
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		render(f, new PrintStream(baos));
+		render(f, new PrintStream(baos), title);
 		DotRenderer.toImage(Algorithm.DOT, baos.toString(), filename, format);
 	}
-
+	
 	public void render(ShadedFunction f, PrintStream ps)
 	{
+		render(f, ps, null);
+	}
+
+	public void render(ShadedFunction f, PrintStream ps, String title)
+	{
 		ps.println("digraph G {");
+		if (title != null)
+		{
+			ps.println("  labelloc=\"t\";");
+			ps.println("  label=\"" + title + "\";");
+		}
 		ps.println("  nodesep=0.125");
 		ps.println("  ranksep=0.25;");
 		ps.println("  node [shape=\"rectangle\",height=0.3,width=0.3,fixedsize=\"true\",style=\"filled\"];");

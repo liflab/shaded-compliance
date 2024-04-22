@@ -54,7 +54,7 @@ public class SimpleLattice
 		LatticeGenerator gen = new LatticeGenerator(new Subsumption(true));
 		ShadedGraph g = gen.getLattice(elements);
 		g.toImage("/tmp/simple-lattice.png", Format.PNG);
-		g.dumpNodes("/tmp/G1_");
+		gen.dumpTrees("/tmp/G1", elements);
 	}
 	
 	public static Map<String,Object> map(Object ... objects)
