@@ -1,16 +1,12 @@
 package treecompliancelab;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import ca.uqac.lif.fs.FileSystem;
-import ca.uqac.lif.fs.FileSystemException;
-import ca.uqac.lif.synthia.NoMoreElementException;
 import ca.uqac.lif.synthia.Picker;
-import ca.uqac.lif.synthia.PickerException;
 import ca.uqac.lif.xml.XmlElement;
 import ca.uqac.lif.xml.XmlElement.XmlParseException;
 
@@ -21,23 +17,8 @@ import ca.uqac.lif.xml.XmlElement.XmlParseException;
  * the two regular expressions is considered to be part of the event. Any text
  * between the end of an event and the beginning of the next event is ignored.
  */
-public class FileLogPicker implements LogPicker
+public class FileLogPicker extends MultiLogPicker<XmlElement>
 {
-	/**
-	 * The index of the next input stream to read from.
-	 */
-	protected int m_index;
-
-	/**
-	 * The names of the files to read from
-	 */
-	protected final String[] m_filenames;
-
-	/**
-	 * The file system giving access to the files to read from.
-	 */
-	protected final FileSystem m_fs;
-
 	/**
 	 * The regular expression that indicates the beginning of an event.
 	 */
@@ -57,12 +38,9 @@ public class FileLogPicker implements LogPicker
 	 */
 	public FileLogPicker(String start, String end, FileSystem fs, String ... filenames)
 	{
-		super();
-		m_filenames = filenames;
-		m_index = 0;
+		super(fs, filenames);
 		m_start = start;
 		m_end = end;
-		m_fs = fs;
 	}
 
 	/**
@@ -78,44 +56,9 @@ public class FileLogPicker implements LogPicker
 	}
 
 	@Override
-	public boolean isDone()
-	{
-		return m_index >= m_filenames.length;
-	}
-
-	@Override
 	public Picker<List<XmlElement>> duplicate(boolean with_state)
 	{
 		throw new UnsupportedOperationException("This picker cannot be duplicated");
-	}
-
-	@Override
-	public List<XmlElement> pick()
-	{
-		if (m_index >= m_filenames.length)
-		{
-			throw new NoMoreElementException();
-		}
-		try
-		{
-			InputStream is = m_fs.readFrom(m_filenames[m_index]);
-			List<XmlElement> log = readFile(is);
-			is.close();
-			m_index++;
-			return log;
-		}
-		catch (XmlParseException e)
-		{
-			throw new PickerException(e);
-		}
-		catch (FileSystemException e)
-		{
-			throw new PickerException(e);
-		}
-		catch (IOException e)
-		{
-			throw new PickerException(e);
-		}
 	}
 
 	/**
@@ -124,7 +67,7 @@ public class FileLogPicker implements LogPicker
 	 * @return The list of XML elements in the file
 	 * @throws XmlParseException If the XML could not be parsed
 	 */
-	protected List<XmlElement> readFile(InputStream is) throws XmlParseException
+	protected List<XmlElement> readFile(InputStream is)
 	{
 		List<XmlElement> log = new ArrayList<XmlElement>();
 		boolean in_event = false;
@@ -144,9 +87,18 @@ public class FileLogPicker implements LogPicker
 			if (line.matches(m_end))
 			{
 				in_event = false;
-				XmlElement event = XmlElement.parse(current_event.toString());
-				log.add(event);
-				current_event.setLength(0);
+				XmlElement event;
+				try
+				{
+					event = XmlElement.parse(current_event.toString());
+					log.add(event);
+					current_event.setLength(0);
+				}
+				catch (XmlParseException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 		scanner.close();

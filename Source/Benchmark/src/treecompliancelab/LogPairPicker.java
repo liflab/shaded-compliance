@@ -5,16 +5,15 @@ import java.util.List;
 
 import ca.uqac.lif.synthia.Bounded;
 import ca.uqac.lif.synthia.util.BoundedBufferedPicker;
-import ca.uqac.lif.xml.XmlElement;
 
 /**
  * Picks pairs of log entries from a source of log entries.
  */
-public class LogPairPicker extends BoundedBufferedPicker<List<XmlElement>[]>
+public class LogPairPicker<T> extends BoundedBufferedPicker<List<T>[]>
 {
-	protected final Bounded<List<XmlElement>> m_source;
+	protected final Bounded<List<T>> m_source;
 
-	public LogPairPicker(Bounded<List<XmlElement>> source)
+	public LogPairPicker(Bounded<List<T>> source)
 	{
 		super();
 		m_source = source;
@@ -24,7 +23,7 @@ public class LogPairPicker extends BoundedBufferedPicker<List<XmlElement>[]>
 	@Override
 	protected void fillQueue()
 	{
-		List<List<XmlElement>> logs = new ArrayList<List<XmlElement>>();
+		List<List<T>> logs = new ArrayList<List<T>>();
 		while (!m_source.isDone())
 		{
 			logs.add(m_source.pick());
@@ -33,7 +32,7 @@ public class LogPairPicker extends BoundedBufferedPicker<List<XmlElement>[]>
 		{
 			for (int j = i + 1; j < logs.size(); j++)
 			{
-				List<XmlElement>[] pair = new List[2];
+				List<T>[] pair = new List[2];
 				pair[0] = logs.get(i);
 				pair[1] = logs.get(j);
 				m_queue.add(pair);
@@ -49,7 +48,7 @@ public class LogPairPicker extends BoundedBufferedPicker<List<XmlElement>[]>
 	}
 
 	@Override
-	public LogPairPicker duplicate(boolean with_state)
+	public LogPairPicker<T> duplicate(boolean with_state)
 	{
 		throw new UnsupportedOperationException("This picker cannot be duplicated");
 	}
