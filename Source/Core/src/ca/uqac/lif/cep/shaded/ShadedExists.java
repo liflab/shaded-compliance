@@ -20,6 +20,12 @@ public class ShadedExists extends ShadedQuantifier
 	{
 		return "\u2203" + m_x + "\u2208" + m_pi;
 	}
+	
+	@Override
+	protected void toString(StringBuilder out)
+	{
+		out.append("exists");
+	}
 
 	@Override
 	public boolean sameAs(ShadedFunction f)

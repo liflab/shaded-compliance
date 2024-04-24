@@ -41,6 +41,20 @@ public class ShadedGraph
 			m_multiplicity.put(i, 1);
 		}
 	}
+	
+	public void printMatrix(PrintStream ps)
+	{
+		for (int i = 0; i < m_adjacency.length; i++)
+		{
+			for (int j = 0; j < m_adjacency[i].length; j++)
+			{
+				if (j > 0)
+					ps.print(" ");
+				ps.print(m_adjacency[i][j] ? "1" : "0");
+			}
+			ps.println();
+		}
+	}
 
 	public int size()
 	{

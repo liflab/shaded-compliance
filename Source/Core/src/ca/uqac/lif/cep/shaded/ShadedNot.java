@@ -23,6 +23,15 @@ public class ShadedNot extends ShadedConnective
 	}
 	
 	@Override
+	protected void toString(StringBuilder out)
+	{
+		out.append("!" + (getValue() == Color.RED ? "-" : "+"));
+		out.append("(");
+		m_operand.toString(out);
+		out.append(")");
+	}
+	
+	@Override
 	public int size()
 	{
 		return 1 + m_operand.size();

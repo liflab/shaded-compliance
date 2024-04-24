@@ -194,6 +194,24 @@ public class SubsumptionTest
 	}
 	
 	@Test
+	public void test10()
+	{
+		ShadedConnective phi1 = or (G(eq(fetch("a"), 0)), G(eq(fetch("b"), 0)));
+		ShadedConnective phi2 = phi1.duplicate();
+		phi1.update(map("a", 0, "b", 0));
+		//phi1.update(map("a", 1, "b", 0));
+		//phi1.update(map("a", 0, "b", 0));
+		phi2.update(map("a", 1, "b", 0));
+		//phi2.update(map("a", 0, "b", 0));
+		//phi2.update(map("a", 0, "b", 0));
+		s_renderer.toImage(phi1, "/tmp/phi1.png", Format.PNG);
+		s_renderer.toImage(phi2, "/tmp/phi2.png", Format.PNG);
+		Subsumption comp = new Subsumption();
+		//assertTrue(comp.inRelation(phi2, phi1));
+		assertTrue(comp.inRelation(phi2, phi1));
+	}
+	
+	@Test
 	public void testPolarity1()
 	{
 		ShadedConnective phi1 = G(eq(fetch("a"), 1));

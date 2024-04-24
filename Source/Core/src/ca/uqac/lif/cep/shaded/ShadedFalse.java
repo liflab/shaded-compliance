@@ -23,6 +23,12 @@ public class ShadedFalse extends ShadedConnective
 	{
 		// Do nothing
 	}
+	
+	@Override
+	protected void toString(StringBuilder out)
+	{
+		out.append("F");
+	}
 
 	@Override
 	public ShadedFalse update(Object event)

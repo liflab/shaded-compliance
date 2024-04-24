@@ -78,6 +78,16 @@ public abstract class ShadedComparison extends ShadedConnective
 		{
 			super(left, right);
 		}
+		
+		@Override
+		protected void toString(StringBuilder out)
+		{
+			out.append("<=(");
+			out.append(m_left);
+			out.append("),(");
+			out.append(m_right);
+			out.append(")");
+		}
 
 		@Override
 		public boolean sameAs(ShadedFunction f)
@@ -140,6 +150,16 @@ public abstract class ShadedComparison extends ShadedConnective
 		public ShadedEquals(ShadedFunction left, ShadedFunction right)
 		{
 			super(left, right);
+		}
+		
+		@Override
+		protected void toString(StringBuilder out)
+		{
+			out.append("=(");
+			out.append(m_left);
+			out.append("),(");
+			out.append(m_right);
+			out.append(")");
 		}
 
 		@Override

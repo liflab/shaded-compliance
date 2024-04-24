@@ -1,5 +1,7 @@
 package ca.uqac.lif.cep.shaded;
 
+import ca.uqac.lif.cep.shaded.ShadedConnective.Color;
+
 /**
  * Multi-shade implements of the LTL "F" operator.
  * @author Sylvain Hallé
@@ -17,6 +19,26 @@ public class ShadedF extends ShadedLtlOperator
     f.setPolarity(p);
     return f;
   }
+	
+	@Override
+	protected void toString(StringBuilder out)
+	{
+		out.append("G" + (getValue() == Color.RED ? "-" : "+"));
+		boolean first = true;
+		for (ShadedConnective c : m_operands)
+		{
+			if (first)
+			{
+				first = false;
+			}
+			else
+			{
+				out.append(",");
+			}
+			c.toString(out);
+		}
+		out.append(")");
+	}
 	
 	public ShadedF(ShadedConnective phi)
 	{

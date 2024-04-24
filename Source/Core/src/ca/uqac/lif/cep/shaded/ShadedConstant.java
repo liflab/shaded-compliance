@@ -77,6 +77,12 @@ public class ShadedConstant implements ShadedFunction
 	{
 		return duplicate(false);
 	}
+	
+	@Override
+	public String toString()
+	{
+		return m_value.toString();
+	}
 
 	@Override
 	public String getSymbol()

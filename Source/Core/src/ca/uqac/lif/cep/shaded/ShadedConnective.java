@@ -20,6 +20,16 @@ public abstract class ShadedConnective implements ShadedFunction, Polarized
 	}
 	
 	@Override
+	public String toString()
+	{
+		StringBuilder out = new StringBuilder();
+		toString(out);
+		return out.toString();
+	}
+	
+	protected abstract void toString(StringBuilder out);
+	
+	@Override
 	public abstract ShadedConnective update(Object event);
 	
 	@Override

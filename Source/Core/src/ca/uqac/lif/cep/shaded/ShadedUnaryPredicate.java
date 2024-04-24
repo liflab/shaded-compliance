@@ -61,6 +61,12 @@ public abstract class ShadedUnaryPredicate extends ShadedConnective
 			}
 			return ie;
 		}
+		
+		@Override
+		protected void toString(StringBuilder out)
+		{
+			out.append("even");
+		}
 
 		@Override
 		public ShadedUnaryPredicate update(Object event)

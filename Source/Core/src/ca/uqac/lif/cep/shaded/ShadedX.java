@@ -22,6 +22,15 @@ public class ShadedX extends ShadedConnective
 	}
 	
 	@Override
+	protected void toString(StringBuilder out)
+	{
+		out.append("X" + (getValue() == Color.RED ? "-" : "+"));
+		out.append("(");
+		m_operand.toString(out);
+		out.append(")");
+	}
+	
+	@Override
 	public int getArity()
 	{
 		return m_operand == null ? 0 : 1;

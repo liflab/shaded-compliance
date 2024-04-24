@@ -1,5 +1,7 @@
 package ca.uqac.lif.cep.shaded;
 
+import ca.uqac.lif.cep.shaded.ShadedConnective.Color;
+
 /**
  * Logical OR operator for multi-shade logic.
  * @author Sylvain Hallé
@@ -27,6 +29,26 @@ public class ShadedOr extends ShadedNaryConnective
     or.setPolarity(p);
     return or;
   }
+	
+	@Override
+	protected void toString(StringBuilder out)
+	{
+		out.append("|" + (getValue() == Color.RED ? "-" : "+"));
+		boolean first = true;
+		for (ShadedConnective c : m_operands)
+		{
+			if (first)
+			{
+				first = false;
+			}
+			else
+			{
+				out.append(",");
+			}
+			c.toString(out);
+		}
+		out.append(")");
+	}
 	
 	/**
 	 * Creates a new OR operator.
@@ -102,12 +124,6 @@ public class ShadedOr extends ShadedNaryConnective
 			m_color = Color.RED;
 		}
 		return this;
-	}
-	
-	@Override
-	public String toString()
-	{
-		return "\u2228";
 	}
 	
 	@Override

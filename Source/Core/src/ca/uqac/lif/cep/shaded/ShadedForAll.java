@@ -20,6 +20,12 @@ public class ShadedForAll extends ShadedQuantifier
 	{
 		return "\u2200" + m_x + "\u2208" + m_pi;
 	}
+	
+	@Override
+	protected void toString(StringBuilder out)
+	{
+		out.append("all");
+	}
 
 	@Override
 	public boolean sameAs(ShadedFunction f)

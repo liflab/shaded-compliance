@@ -31,6 +31,12 @@ public class ShadedTrue extends ShadedConnective
 	}
 	
 	@Override
+	protected void toString(StringBuilder out)
+	{
+		out.append("T");
+	}
+	
+	@Override
 	public int hashCode()
 	{
 		return "T".hashCode();

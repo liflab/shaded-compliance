@@ -101,9 +101,23 @@ public class ShadedG extends ShadedLtlOperator
 	}
 	
 	@Override
-	public String toString()
+	protected void toString(StringBuilder out)
 	{
-		return "G";
+		out.append("G" + (getValue() == Color.RED ? "-" : "+"));
+		boolean first = true;
+		for (ShadedConnective c : m_operands)
+		{
+			if (first)
+			{
+				first = false;
+			}
+			else
+			{
+				out.append(",");
+			}
+			c.toString(out);
+		}
+		out.append(")");
 	}
 	
 	@Override

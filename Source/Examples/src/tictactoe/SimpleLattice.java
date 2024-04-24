@@ -23,13 +23,13 @@ public class SimpleLattice
 
 	public static void main(String[] args)
 	{
-		//ShadedConnective phi = or(G (eq(fetch("a"), 0)), G (or (eq(fetch("a"), 1), eq(fetch("b"), 0))));
-		ShadedConnective phi = or(G (eq(fetch("a"), 0)), G (eq(fetch("b"), 0)));
+		ShadedConnective phi = or(G (eq(fetch("a"), 0)), G (and (eq(fetch("a"), 1), eq(fetch("b"), 0))));
+		//ShadedConnective phi = or(G (eq(fetch("a"), 0)), G (eq(fetch("b"), 0)));
 		
 		List<ShadedConnective> elements = new ArrayList<>();
-		for (int a1 = 0; a1 <= 1; a1++)
+		for (int a1 = 0; a1 <= 2; a1++)
 		{
-			for (int b1 = 0; b1 <= 1; b1++)
+			for (int b1 = 0; b1 <= 2; b1++)
 			{
 				for (int a2 = 0; a2 <= 1; a2++)
 				{

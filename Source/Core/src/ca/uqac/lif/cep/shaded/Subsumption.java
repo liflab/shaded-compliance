@@ -137,7 +137,7 @@ public class Subsumption implements TreeComparator
 		{
 			Integer[] mapping = picker.pick();
 			boolean subsumed = true;
-			//System.out.println(Arrays.toString(mapping));
+			System.out.println(Arrays.toString(mapping));
 			for (int i = 0; i < mapping.length; i++)
 			{
 				ShadedFunction child_1 = children_from.get(i);
@@ -154,13 +154,13 @@ public class Subsumption implements TreeComparator
 			{
 				return true;
 			}
-			if (isBoolean(f1) || isBoolean(f2))
+			/*if (isBoolean(f1) || isBoolean(f2))
 			{
 				// The only mapping to consider for Boolean nodes is the one where
 				// the n-th child of f1 is mapped to the n-th child of f2. If this
 				// mapping does not work, we stop there.
 				break;
-			}
+			}*/
 		}
 		//System.out.println("None");
 		return false;
