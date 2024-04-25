@@ -95,4 +95,10 @@ public class ShadedConstant implements ShadedFunction
 	{
 		return m_value;
 	}
+
+	@Override
+	public void trim()
+	{
+		// Do nothing
+	}
 }

@@ -4,15 +4,15 @@ import static ca.uqac.lif.cep.shaded.ShadedAnd.and;
 import static ca.uqac.lif.cep.shaded.ShadedComparison.eq;
 import static ca.uqac.lif.cep.shaded.ShadedComparison.geq;
 import static ca.uqac.lif.cep.shaded.ShadedComparison.leq;
+import static ca.uqac.lif.cep.shaded.ShadedEquivalence.iff;
 import static ca.uqac.lif.cep.shaded.ShadedF.F;
 import static ca.uqac.lif.cep.shaded.ShadedForAll.all;
 import static ca.uqac.lif.cep.shaded.ShadedG.G;
 import static ca.uqac.lif.cep.shaded.ShadedFetchAttribute.fetch;
 import static ca.uqac.lif.cep.shaded.ShadedFetchPath.path;
 import static ca.uqac.lif.cep.shaded.ShadedHasPath.hasPath;
+import static ca.uqac.lif.cep.shaded.ShadedImplies.implies;
 import static ca.uqac.lif.cep.shaded.ShadedNot.not;
-import static ca.uqac.lif.cep.shaded.ShadedOr.iff;
-import static ca.uqac.lif.cep.shaded.ShadedOr.implies;
 import static ca.uqac.lif.cep.shaded.ShadedOr.or;
 import static ca.uqac.lif.cep.shaded.ShadedQuantifiedVariable.v;
 import static ca.uqac.lif.cep.shaded.ShadedX.X;
@@ -110,7 +110,7 @@ public class BeepStoreProperty
 						eq (path("Message/Action/text()"), "ItemSearch"),
 						and (
 									leq (path("Message/Page/text()"), 20),
-									geq (path("Message/PageId/text()"), 1)
+									geq (path("Message/Page/text()"), 1)
 								)
 				));
 	}
@@ -125,7 +125,7 @@ public class BeepStoreProperty
 	protected static ShadedConnective pageIfResults()
 	{
 		return G (implies(eq(path("Message/Action/text()"), "ItemSearch"),
-				implies(hasPath("Message/Results"), hasPath("Message/Page"))));
+				iff(hasPath("Message/Results"), hasPath("Message/Page"))));
 	}
 	
 	/**

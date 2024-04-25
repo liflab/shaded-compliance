@@ -1,7 +1,5 @@
 package ca.uqac.lif.cep.shaded;
 
-import ca.uqac.lif.cep.shaded.ShadedConnective.Color;
-
 /**
  * Logical AND operator for multi-shade logic.
  * @author Sylvain Hallé
@@ -12,19 +10,19 @@ public class ShadedAnd extends ShadedNaryConnective
 	{
 		return and(Polarity.POSITIVE, operands);
 	}
-	
+
 	protected static ShadedConnective and(Polarity p, ShadedConnective... operands)
-  {
+	{
 		if (operands.length == 1)
 		{
 			operands[0].setPolarity(p);
 			return operands[0];
 		}
 		ShadedAnd and = new ShadedAnd(operands);
-    and.setPolarity(p);
-    return and;
-  }
-	
+		and.setPolarity(p);
+		return and;
+	}
+
 	@Override
 	protected void toString(StringBuilder out)
 	{
@@ -44,7 +42,7 @@ public class ShadedAnd extends ShadedNaryConnective
 		}
 		out.append(")");
 	}
-	
+
 	/**
 	 * Creates a new AND operator.
 	 * @param p The polarity of the connective
@@ -54,13 +52,13 @@ public class ShadedAnd extends ShadedNaryConnective
 	{
 		super(operands);
 	}
-	
+
 	@Override
 	public int hashCode()
 	{
 		return "&".hashCode();
 	}
-	
+
 	@Override
 	public boolean sameAs(ShadedFunction o)
 	{
@@ -121,7 +119,7 @@ public class ShadedAnd extends ShadedNaryConnective
 		}
 		return this;
 	}
-	
+
 	@Override
 	public String getSymbol()
 	{

@@ -22,6 +22,15 @@ public class ShadedX extends ShadedConnective
 	}
 	
 	@Override
+	public void trim()
+	{
+		if (m_operand != null)
+		{
+			m_operand.trim();
+		}
+	}
+	
+	@Override
 	protected void toString(StringBuilder out)
 	{
 		out.append("X" + (getValue() == Color.RED ? "-" : "+"));

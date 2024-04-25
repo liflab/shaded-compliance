@@ -37,6 +37,31 @@ public abstract class ShadedQuantifier extends ShadedConnective
 		}
 		return size;
 	}
+	
+	@Override
+	public void trim()
+	{
+		if (m_instances == null)
+		{
+			return;
+		}
+		Color c = getValue();
+		if (c == null)
+		{
+			return;
+		}
+		List<ShadedConnective> to_remove = new ArrayList<>();
+		for (ShadedConnective con : m_instances)
+		{
+			Color op_color = con.getValue();
+			if ((m_polarity == Polarity.POSITIVE && op_color != c)
+					|| (m_polarity == Polarity.NEGATIVE && op_color == c))
+			{
+				to_remove.add(con);
+			}
+		}
+		m_instances.removeAll(to_remove);
+	}
 
 	@Override
 	public int getArity()

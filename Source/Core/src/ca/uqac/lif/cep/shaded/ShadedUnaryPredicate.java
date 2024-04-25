@@ -27,6 +27,12 @@ public abstract class ShadedUnaryPredicate extends ShadedConnective
 	{
 		return 1;
 	}
+	
+	@Override
+	public void trim()
+	{
+		m_argument.trim();
+	}
 
 	@Override
 	public ShadedFunction getOperand(int index)

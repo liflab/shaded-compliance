@@ -19,6 +19,12 @@ public class ShadedFalse extends ShadedConnective
 	}
 	
 	@Override
+	public void trim()
+	{
+		// Do nothing
+	}
+	
+	@Override
 	public void setValue(String name, Object value)
 	{
 		// Do nothing

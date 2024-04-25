@@ -95,11 +95,16 @@ public class TreeComparisonExperiment<T> extends Experiment
 				total_pairs = m_picker.countPairs();
 			}
 			setProgression((float) pair_nb / (float) total_pairs);
+			tree1.trim();
+			tree2.trim();
 			/*if (tree1.getValue() == Color.GREEN && tree2.getValue() == Color.RED)
 			{
 				// No point in comparing them, the result is instantaneous
 				continue;
 			}*/		
+			//TreeRenderer tr = new TreeRenderer(false);
+			//tr.toImage(tree1, "/tmp/" + pair_nb + "-1.png", Format.PNG);
+			//tr.toImage(tree1, "/tmp/" + pair_nb + "-2.png", Format.PNG);
 			boolean b = m_comparator.inRelation(tree1, tree2);
 			sw.stop();
 			subsumed += b ? 1 : 0;
@@ -109,13 +114,11 @@ public class TreeComparisonExperiment<T> extends Experiment
 			tree_size_max = Math.max(tree_size_max, tree2.size());
 			long time = sw.getDuration();
 			total_time += time;
-			/*
-			TreeRenderer tr = new TreeRenderer(false);
-			tr.toImage(tree1, "/tmp/" + pair_nb + "-1.png", Format.PNG);
-			tr.toImage(tree1, "/tmp/" + pair_nb + "-2.png", Format.PNG);
-			*/
+			if (pair_nb == 8)
+			{
+				//break;
+			}
 			pair_nb++;
-			//break;
 		}
 		writeOutput(LOG_SIZE_MIN, log_size_min);
 		writeOutput(LOG_SIZE_MAX, log_size_max);

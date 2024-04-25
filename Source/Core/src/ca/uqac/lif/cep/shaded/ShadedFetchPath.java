@@ -39,6 +39,12 @@ public class ShadedFetchPath implements ShadedFunction
 	}
 	
 	@Override
+	public void trim()
+	{
+		// Do nothing
+	}
+	
+	@Override
 	public int size()
 	{
 		return 1;

@@ -21,4 +21,6 @@ public interface ShadedFunction
 	public void setValue(String name, Object value);
 	
 	public int size();
+	
+	public void trim();
 }

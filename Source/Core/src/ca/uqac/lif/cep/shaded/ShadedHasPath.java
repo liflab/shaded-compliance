@@ -36,6 +36,12 @@ public class ShadedHasPath extends ShadedConnective
 	}
 	
 	@Override
+	public void trim()
+	{
+		// Do nothing
+	}
+	
+	@Override
 	public int size()
 	{
 		return 1;

@@ -52,6 +52,13 @@ public abstract class ShadedComparison extends ShadedConnective
 	}
 	
 	@Override
+	public void trim()
+	{
+		m_left.trim();
+		m_right.trim();
+	}
+	
+	@Override
 	public int size()
 	{
 		return 1 + m_left.size() + m_right.size();

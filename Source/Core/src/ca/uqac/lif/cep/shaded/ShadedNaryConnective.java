@@ -1,6 +1,7 @@
 package ca.uqac.lif.cep.shaded;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public abstract class ShadedNaryConnective extends ShadedConnective
@@ -14,6 +15,26 @@ public abstract class ShadedNaryConnective extends ShadedConnective
 		for (ShadedConnective op : operands)
 		{
 			m_operands.add(op);
+		}
+	}
+	
+	@Override
+	public void trim()
+	{
+		Color c = getValue();
+		if (c == null)
+		{
+			return;
+		}
+		Iterator<ShadedConnective> it = m_operands.iterator();
+		while (it.hasNext())
+		{
+			ShadedConnective con = it.next();
+			Color op_color = con.getValue();
+			if ((m_polarity == Polarity.POSITIVE && op_color != c) || (m_polarity == Polarity.NEGATIVE && op_color == c))
+			{
+				it.remove();
+			}
 		}
 	}
 	
