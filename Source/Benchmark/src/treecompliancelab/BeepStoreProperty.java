@@ -48,6 +48,8 @@ public class BeepStoreProperty
 				return onceItemSearch();
 			case MAX_CARTS:
 				return maximumCarts();
+			case NO_DUPLICATE_ITEM:
+				return noDuplicateItems();
 			case PAGE_INTERVAL:
 				return pageInterval();
 			default:
@@ -96,21 +98,17 @@ public class BeepStoreProperty
 	{
 		try
 		{
-			return G (
+			return G(
 					implies(
-							eq (path("Message/Action/text()"), "CartCreate"),
-							all("c", "Message/CartId",
-									G (
-											all ("i1", "Message/Items/Item/ItemId", 
+							eq (path("Message/Action/text()"), "CartAdd"),
+							all ("i1", "Message/Items/Item/ItemId",
+									X (
+											G (
 													implies(
-															eq (path("Message/CartId/text()"), v("c")),
-															X (G (
-																	implies (eq (path("Message/CartId/text()"), v("c")),
-																			all ("i2", "Message/Items/Item/ItemId",
-																					not (eq (v("i1"), v("i2")))
-																			)
-																	)
-															))
+															eq (path("Message/Action/text()"), "CartAdd"),
+															all ("i2", "Message/Items/Item/ItemId",
+																	not (eq (v("i1"), v("i2")))
+															)
 													)
 											)
 									)
