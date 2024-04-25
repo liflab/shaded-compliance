@@ -23,14 +23,14 @@
        script's default values -->
 
   <!-- The project's name -->
-  <name>Grey Compliance</name>
+  <name>Shaded Compliance</name>
   
   <!-- The project's author. Currently this only
   shows up in the footer of the Javadoc documentation. -->
   <author>Sylvain Hallé</author>
   
   <!-- The project's main class -->
-  <!-- <mainclass>my.package.MainClass</mainclass> -->
+  <mainclass>ca.uqac.lif.cep.shaded.CommandLine</mainclass>
   
   <!-- The target JDK for which we are compiling -->
   <targetjdk>8</targetjdk>
@@ -49,6 +49,10 @@
            <bin>**/*Test.class</bin>
          </filenamepattern> -->
   </test>
+  
+  <jar>
+    <filename>../tc</filename>
+  </jar>
   
   <!--
     Write JAR dependencies here.
