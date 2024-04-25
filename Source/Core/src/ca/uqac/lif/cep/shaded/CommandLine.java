@@ -211,6 +211,7 @@ public class CommandLine
 		parser.addArgument(new Argument().withLongName("property").withArgument("file").withDescription("Evaluate property in file"));
 		parser.addArgument(new Argument().withLongName("in-format").withArgument("f").withDescription("Input traces in format f"));
 		parser.addArgument(new Argument().withLongName("output").withArgument("file").withDescription("Output diagram to file"));
+		parser.addArgument(new Argument().withLongName("with-trees").withArgument("prefix").withDescription("Output trees to files with prefix"));
 		ArgumentMap params = parser.parse(args);
 		ShadedConnective phi = getProperty(params);
 		if (phi == null)
@@ -230,7 +231,12 @@ public class CommandLine
 		}
 		LatticeGenerator gen = new LatticeGenerator(new Subsumption(true));
 		ShadedGraph g = gen.getLattice(elements);
-		g.toImage(params.getOptionValue("output"), Format.PNG);
+		g.toImage(params.getOptionValue("output"), Format.PNG, null);
+		if (params.hasOption("with-trees"))
+		{
+			String prefix = params.getOptionValue("with-trees");
+			gen.dumpTrees(prefix, elements);
+		}
 		return 0;
 	}
 
