@@ -3,6 +3,18 @@ package treecompliancelab;
 import static ca.uqac.lif.labpal.region.ProductRegion.product;
 import static ca.uqac.lif.labpal.region.ExtensionDomain.extension;
 
+import static treecompliancelab.TreeComparisonExperiment.SCENARIO;
+import static treecompliancelab.TreeComparisonExperiment.CONDITION;
+import static treecompliancelab.TreeComparisonExperiment.LOG_SIZE_MAX;
+import static treecompliancelab.TreeComparisonExperiment.LOG_SIZE_MIN;
+import static treecompliancelab.TreeComparisonExperiment.NUM_PAIRS;
+import static treecompliancelab.TreeComparisonExperiment.SUBSUMED;
+import static treecompliancelab.TreeComparisonExperiment.TIME;
+import static treecompliancelab.TreeComparisonExperiment.TREE_SIZE_MAX;
+import static treecompliancelab.TreeComparisonExperiment.TREE_SIZE_MIN;
+
+
+
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +26,7 @@ import ca.uqac.lif.fs.FileUtils;
 import ca.uqac.lif.fs.JarFile;
 import ca.uqac.lif.labpal.Laboratory;
 import ca.uqac.lif.labpal.region.Region;
+import ca.uqac.lif.labpal.table.ExperimentTable;
 import ca.uqac.lif.xml.XmlElement;
 
 public class MainLab extends Laboratory
@@ -21,6 +34,8 @@ public class MainLab extends Laboratory
 	@Override
 	public void setup()
 	{
+		ExperimentTable results = new ExperimentTable(SCENARIO, LOG_SIZE_MIN, LOG_SIZE_MAX, CONDITION, TREE_SIZE_MIN, TREE_SIZE_MAX, TIME, NUM_PAIRS, SUBSUMED);
+		add(results);
 		try
 		{
 			FileSystem main_fs = new JarFile(MainLab.class).open();
@@ -29,14 +44,19 @@ public class MainLab extends Laboratory
 			{
 				FileSystem fs = new Chroot(main_fs, "data/beepstore");
 				List<String> filenames = FileUtils.ls(fs, "", "log.*\\.xml");
-				Region big_r = product(extension("Property", BeepStoreProperty.ONCE_ITEM_SEARCH, BeepStoreProperty.MAX_CARTS, BeepStoreProperty.NO_DUPLICATE_ITEM));
+				Region big_r = product(extension("Property", 
+						BeepStoreProperty.ONCE_ITEM_SEARCH, 
+						BeepStoreProperty.MAX_CARTS, 
+						BeepStoreProperty.PAGE_INTERVAL, 
+						BeepStoreProperty.NO_DUPLICATE_ITEM));
 				for (Region r : big_r.all("Property"))
 				{
 					String property = r.asPoint().getString("Property");
 					LogPairPicker<XmlElement> picker = new LogPairPicker<XmlElement>(new FileLogPicker("<Message>", "</Message>", fs, filenames));
 					TreeComparisonExperiment<XmlElement> experiment = new TreeComparisonExperiment<>(
-							property, BeepStoreProperty.get(property), new Subsumption(), picker);
+							"Beep Store", property, BeepStoreProperty.get(property), new Subsumption(), picker);
 					add(experiment);
+					results.add(experiment);
 				}
 			}
 			// CVC Procedure
@@ -49,8 +69,9 @@ public class MainLab extends Laboratory
 					String property = r.asPoint().getString("Property");
 					LogPairPicker<Map<String,Object>> picker = new LogPairPicker<>(new CvcLogPicker(fs, filenames));
 					TreeComparisonExperiment<Map<String,Object>> experiment = new TreeComparisonExperiment<>(
-							property, CvcProperty.get(property), new Subsumption(), picker);
+							"CVC Procedure", property, CvcProperty.get(property), new Subsumption(), picker);
 					add(experiment);
+					results.add(experiment);
 				}
 			}
 		}

@@ -16,6 +16,11 @@ public abstract class ShadedComparison extends ShadedConnective
 		return e;
 	}
 
+	public static ShadedGreaterThanOrEqual geq(Object left, Object right)
+	{
+		return geq(Polarity.POSITIVE, wrap(left), wrap(right));
+	}
+	
 	public static ShadedLessThanOrEqual leq(Object left, Object right)
 	{
 		return leq(Polarity.POSITIVE, wrap(left), wrap(right));
@@ -24,6 +29,13 @@ public abstract class ShadedComparison extends ShadedConnective
 	protected static ShadedLessThanOrEqual leq(Polarity p, ShadedFunction left, ShadedFunction right)
 	{
 		ShadedLessThanOrEqual e = new ShadedLessThanOrEqual(left, right);
+		e.setPolarity(p);
+		return e;
+	}
+	
+	protected static ShadedGreaterThanOrEqual geq(Polarity p, ShadedFunction left, ShadedFunction right)
+	{
+		ShadedGreaterThanOrEqual e = new ShadedGreaterThanOrEqual(left, right);
 		e.setPolarity(p);
 		return e;
 	}
@@ -140,6 +152,79 @@ public abstract class ShadedComparison extends ShadedConnective
 
 		@Override
 		public ShadedLessThanOrEqual duplicate()
+		{
+			return duplicate(false);
+		}
+	}
+	
+	public static class ShadedGreaterThanOrEqual extends ShadedComparison
+	{
+		public ShadedGreaterThanOrEqual(ShadedFunction left, ShadedFunction right)
+		{
+			super(left, right);
+		}
+		
+		@Override
+		protected void toString(StringBuilder out)
+		{
+			out.append(">=(");
+			out.append(m_left);
+			out.append("),(");
+			out.append(m_right);
+			out.append(")");
+		}
+
+		@Override
+		public boolean sameAs(ShadedFunction f)
+		{
+			if (!(f instanceof ShadedGreaterThanOrEqual))
+			{
+				return false;
+			}
+			ShadedGreaterThanOrEqual eq = (ShadedGreaterThanOrEqual) f;
+			return eq.m_color == m_color && eq.m_left.sameAs(m_left) && eq.m_right.sameAs(m_right);
+		}
+
+		@Override
+		public ShadedGreaterThanOrEqual update(Object event)
+		{
+			m_left.update(event);
+			m_right.update(event);
+			Object left = m_left.getValue();
+			Object right = m_right.getValue();
+			if (!(left instanceof Number) || !(right instanceof Number))
+			{
+				m_color = null;
+			}
+			else
+			{
+				Number n_left = (Number) left;
+				Number n_right = (Number) right;
+				m_color = n_left.doubleValue() >= n_right.doubleValue() ? Color.GREEN : Color.RED;
+			}
+			return this;
+		}
+
+		@Override
+		public String getSymbol()
+		{
+			return "&#8805;";
+		}
+
+		@Override
+		public ShadedGreaterThanOrEqual duplicate(boolean with_state)
+		{
+			ShadedGreaterThanOrEqual s = new ShadedGreaterThanOrEqual(m_left.duplicate(with_state), m_right.duplicate(with_state));
+			s.m_polarity = m_polarity;
+			if (with_state)
+			{
+				s.m_color = m_color;
+			}
+			return s;
+		}
+
+		@Override
+		public ShadedGreaterThanOrEqual duplicate()
 		{
 			return duplicate(false);
 		}

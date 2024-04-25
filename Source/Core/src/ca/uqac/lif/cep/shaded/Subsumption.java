@@ -1,7 +1,6 @@
 package ca.uqac.lif.cep.shaded;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import ca.uqac.lif.cep.shaded.Polarized.Polarity;
@@ -137,7 +136,6 @@ public class Subsumption implements TreeComparator
 		{
 			Integer[] mapping = picker.pick();
 			boolean subsumed = true;
-			System.out.println(Arrays.toString(mapping));
 			for (int i = 0; i < mapping.length; i++)
 			{
 				ShadedFunction child_1 = children_from.get(i);

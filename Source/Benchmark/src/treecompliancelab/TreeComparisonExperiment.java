@@ -29,6 +29,8 @@ public class TreeComparisonExperiment<T> extends Experiment
 	public static final String TIME = "Average time";
 	
 	public static final String SUBSUMED = "Subsumed";
+	
+	public static final String SCENARIO = "Scenario";
 
 	protected final LogPairPicker<T> m_picker;
 
@@ -39,9 +41,10 @@ public class TreeComparisonExperiment<T> extends Experiment
 	 */
 	protected final ShadedConnective m_condition;
 
-	public TreeComparisonExperiment(String condition_name, ShadedConnective condition, TreeComparator comparator, LogPairPicker<T> picker)
+	public TreeComparisonExperiment(String scenario, String condition_name, ShadedConnective condition, TreeComparator comparator, LogPairPicker<T> picker)
 	{
 		super();
+		describe(SCENARIO, "The scenario the condition and event traces come from");
 		describe(CONDITION, "The condition evaluated on each event trace");
 		describe(LOG_SIZE_MIN, "The size of the smallest log");
 		describe(LOG_SIZE_MAX, "The size of the largest log");
@@ -50,6 +53,7 @@ public class TreeComparisonExperiment<T> extends Experiment
 		describe(TIME, "The average time taken to compare the evaluation trees of a log pair (in ms)");
 		describe(SUBSUMED, "The number of pairs of logs for which the subsumption relation holds");
 		describe(NUM_PAIRS, "The numbe of pairs of logs considered");
+		writeInput(SCENARIO, scenario);
 		writeInput(CONDITION, condition_name);
 		m_condition = condition;
 		m_comparator = comparator;
