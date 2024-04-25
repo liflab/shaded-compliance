@@ -1,13 +1,16 @@
 package ca.uqac.lif.cep.shaded;
 
-import ca.uqac.lif.cep.shaded.ShadedConnective.Color;
-
 /**
  * Logical OR operator for multi-shade logic.
  * @author Sylvain Hallé
  */
 public class ShadedOr extends ShadedNaryConnective
 {
+	public static ShadedConnective iff(ShadedConnective left, ShadedConnective right)
+	{
+		return or(new ShadedAnd(left, right), new ShadedAnd(new ShadedNot(left), new ShadedNot(right)));
+	}
+	
 	public static ShadedConnective implies(ShadedConnective left, ShadedConnective right)
 	{
 		return or(new ShadedNot(left), right);

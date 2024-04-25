@@ -40,6 +40,11 @@ public class LogPairPicker<T> extends BoundedBufferedPicker<List<T>[]>
 		}
 	}
 	
+	public int countPairs()
+	{
+		return m_queue.size();
+	}
+	
 	@Override
 	public void reset()
 	{

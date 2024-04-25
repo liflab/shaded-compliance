@@ -45,10 +45,7 @@ public class MainLab extends Laboratory
 				FileSystem fs = new Chroot(main_fs, "data/beepstore");
 				List<String> filenames = FileUtils.ls(fs, "", "log.*\\.xml");
 				Region big_r = product(extension("Property", 
-						BeepStoreProperty.ONCE_ITEM_SEARCH, 
-						BeepStoreProperty.MAX_CARTS, 
-						BeepStoreProperty.PAGE_INTERVAL, 
-						BeepStoreProperty.NO_DUPLICATE_ITEM));
+						(Object[]) BeepStoreProperty.getProperties()));
 				for (Region r : big_r.all("Property"))
 				{
 					String property = r.asPoint().getString("Property");

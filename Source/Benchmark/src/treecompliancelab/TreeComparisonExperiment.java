@@ -69,6 +69,7 @@ public class TreeComparisonExperiment<T> extends Experiment
 		int tree_size_min = Integer.MAX_VALUE, tree_size_max = 0;
 		int subsumed = 0;
 		long total_time = 0;
+		int total_pairs = 0;
 		while (!m_picker.isDone())
 		{
 			List<T>[] pair = m_picker.pick();
@@ -87,6 +88,13 @@ public class TreeComparisonExperiment<T> extends Experiment
 			{
 				tree2.update(e);
 			}
+			if (total_pairs == 0)
+			{
+				// We count pairs here, since the picker generates the pairs
+				// only on its first call to pick
+				total_pairs = m_picker.countPairs();
+			}
+			setProgression((float) pair_nb / (float) total_pairs);
 			/*if (tree1.getValue() == Color.GREEN && tree2.getValue() == Color.RED)
 			{
 				// No point in comparing them, the result is instantaneous
