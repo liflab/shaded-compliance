@@ -9,9 +9,16 @@ comparing *evaluation trees*. These are structures induced by the evaluation
 of a logical expression on an event trace. The library also allows users to
 draw these trees and save them as image files.
 
+For example, the LTL property *G* (a = 0 ∨ b = 0), evaluated on a trace of 3
+events, produces the following tree:
+
+![Evaluation tree](https://github.com/liflab/shaded-compliance/blob/main/tree.png?raw=true)
+
 Moreover, if a set of traces is passed to the tool, a diagram of the relation
 between these traces can also be computed and drawn --this is called the
-*Hasse diagram* of the relation.
+*Hasse diagram* of the relation. Here is an example of such a diagram:
+
+![Hasse diagram](https://github.com/liflab/shaded-compliance/blob/main/hasse.png?raw=true)
 
 The code contained in this repository provides an implementation and a
 benchmark for the concepts described in the following research paper:
