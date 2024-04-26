@@ -89,7 +89,7 @@ public class ShadedOr extends ShadedNaryConnective
 		}
 		for (int i = 0; i < m_operands.size(); i++)
 		{
-			if (!m_operands.get(i).equals(c.m_operands.get(i)))
+			if (!m_operands.get(i).sameAs(c.m_operands.get(i)))
 			{
 				return false;
 			}

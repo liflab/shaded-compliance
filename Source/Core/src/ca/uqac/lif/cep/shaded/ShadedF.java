@@ -38,7 +38,7 @@ public class ShadedF extends ShadedLtlOperator
 	@Override
 	protected void toString(StringBuilder out)
 	{
-		out.append("G" + (getValue() == Color.RED ? "-" : "+"));
+		out.append("F" + (getValue() == Color.RED ? "-" : "+"));
 		boolean first = true;
 		for (ShadedConnective c : m_operands)
 		{
@@ -80,7 +80,7 @@ public class ShadedF extends ShadedLtlOperator
 		}
 		for (int i = 0; i < m_operands.size(); i++)
 		{
-			if (!m_operands.get(i).equals(c.m_operands.get(i)))
+			if (!m_operands.get(i).sameAs(c.m_operands.get(i)))
 			{
 				return false;
 			}

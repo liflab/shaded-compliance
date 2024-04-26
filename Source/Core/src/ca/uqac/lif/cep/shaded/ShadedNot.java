@@ -84,7 +84,7 @@ public class ShadedNot extends ShadedConnective
 		{
 			return false;
 		}
-		return m_operand.equals(c.m_operand);
+		return m_operand.sameAs(c.m_operand);
 	}
 
 
