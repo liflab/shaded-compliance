@@ -2,38 +2,78 @@ package treecompliancelab;
 
 import java.util.List;
 
-import ca.uqac.lif.cep.shaded.DotRenderer.Format;
 import ca.uqac.lif.cep.shaded.ShadedConnective;
-import ca.uqac.lif.cep.shaded.ShadedConnective.Color;
 import ca.uqac.lif.cep.shaded.TreeComparator;
-import ca.uqac.lif.cep.shaded.TreeRenderer;
 import ca.uqac.lif.json.JsonList;
 import ca.uqac.lif.labpal.experiment.Experiment;
 import ca.uqac.lif.labpal.util.Stopwatch;
-import ca.uqac.lif.xml.XmlElement;
 
 public class TreeComparisonExperiment<T> extends Experiment
 {
+	/**
+	 * Name of parameter "Average time".
+	 */
+	public static final String AVG_TIME = "Average time";
+	
+	/**
+	 * Name of parameter "Condition".
+	 */
 	public static final String CONDITION = "Condition";
 
+	/**
+	 * Name of parameter "Minimum log size".
+	 */
 	public static final String LOG_SIZE_MIN = "Log size (min)";
 	
+	/**
+	 * Name of parameter "Maximum log size".
+	 */
 	public static final String LOG_SIZE_MAX = "Log size (max)";
 	
+	/**
+	 * Name of parameter "Minimum tree size".
+	 */
 	public static final String TREE_SIZE_MIN = "Tree size (min)";
 	
+	/**
+	 * Name of parameter "Maximum tree size".
+	 */
 	public static final String TREE_SIZE_MAX = "Tree size (max)";
 	
+	/**
+	 * Name of parameter "Number of pairs".
+	 */
 	public static final String NUM_PAIRS = "Number of pairs";
-
-	public static final String TIME = "Average time";
 	
+	/**
+	 * Name of parameter "Subsumed".
+	 */
 	public static final String SUBSUMED = "Subsumed";
 	
+	/**
+	 * Name of parameter "Scenario".
+	 */
 	public static final String SCENARIO = "Scenario";
+	
+	/**
+	 * Name of parameter "Time".
+	 */
+	public static final String TIME = "Time";
 
+	/**
+	 * Name of parameter "Tree size".
+	 */
+	public static final String TREE_SIZE = "Tree size";
+	
+	/**
+	 * A source of log pairs. This source will be enumerated, and each produced
+	 * pair will be submitted to the tree comparator.
+	 */
 	protected final LogPairPicker<T> m_picker;
 
+	/**
+	 * The object used to compare evaluation trees.
+	 */
 	protected final TreeComparator m_comparator;
 
 	/**
@@ -41,6 +81,14 @@ public class TreeComparisonExperiment<T> extends Experiment
 	 */
 	protected final ShadedConnective m_condition;
 
+	/**
+	 * Creates a new tree comparison experiment.
+	 * @param scenario
+	 * @param condition_name
+	 * @param condition
+	 * @param comparator
+	 * @param picker
+	 */
 	public TreeComparisonExperiment(String scenario, String condition_name, ShadedConnective condition, TreeComparator comparator, LogPairPicker<T> picker)
 	{
 		super();
@@ -50,11 +98,15 @@ public class TreeComparisonExperiment<T> extends Experiment
 		describe(LOG_SIZE_MAX, "The size of the largest log");
 		describe(TREE_SIZE_MIN, "The size of the smallest tree");
 		describe(TREE_SIZE_MAX, "The size of the largest tree");
-		describe(TIME, "The average time taken to compare the evaluation trees of a log pair (in ms)");
+		describe(AVG_TIME, "The average time taken to compare the evaluation trees of a log pair (in ms)");
 		describe(SUBSUMED, "The number of pairs of logs for which the subsumption relation holds");
-		describe(NUM_PAIRS, "The numbe of pairs of logs considered");
+		describe(NUM_PAIRS, "The number of pairs of logs considered");
+		describe(TIME, "The time taken to evaluate each log pair (in ms)");
+		describe(TREE_SIZE, "The cumulative size of each pair of trees (in ms)");
 		writeInput(SCENARIO, scenario);
 		writeInput(CONDITION, condition_name);
+		writeOutput(TIME, new JsonList());
+		writeOutput(TREE_SIZE, new JsonList());
 		m_condition = condition;
 		m_comparator = comparator;
 		m_picker = picker;
@@ -70,6 +122,8 @@ public class TreeComparisonExperiment<T> extends Experiment
 		int subsumed = 0;
 		long total_time = 0;
 		int total_pairs = 0;
+		JsonList l_time = (JsonList) read(TIME);
+		JsonList l_size = (JsonList) read(TREE_SIZE);
 		while (!m_picker.isDone())
 		{
 			List<T>[] pair = m_picker.pick();
@@ -108,23 +162,22 @@ public class TreeComparisonExperiment<T> extends Experiment
 			boolean b = m_comparator.inRelation(tree1, tree2);
 			sw.stop();
 			subsumed += b ? 1 : 0;
-			tree_size_min = Math.min(tree_size_min, tree1.size());
-			tree_size_min = Math.min(tree_size_min, tree2.size());
-			tree_size_max = Math.max(tree_size_max, tree1.size());
-			tree_size_max = Math.max(tree_size_max, tree2.size());
+			int size1 = tree1.size(), size2 = tree2.size();
+			tree_size_min = Math.min(tree_size_min, size1);
+			tree_size_min = Math.min(tree_size_min, size2);
+			tree_size_max = Math.max(tree_size_max, size1);
+			tree_size_max = Math.max(tree_size_max, size2);
 			long time = sw.getDuration();
+			l_time.add(time);
+			l_size.add(size1 + size2);
 			total_time += time;
-			if (pair_nb == 8)
-			{
-				//break;
-			}
 			pair_nb++;
 		}
 		writeOutput(LOG_SIZE_MIN, log_size_min);
 		writeOutput(LOG_SIZE_MAX, log_size_max);
 		writeOutput(TREE_SIZE_MIN, tree_size_min);
 		writeOutput(TREE_SIZE_MAX, tree_size_max);
-		writeOutput(TIME, (float) total_time / (float) pair_nb);
+		writeOutput(AVG_TIME, (float) total_time / (float) pair_nb);
 		writeOutput(SUBSUMED, subsumed);
 		writeOutput(NUM_PAIRS, pair_nb);
 	}
