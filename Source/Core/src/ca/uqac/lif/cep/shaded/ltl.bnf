@@ -1,3 +1,6 @@
+# BNF grammar for Linear Temporal Logic
+# Used by the command-line interface to parse compliance properties
+
 <phi> := <F> | <G> | <X> | <and> | <or> | <implies> | <not> | <atom> ;
 
 # Temporal operators
