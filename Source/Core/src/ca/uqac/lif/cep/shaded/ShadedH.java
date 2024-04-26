@@ -18,22 +18,122 @@
 package ca.uqac.lif.cep.shaded;
 
 /**
- * Multi-shade implements of the LTL "F" operator.
+ * Multi-shade implements of the LTL "H" operator.
  * @author Sylvain Hallé
  */
-public class ShadedF extends ShadedLtlOperator
+public class ShadedH extends ShadedPastLtlOperator
 {
-	public static ShadedF F(ShadedConnective operand)
+	public static ShadedH H(ShadedConnective operand)
 	{
-		return F(Polarity.POSITIVE, operand);
+		return H(Polarity.POSITIVE, operand);
 	}
 	
-	protected static ShadedF F(Polarity p, ShadedConnective operand)
+	protected static ShadedH H(Polarity p, ShadedConnective operand)
   {
-		ShadedF f = new ShadedF(operand);
-    f.setPolarity(p);
-    return f;
+		ShadedH g = new ShadedH(operand);
+    g.setPolarity(p);
+    return g;
   }
+	
+	public ShadedH(ShadedConnective phi)
+	{
+		super(phi);
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		return "H".hashCode();
+	}
+	
+	@Override
+	public boolean sameAs(ShadedFunction o)
+	{
+		if (!(o instanceof ShadedH))
+		{
+			return false;
+		}
+		ShadedH c = (ShadedH) o;
+		if (m_color != c.m_color || m_polarity != c.m_polarity || !m_phi.equals(c.m_phi) || m_operands.size() != c.m_operands.size())
+		{
+			return false;
+		}
+		for (int i = 0; i < m_operands.size(); i++)
+		{
+			if (!m_operands.get(i).equals(c.m_operands.get(i)))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public ShadedH update(Object event)
+	{
+		m_events.add(event);
+		ShadedConnective phi_copy = m_phi.duplicate();
+		phi_copy.setPolarity(m_polarity);
+		m_operands.add(phi_copy);
+		for (int i = m_events.size() - 1; i >= 0; i--)
+		{
+			phi_copy.update(m_events.get(i));
+		}
+		boolean has_red = false, has_null = false;
+		for (ShadedConnective op : m_operands)
+		{
+			Color c = op.getValue();
+			if (c == Color.RED)
+			{
+				has_red = true;
+			}
+			else if (c == null)
+			{
+				has_null = true;
+			}
+		}
+		if (has_red)
+		{
+			m_color = Color.RED;
+		}
+		else if (has_null)
+		{
+			m_color = null;
+		}
+		else
+		{
+			m_color = Color.GREEN;
+		}
+		return this;
+	}
+
+	@Override
+	public ShadedH duplicate(boolean with_state)
+	{
+		ShadedH g = new ShadedH(m_phi);
+		copyInto(g, with_state);
+		return g;
+	}
+	
+	@Override
+	public ShadedH duplicate()
+	{
+		return duplicate(false);
+	}
+	
+	protected void copyInto(ShadedH other, boolean with_state)
+	{
+		m_polarity = other.m_polarity;
+		other.m_events.addAll(m_events);
+		if (with_state)
+		{
+			other.m_color = m_color;
+			for (ShadedConnective op : m_operands)
+			{
+				other.m_operands.add(op.duplicate(with_state));
+			}
+		}
+	}
 	
 	@Override
 	protected void toString(StringBuilder out)
@@ -55,91 +155,9 @@ public class ShadedF extends ShadedLtlOperator
 		out.append(")");
 	}
 	
-	public ShadedF(ShadedConnective phi)
-	{
-		super(phi);
-	}
-	
-	@Override
-	public int hashCode()
-	{
-		return "F".hashCode();
-	}
-	
-	@Override
-	public boolean sameAs(ShadedFunction o)
-	{
-		if (!(o instanceof ShadedF))
-		{
-			return false;
-		}
-		ShadedF c = (ShadedF) o;
-		if (m_color != c.m_color || m_polarity != c.m_polarity || !m_phi.equals(c.m_phi) || m_operands.size() != c.m_operands.size())
-		{
-			return false;
-		}
-		for (int i = 0; i < m_operands.size(); i++)
-		{
-			if (!m_operands.get(i).equals(c.m_operands.get(i)))
-			{
-				return false;
-			}
-		}
-		return true;
-	}
-
-	@Override
-	public ShadedF update(Object event)
-	{
-		ShadedConnective phi_copy = m_phi.duplicate();
-		phi_copy.setPolarity(m_polarity);
-		m_operands.add(phi_copy);
-		boolean has_green = false, has_null = false;
-		for (ShadedConnective op : m_operands)
-		{
-			op.update(event);
-			Color c = op.getValue();
-			if (c == Color.GREEN)
-			{
-				has_green = true;
-			}
-			else if (c == null)
-			{
-				has_null = true;
-			}
-		}
-		if (has_green)
-		{
-			m_color = Color.GREEN;
-		}
-		else if (has_null)
-		{
-			m_color = null;
-		}
-		else
-		{
-			m_color = Color.RED;
-		}
-		return this;
-	}
-
-	@Override
-	public ShadedF duplicate(boolean with_state)
-	{
-		ShadedF g = new ShadedF(m_phi);
-		copyInto(g, with_state);
-		return g;
-	}
-	
-	@Override
-	public ShadedF duplicate()
-	{
-		return duplicate(false);
-	}
-	
 	@Override
 	public String getSymbol()
 	{
-		return "<b>F</b>";
+		return "<b>H</b>";
 	}
 }

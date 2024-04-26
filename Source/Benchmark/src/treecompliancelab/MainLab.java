@@ -32,8 +32,7 @@ import static treecompliancelab.TreeComparisonExperiment.TREE_SIZE_MAX;
 import static treecompliancelab.TreeComparisonExperiment.TREE_SIZE_MIN;
 import static treecompliancelab.TreeComparisonExperiment.SCENARIO;
 
-
-
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -66,7 +65,8 @@ public class MainLab extends Laboratory
 			// Beep Store
 			{
 				FileSystem fs = new Chroot(main_fs, "data/beepstore");
-				List<String> filenames = FileUtils.ls(fs, "", "log.*\\.xml");
+				List<String> filenames = FileUtils.ls(fs, "", "log-(\\d|1\\d|2\\d)\\.xml");
+				//List<String> filenames = Arrays.asList("log-5.xml", "log-6.xml");
 				Region big_r = product(extension("Property", 
 						(Object[]) BeepStoreProperty.getProperties()));
 				for (Region r : big_r.all("Property"))

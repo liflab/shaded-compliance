@@ -27,9 +27,11 @@ import static ca.uqac.lif.cep.shaded.ShadedForAll.all;
 import static ca.uqac.lif.cep.shaded.ShadedG.G;
 import static ca.uqac.lif.cep.shaded.ShadedFetchAttribute.fetch;
 import static ca.uqac.lif.cep.shaded.ShadedFetchPath.path;
+import static ca.uqac.lif.cep.shaded.ShadedH.H;
 import static ca.uqac.lif.cep.shaded.ShadedHasPath.hasPath;
 import static ca.uqac.lif.cep.shaded.ShadedImplies.implies;
 import static ca.uqac.lif.cep.shaded.ShadedNot.not;
+import static ca.uqac.lif.cep.shaded.ShadedO.O;
 import static ca.uqac.lif.cep.shaded.ShadedOr.or;
 import static ca.uqac.lif.cep.shaded.ShadedQuantifiedVariable.v;
 import static ca.uqac.lif.cep.shaded.ShadedX.X;
@@ -59,13 +61,16 @@ public class BeepStoreProperty
 	
 	public static final String MAX_CARTS = "Maximum carts";
 	
+	public static final String NO_CART_BEFORE_LOGIN = "No cart before login";
+	
 	public static final String NO_DUPLICATE_ITEM = "No duplicate item";
 	
 	public static final String NO_LOGIN_TWICE = "No login twice";
 	
 	public static String[] getProperties()
 	{
-		return new String[] { HAS_KEY, MAX_CARTS, NO_DUPLICATE_ITEM, NO_LOGIN_TWICE, ONCE_LOGIN,
+		return new String[] { HAS_KEY, MAX_CARTS, NO_CART_BEFORE_LOGIN,
+				NO_DUPLICATE_ITEM, NO_LOGIN_TWICE, ONCE_LOGIN,
 				ONCE_ITEM_SEARCH, PAGE_IF_RESULTS, PAGE_INTERVAL };
 	}
 
@@ -77,6 +82,8 @@ public class BeepStoreProperty
 				return hasKey();
 			case MAX_CARTS:
 				return maximumCarts();
+			case NO_CART_BEFORE_LOGIN:
+				return noCartOpBeforeLogin();
 			case NO_DUPLICATE_ITEM:
 				return noDuplicateItems();
 			case NO_LOGIN_TWICE:
@@ -156,6 +163,13 @@ public class BeepStoreProperty
 		return G (implies (
 				eq(path("Message/Action/text()"), "LoginResponse"),
 				X (G (not(eq(path("Message/Action/text()"), "Login"))))));
+	}
+	
+	protected static ShadedConnective noCartOpBeforeLogin()
+	{
+		return H (implies (
+				eq(path("Message/Action/text()"), "CartCreate"),
+				(O (eq(path("Message/Action/text()"), "ItemSearch")))));
 	}
 	
 	protected static ShadedConnective maximumCarts()

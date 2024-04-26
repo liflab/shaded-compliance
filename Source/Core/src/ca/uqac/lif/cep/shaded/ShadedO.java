@@ -18,27 +18,32 @@
 package ca.uqac.lif.cep.shaded;
 
 /**
- * Multi-shade implements of the LTL "F" operator.
+ * Multi-shade implements of the LTL "O" operator.
  * @author Sylvain Hallé
  */
-public class ShadedF extends ShadedLtlOperator
+public class ShadedO extends ShadedPastLtlOperator
 {
-	public static ShadedF F(ShadedConnective operand)
+	public static ShadedO O(ShadedConnective operand)
 	{
-		return F(Polarity.POSITIVE, operand);
+		return O(Polarity.POSITIVE, operand);
 	}
 	
-	protected static ShadedF F(Polarity p, ShadedConnective operand)
+	protected static ShadedO O(Polarity p, ShadedConnective operand)
   {
-		ShadedF f = new ShadedF(operand);
+		ShadedO f = new ShadedO(operand);
     f.setPolarity(p);
     return f;
   }
+
+	public ShadedO(ShadedConnective phi)
+	{
+		super(phi);
+	}
 	
 	@Override
 	protected void toString(StringBuilder out)
 	{
-		out.append("G" + (getValue() == Color.RED ? "-" : "+"));
+		out.append("O" + (getValue() == Color.RED ? "-" : "+"));
 		boolean first = true;
 		for (ShadedConnective c : m_operands)
 		{
@@ -55,25 +60,20 @@ public class ShadedF extends ShadedLtlOperator
 		out.append(")");
 	}
 	
-	public ShadedF(ShadedConnective phi)
-	{
-		super(phi);
-	}
-	
 	@Override
 	public int hashCode()
 	{
-		return "F".hashCode();
+		return "O".hashCode();
 	}
 	
 	@Override
 	public boolean sameAs(ShadedFunction o)
 	{
-		if (!(o instanceof ShadedF))
+		if (!(o instanceof ShadedO))
 		{
 			return false;
 		}
-		ShadedF c = (ShadedF) o;
+		ShadedO c = (ShadedO) o;
 		if (m_color != c.m_color || m_polarity != c.m_polarity || !m_phi.equals(c.m_phi) || m_operands.size() != c.m_operands.size())
 		{
 			return false;
@@ -89,15 +89,19 @@ public class ShadedF extends ShadedLtlOperator
 	}
 
 	@Override
-	public ShadedF update(Object event)
+	public ShadedO update(Object event)
 	{
+		m_events.add(event);
 		ShadedConnective phi_copy = m_phi.duplicate();
 		phi_copy.setPolarity(m_polarity);
 		m_operands.add(phi_copy);
+		for (int i = m_events.size() - 1; i >= 0; i--)
+		{
+			phi_copy.update(m_events.get(i));
+		}
 		boolean has_green = false, has_null = false;
 		for (ShadedConnective op : m_operands)
 		{
-			op.update(event);
 			Color c = op.getValue();
 			if (c == Color.GREEN)
 			{
@@ -124,22 +128,28 @@ public class ShadedF extends ShadedLtlOperator
 	}
 
 	@Override
-	public ShadedF duplicate(boolean with_state)
+	public ShadedO duplicate(boolean with_state)
 	{
-		ShadedF g = new ShadedF(m_phi);
+		ShadedO g = new ShadedO(m_phi);
 		copyInto(g, with_state);
 		return g;
 	}
 	
 	@Override
-	public ShadedF duplicate()
+	public ShadedO duplicate()
 	{
 		return duplicate(false);
 	}
 	
 	@Override
+	public String toString()
+	{
+		return "O";
+	}
+	
+	@Override
 	public String getSymbol()
 	{
-		return "<b>F</b>";
+		return "<b>O</b>";
 	}
 }

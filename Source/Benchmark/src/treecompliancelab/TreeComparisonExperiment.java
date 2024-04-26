@@ -19,8 +19,10 @@ package treecompliancelab;
 
 import java.util.List;
 
+import ca.uqac.lif.cep.shaded.DotRenderer.Format;
 import ca.uqac.lif.cep.shaded.ShadedConnective;
 import ca.uqac.lif.cep.shaded.TreeComparator;
+import ca.uqac.lif.cep.shaded.TreeRenderer;
 import ca.uqac.lif.json.JsonList;
 import ca.uqac.lif.labpal.experiment.Experiment;
 import ca.uqac.lif.labpal.util.Stopwatch;
@@ -31,7 +33,7 @@ public class TreeComparisonExperiment<T> extends Experiment
 	 * Name of parameter "Average time".
 	 */
 	public static final String AVG_TIME = "Average time";
-	
+
 	/**
 	 * Name of parameter "Condition".
 	 */
@@ -41,37 +43,37 @@ public class TreeComparisonExperiment<T> extends Experiment
 	 * Name of parameter "Minimum log size".
 	 */
 	public static final String LOG_SIZE_MIN = "Log size (min)";
-	
+
 	/**
 	 * Name of parameter "Maximum log size".
 	 */
 	public static final String LOG_SIZE_MAX = "Log size (max)";
-	
+
 	/**
 	 * Name of parameter "Minimum tree size".
 	 */
 	public static final String TREE_SIZE_MIN = "Tree size (min)";
-	
+
 	/**
 	 * Name of parameter "Maximum tree size".
 	 */
 	public static final String TREE_SIZE_MAX = "Tree size (max)";
-	
+
 	/**
 	 * Name of parameter "Number of pairs".
 	 */
 	public static final String NUM_PAIRS = "Number of pairs";
-	
+
 	/**
 	 * Name of parameter "Subsumed".
 	 */
 	public static final String SUBSUMED = "Subsumed";
-	
+
 	/**
 	 * Name of parameter "Scenario".
 	 */
 	public static final String SCENARIO = "Scenario";
-	
+
 	/**
 	 * Name of parameter "Time".
 	 */
@@ -81,7 +83,13 @@ public class TreeComparisonExperiment<T> extends Experiment
 	 * Name of parameter "Tree size".
 	 */
 	public static final String TREE_SIZE = "Tree size";
-	
+
+	/**
+	 * A flag determining if the evaluation trees should be drawn and exported as
+	 * image files. (Mostly used for debugging.)
+	 */
+	protected static boolean s_drawTrees = true;
+
 	/**
 	 * A source of log pairs. This source will be enumerated, and each produced
 	 * pair will be submitted to the tree comparator.
@@ -173,29 +181,32 @@ public class TreeComparisonExperiment<T> extends Experiment
 				// No point in comparing them, the result is instantaneous
 				continue;
 			}*/		
-			//TreeRenderer tr = new TreeRenderer(false);
-			//tr.toImage(tree1, "/tmp/" + pair_nb + "-1.png", Format.PNG);
-			//tr.toImage(tree1, "/tmp/" + pair_nb + "-2.png", Format.PNG);
+			if (s_drawTrees && pair_nb == 164)
+			{
+				TreeRenderer tr = new TreeRenderer(false);
+				tr.toImage(tree1, "/tmp/" + pair_nb + "-1.png", Format.PNG);
+				tr.toImage(tree1, "/tmp/" + pair_nb + "-2.png", Format.PNG);
+			}
+			int size1 = tree1.size(), size2 = tree2.size();
+			l_size.add(size1 + size2);
 			boolean b = m_comparator.inRelation(tree1, tree2);
 			sw.stop();
 			subsumed += b ? 1 : 0;
-			int size1 = tree1.size(), size2 = tree2.size();
 			tree_size_min = Math.min(tree_size_min, size1);
 			tree_size_min = Math.min(tree_size_min, size2);
 			tree_size_max = Math.max(tree_size_max, size1);
 			tree_size_max = Math.max(tree_size_max, size2);
 			long time = sw.getDuration();
 			l_time.add(time);
-			l_size.add(size1 + size2);
 			total_time += time;
 			pair_nb++;
+			writeOutput(LOG_SIZE_MIN, log_size_min);
+			writeOutput(LOG_SIZE_MAX, log_size_max);
+			writeOutput(TREE_SIZE_MIN, tree_size_min);
+			writeOutput(TREE_SIZE_MAX, tree_size_max);
+			writeOutput(AVG_TIME, (float) total_time / (float) pair_nb);
+			writeOutput(SUBSUMED, subsumed);
+			writeOutput(NUM_PAIRS, pair_nb);
 		}
-		writeOutput(LOG_SIZE_MIN, log_size_min);
-		writeOutput(LOG_SIZE_MAX, log_size_max);
-		writeOutput(TREE_SIZE_MIN, tree_size_min);
-		writeOutput(TREE_SIZE_MAX, tree_size_max);
-		writeOutput(AVG_TIME, (float) total_time / (float) pair_nb);
-		writeOutput(SUBSUMED, subsumed);
-		writeOutput(NUM_PAIRS, pair_nb);
 	}
 }
