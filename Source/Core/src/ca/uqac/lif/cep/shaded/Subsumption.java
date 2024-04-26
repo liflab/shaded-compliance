@@ -133,7 +133,7 @@ public class Subsumption implements TreeComparator
 			}
 			return true;
 		}
-		NewerInjectionPicker picker = new NewerInjectionPicker(children_from.size(), children_to.size());
+		InjectionPicker picker = new InjectionPicker(children_from.size(), children_to.size());
 		while (!picker.isDone())
 		{
 			Integer[] mapping = picker.pick();

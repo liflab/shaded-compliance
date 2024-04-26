@@ -1,28 +1,12 @@
 package ca.uqac.lif.cep.shaded;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import ca.uqac.lif.synthia.Bounded;
-import ca.uqac.lif.synthia.enumerative.AllBooleans;
-import ca.uqac.lif.synthia.enumerative.AllPickers;
-import ca.uqac.lif.synthia.util.BoundedBufferedPicker;
+import ca.uqac.lif.synthia.NoMoreElementException;
 
-/**
- * Enumerates all possible injections from a set of <i>k</i> elements to a set of
- * <i>n</i> elements. An injection is a function that maps each element of the
- * first set to a unique element of the second set. If elements of both sets are
- * in the form [1, &hellip;, <i>k</i>] and [1, &hellip;, <i>n</i>],
- * respectively, an injection be represented as a vector &langle;x<sub>1</sub>,
- * &hellip;, <i>x</i><sub><i>n</i></sub>&rangle;, where
- * <i>x</i><sub><i>i</i></sub> is the element of the second set associated to
- * element <i>i</i> in the first. Therefore, the number of injections is
- * given by <i>k</i>! &times; C(<i>n</i>,<i>k</i>). Indeed, there are
- * C(<i>n</i>,<i>k</i>) ways of picking <i>k</i> elements from a set of
- * <i>n</i>, and  <i>k</i>! ways of ordering each of them.
- */
-public class InjectionPicker extends BoundedBufferedPicker<Integer[]>
+public class InjectionPicker implements Bounded<Integer[]>
 {
 	/**
 	 * Number of elements to choose from.
@@ -34,14 +18,13 @@ public class InjectionPicker extends BoundedBufferedPicker<Integer[]>
 	 */
 	protected final int m_k;
 
-	/**
-	 * The list of permutation "templates". A template is a permutation of the
-	 * numbers from 0 to m_k.
-	 */
-	protected final List<Integer[]> m_templates;
+	protected StackFrame[] m_stack;
 
-	protected final AllPickers m_allBools;
+	protected Set<Integer>[] m_forbidden;
 
+	protected boolean m_done = false;
+
+	@SuppressWarnings("unchecked")
 	public InjectionPicker(int k, int n)
 	{
 		super();
@@ -51,128 +34,196 @@ public class InjectionPicker extends BoundedBufferedPicker<Integer[]>
 		}
 		m_n = n;
 		m_k = k;
-		m_templates = populateTemplates(m_k);
-		Bounded<?>[] bools = new Bounded[m_n];
-		for (int i = 0; i < m_n; i++)
+		m_stack = new StackFrame[k];
+		m_forbidden = new HashSet[k];
+		reset();
+	}
+
+	@Override
+	public Integer[] pick()
+	{
+		if (isDone())
 		{
-			bools[i] = new AllBooleans();
+			throw new NoMoreElementException();
 		}
-		m_allBools = new AllPickers(bools);
+		Integer[] next_injection = new Integer[m_k];
+		for (int i = 0; i < m_k; i++)
+		{
+			next_injection[i] = m_stack[i].getValue();
+		}
+		findNextInjection();
+		return next_injection;
+	}
+
+	@Override
+	public boolean isDone()
+	{
+		if (m_done)
+		{
+			return true;
+		}
+		if (!isValid())
+		{
+			// If the current injection is not valid, we need to find the next one
+			findNextInjection();
+		}
+		return m_done;
+	}
+
+	public void forbid(int index, int value)
+	{
+		m_forbidden[index].add(value);
+		if (!isValid())
+		{
+			// If the current injection is not valid, we need to find the next one
+			findNextInjection();
+		}
+	}
+
+	/**
+	 * Moves the state of the stack to the next valid injection.
+	 */
+	protected void findNextInjection()
+	{
+		if (m_done)
+		{
+			return;
+		}
+		do
+		{
+			for (int i = m_k - 1; i >= 0; i--)
+			{
+				m_stack[i] = m_stack[i].next();
+				if (i == 0 && m_stack[i] == null)
+				{
+					m_done = true;
+					break;
+				}
+				if (m_stack[i] != null)
+				{
+					for (int j = i + 1; j < m_k; j++)
+					{
+						m_stack[j] = m_stack[j - 1].nextNeighbor();
+						if (m_stack[j] == null)
+						{
+							m_done = true;
+							break;
+						}
+					}
+					break;
+				}
+			}
+		} while (!m_done && !isValid());
+	}
+
+	protected boolean isValid()
+	{
+		if (m_stack[0] == null)
+		{
+			return false;
+		}
+		for (int i = 0; i < m_k; i++)
+		{
+			if (m_stack[i] == null)
+			{
+				return false;
+			}
+			if (m_forbidden[i].contains(m_stack[i].getValue()))
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
 	public InjectionPicker duplicate(boolean with_state)
 	{
-		return null;
+		throw new UnsupportedOperationException("This picker cannot be duplicated");
 	}
 
 	@Override
-	protected void fillQueue()
+	public void reset()
 	{
-		if (m_allBools.isDone())
+		for (int i = 0; i < m_k; i++)
 		{
-			return;
+			m_forbidden[i] = new HashSet<Integer>();
 		}
-		while (!m_allBools.isDone())
+		m_stack[0] = new StackFrame(0, 0);
+		for (int i = 1; i < m_stack.length; i++)
 		{
-			Object[] subset = m_allBools.pick();
-			List<Integer> l_subset = new ArrayList<>();
-			for (int i = 0; i < subset.length; i++)
-			{
-				if (Boolean.TRUE.equals(subset[i]))
-				{
-					l_subset.add(i);
-				}
-			}
-			if (l_subset.size() != m_k)
-			{
-				continue;
-			}
-			addPermutations(l_subset);
-			break;
+			m_stack[i] = m_stack[i - 1].nextNeighbor();
 		}
 	}
 
-	/**
-	 * Populates the list of templates with all possible <i>k</i>-permutations of
-	 * {0, &hellip;, <i>k</i>}. For example, if <i>k</i> = 3, the list will contain
-	 * the following arrays:
-	 * <ul>
-	 * <li>[0, 1, 2]</li>
-	 * <li>[0, 2, 1]</li>
-	 * <li>[1, 0, 2]</li>
-	 * <li>[1, 2, 0]</li>
-	 * <li>[2, 0, 1]</li>
-	 * <li>[2, 1, 0]</li>
-	 * </ul>
-	 * The method implements a
-	 * <a href="https://www.baeldung.com/cs/array-generate-all-permutations">non-recursive
-	 * version of Heap's algorithm</a>.
-	 * @param k The value of <i>k</i> in the definition above
-	 * @return The list of permutation templates
-	 */
-	protected static List<Integer[]> populateTemplates(int k)
+	protected class StackFrame
 	{
-		List<Integer[]> templates = new ArrayList<>();
-		List<Integer> c = new ArrayList<>(k);
-		List<Integer> A = new ArrayList<>(k);
-		for (int i = 1; i <= k; i++)
-		{
-			c.add(0);
-			A.add(i - 1);
-		}
-		templates.add(toArray(A));
-		int i = 0;
-		while (i < k)
-		{
-			if (c.get(i) < i)
-			{
-				if (i % 2 == 0)
-				{
-					Collections.swap(A, 0, i);
-				}
-				else
-				{
-					Collections.swap(A, c.get(i), i);
-				}
-				templates.add(toArray(A));
-				c.set(i, c.get(i) + 1);
-				i = 0;
-			}
-			else
-			{
-				c.set(i, 0);
-				i++;
-			}
-		}
-		return templates;
-	}
+		/**
+		 * The set of indices that have already been taken.
+		 */
+		private final Set<Integer> m_taken;
 
-	/**
-	 * Generates all permutations of a list of integers. 
-	 * @param c
-	 */
-	protected void addPermutations(List<Integer> c)
-	{
-		for (Integer[] template : m_templates)
-		{
-			Integer[] mapping = new Integer[template.length];
-			for (int i = 0; i < template.length; i++)
-			{
-				mapping[i] = c.get(template[i]);
-			}
-			m_queue.add(mapping);
-		}
-		System.out.println(m_templates.size() + " " + this);
-	}
+		private final int m_value;
 
-	/**
-	 * Converts a list of integers to an array of integers.
-	 * @param list The list to convert
-	 * @return The array
-	 */
-	protected static Integer[] toArray(List<Integer> list)
-	{
-		return list.toArray(new Integer[list.size()]);
+		private final int m_index;
+
+		public StackFrame(int index, int value, Set<Integer> taken)
+		{
+			super();
+			m_index = index;
+			m_value = value;
+			m_taken = new HashSet<>(taken);
+		}
+
+		public StackFrame(int index, int value)
+		{
+			super();
+			m_index = index;
+			m_value = value;
+			m_taken = new HashSet<>(1);
+		}
+		public int getValue()
+		{
+			return m_value;
+		}
+
+		public Set<Integer> getTaken()
+		{
+			return m_taken;
+		}
+
+		public StackFrame next()
+		{
+			for (int i = m_value + 1; i < m_n; i++)
+			{
+				if (!m_taken.contains(i) && !m_forbidden[m_index].contains(i))
+				{
+					StackFrame next = new StackFrame(m_index, i, m_taken);
+					return next;
+				}
+			}
+			return null;
+		}
+
+		public StackFrame nextNeighbor()
+		{
+			for (int i = 0; i < m_n; i++)
+			{
+				if (!m_taken.contains(i) && i != m_value && !m_forbidden[m_index + 1].contains(i))
+				{
+					StackFrame next = new StackFrame(m_index + 1, i);
+					next.m_taken.addAll(m_taken);
+					next.m_taken.add(m_value);
+					return next;
+				}
+			}
+			return null;
+		}
+
+		@Override
+		public String toString()
+		{
+			return m_value + "(" + m_taken + ")";
+		}
 	}
 }
