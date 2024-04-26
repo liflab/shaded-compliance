@@ -76,7 +76,7 @@ public class QuantifiersTest
 		Subsumption rel = new Subsumption(true);
 		System.out.println(rel.inRelation(phi2, phi1));
 		System.out.println(rel.inRelation(phi1, phi2));
-		assertFalse(rel.inRelation(phi2, phi1));
-		assertFalse(rel.inRelation(phi1, phi2));
+		assertTrue(rel.inRelation(phi2, phi1));
+		assertTrue(rel.inRelation(phi1, phi2));
 	}
 }

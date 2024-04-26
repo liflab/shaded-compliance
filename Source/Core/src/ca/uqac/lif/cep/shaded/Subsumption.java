@@ -83,8 +83,8 @@ public class Subsumption implements TreeComparator
 
 	protected boolean hasMapping(ShadedFunction f1, ShadedFunction f2, Color col, boolean inverted)
 	{
-		List<ShadedFunction> children_from = new ArrayList<>();
-		List<ShadedFunction> children_to = new ArrayList<>();
+		List<EquivalenceClass> children_from = new ArrayList<>();
+		List<EquivalenceClass> children_to = new ArrayList<>();
 		ShadedFunction from = f1, to = f2;
 		boolean has_white = false;
 		for (int i = 0; i < from.getArity(); i++)
@@ -93,7 +93,7 @@ public class Subsumption implements TreeComparator
 			has_white |= m_compareNonConnectives && !(child instanceof ShadedConnective);
 			if ((m_compareNonConnectives && !(child instanceof ShadedConnective)) || (child instanceof ShadedConnective && child.getValue() == col))
 			{
-				children_from.add(child);
+				addChild(children_from, child);
 			}
 		}
 		for (int i = 0; i < to.getArity(); i++)
@@ -101,7 +101,7 @@ public class Subsumption implements TreeComparator
 			ShadedFunction child = to.getOperand(i);
 			if ((m_compareNonConnectives && !(child instanceof ShadedConnective)) || ((child instanceof ShadedConnective) && colorSubsumes(col, (Color) child.getValue(), inverted)))
 			{
-				children_to.add(child);
+				addChild(children_to, child);
 			}
 		}
 		if (children_from.size() > children_to.size())
@@ -124,7 +124,9 @@ public class Subsumption implements TreeComparator
 			}
 			for (int i = 0; i < children_from.size(); i++)
 			{
-				if (!children_from.get(i).sameAs(children_to.get(i)))
+				EquivalenceClass eq1 = children_from.get(i);
+				EquivalenceClass eq2 = children_to.get(i);
+				if (!eq1.m_representative.sameAs(eq2.m_representative))
 				{
 					return false;
 				}
@@ -138,9 +140,9 @@ public class Subsumption implements TreeComparator
 			boolean subsumed = true;
 			for (int i = 0; i < mapping.length; i++)
 			{
-				ShadedFunction child_1 = children_from.get(i);
-				ShadedFunction child_2 = children_to.get(mapping[i]);
-				if ((!inverted && !inRelation(child_1, child_2)) || (inverted && !inRelation(child_2, child_1)))
+				EquivalenceClass child_1 = children_from.get(i);
+				EquivalenceClass child_2 = children_to.get(mapping[i]);
+				if ((child_1.m_cardinality > child_2.m_cardinality) || (!inverted && (!child_1.mapsTo(child_2))) || (inverted &&  !child_2.mapsTo(child_1)))
 				{
 					subsumed = false;
 					//System.out.println("Forbid " + i + " " + mapping[i]);
@@ -178,6 +180,54 @@ public class Subsumption implements TreeComparator
 		else
 		{
 			return c2 != Color.GREEN || c1 == Color.GREEN;
+		}
+	}
+	
+	protected void addChild(List<EquivalenceClass> classes, ShadedFunction f)
+	{
+		for (EquivalenceClass eq : classes)
+		{
+			if (eq.inClass(f))
+			{
+				eq.increment();
+				return;
+			}
+		}
+		classes.add(new EquivalenceClass(f));
+	}
+	
+	protected class EquivalenceClass
+	{
+		protected int m_cardinality;
+		
+		protected final ShadedFunction m_representative;
+		
+		public EquivalenceClass(ShadedFunction c)
+		{
+			super();
+			m_cardinality = 1;
+			m_representative = c;
+		}
+		
+		public boolean inClass(ShadedFunction c)
+		{
+			return m_representative.sameAs(c);
+		}
+		
+		@Override
+		public String toString()
+		{
+			return m_cardinality + ":" + m_representative;
+		}
+		
+		public void increment()
+		{
+			m_cardinality++;
+		}
+		
+		public boolean mapsTo(EquivalenceClass c)
+		{
+			return inRelation(m_representative, c.m_representative);
 		}
 	}
 }
