@@ -57,7 +57,14 @@ public class Subsumption implements TreeComparator
 				// Comparing trees with different polarity is meaningless
 				return false;
 			}
-			return isSubsumed(c1, c2, pol_1);
+			try
+			{
+				return isSubsumed(c1, c2, pol_1);
+			}
+			catch (LoopInterruptedException e)
+			{
+				return false;
+			}
 		}
 		if (m_compareNonConnectives)
 		{
@@ -66,7 +73,7 @@ public class Subsumption implements TreeComparator
 		return false;
 	}
 
-	protected boolean isSubsumed(ShadedFunction f1, ShadedFunction f2, Polarity pol)
+	protected boolean isSubsumed(ShadedFunction f1, ShadedFunction f2, Polarity pol) throws LoopInterruptedException
 	{
 		// In the following, all color references in comments are for the positive polarity
 		// Invert the colors to reason about the negative polarity
@@ -98,7 +105,7 @@ public class Subsumption implements TreeComparator
 		}
 	}
 
-	protected boolean hasMapping(ShadedFunction f1, ShadedFunction f2, Color col, boolean inverted)
+	protected boolean hasMapping(ShadedFunction f1, ShadedFunction f2, Color col, boolean inverted) throws LoopInterruptedException
 	{
 		List<EquivalenceClass> children_from = new ArrayList<>();
 		List<EquivalenceClass> children_to = new ArrayList<>();
@@ -153,6 +160,10 @@ public class Subsumption implements TreeComparator
 		InjectionPicker picker = new InjectionPicker(children_from.size(), children_to.size());
 		while (!picker.isDone())
 		{
+			if (Thread.currentThread().isInterrupted())
+			{
+				throw new LoopInterruptedException();
+			}
 			Integer[] mapping = picker.pick();
 			boolean subsumed = true;
 			for (int i = 0; i < mapping.length; i++)
@@ -179,7 +190,6 @@ public class Subsumption implements TreeComparator
 				break;
 			}*/
 		}
-		//System.out.println("None");
 		return false;
 	}
 	
@@ -246,5 +256,14 @@ public class Subsumption implements TreeComparator
 		{
 			return inRelation(m_representative, c.m_representative);
 		}
+	}
+	
+	/**
+	 * Exception used internally to signal that the container thread running
+	 * the method has been interrupted.
+	 */
+	protected static class LoopInterruptedException extends InterruptedException
+	{
+		private static final long serialVersionUID = 1L;
 	}
 }

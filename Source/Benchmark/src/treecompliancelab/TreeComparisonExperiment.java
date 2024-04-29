@@ -26,6 +26,7 @@ import ca.uqac.lif.cep.shaded.TreeRenderer;
 import ca.uqac.lif.json.JsonList;
 import ca.uqac.lif.labpal.experiment.Experiment;
 import ca.uqac.lif.labpal.util.Stopwatch;
+import ca.uqac.lif.units.si.Second;
 
 public class TreeComparisonExperiment<T> extends Experiment
 {
@@ -117,6 +118,7 @@ public class TreeComparisonExperiment<T> extends Experiment
 	public TreeComparisonExperiment(String scenario, String condition_name, ShadedConnective condition, TreeComparator comparator, LogPairPicker<T> picker)
 	{
 		super();
+		setTimeout(new Second(7));
 		describe(SCENARIO, "The scenario the condition and event traces come from");
 		describe(CONDITION, "The condition evaluated on each event trace");
 		describe(LOG_SIZE_MIN, "The size of the smallest log");
@@ -151,6 +153,16 @@ public class TreeComparisonExperiment<T> extends Experiment
 		JsonList l_size = (JsonList) read(TREE_SIZE);
 		while (!m_picker.isDone())
 		{
+			if (hasTimedOut())
+			{
+				System.out.println("Shutdown!");
+				break;
+			}
+			if (Thread.currentThread().isInterrupted())
+			{
+				System.out.println("Interrupted!");
+				break;
+			}
 			List<T>[] pair = m_picker.pick();
 			ShadedConnective tree1 = m_condition.duplicate();
 			log_size_min = Math.min(log_size_min, pair[0].size());

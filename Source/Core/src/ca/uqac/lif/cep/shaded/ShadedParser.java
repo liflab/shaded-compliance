@@ -27,6 +27,11 @@ import ca.uqac.lif.bullwinkle.Builds;
 import ca.uqac.lif.bullwinkle.ParseNode;
 import ca.uqac.lif.bullwinkle.ParseTreeObjectBuilder;
 
+/**
+ * Parses a character string against a BNF grammar for LTL formulas, and builds
+ * a tree of {@link ShadedConnective} objects representing the formula.
+ * @author Sylvain Hallé
+ */
 public class ShadedParser extends ParseTreeObjectBuilder<ShadedConnective>
 {
 	/**
