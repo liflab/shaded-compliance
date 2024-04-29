@@ -104,6 +104,27 @@ public class ShadedParser extends ParseTreeObjectBuilder<ShadedConnective>
 		ShadedConnective inside = (ShadedConnective) parts[0];
 		return new ShadedX(inside);
 	}
+	
+	@Builds(rule="<O>", pop=true, clean=true)
+	public ShadedConnective handleO(Object... parts)
+	{
+		ShadedConnective inside = (ShadedConnective) parts[0];
+		return new ShadedO(inside);
+	}
+
+	@Builds(rule="<H>", pop=true, clean=true)
+	public ShadedConnective handleH(Object... parts)
+	{
+		ShadedConnective inside = (ShadedConnective) parts[0];
+		return new ShadedH(inside);
+	}
+
+	@Builds(rule="<Y>", pop=true, clean=true)
+	public ShadedConnective handleY(Object... parts)
+	{
+		ShadedConnective inside = (ShadedConnective) parts[0];
+		return new ShadedY(inside);
+	}
 
 	@Builds(rule="<not>", pop=true, clean=true)
 	public ShadedConnective handleNot(Object... parts)

@@ -17,29 +17,32 @@
  */
 package ca.uqac.lif.cep.shaded;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Multi-shade implements of the LTL "X" operator.
+ * Multi-shade implements of the LTL "Y" operator.
  * @author Sylvain Hallé
  */
-public class ShadedX extends ShadedConnective
+public class ShadedY extends ShadedConnective
 {
-	public static final ShadedX X(ShadedConnective phi)
+	public static final ShadedY X(ShadedConnective phi)
 	{
-		return new ShadedX(phi);
+		return new ShadedY(phi);
 	}
 	
 	protected final ShadedConnective m_phi;
 	
 	protected ShadedConnective m_operand;
 	
-	protected boolean m_seenFirst;
+	protected final List<Object> m_events;
 	
-	public ShadedX(ShadedConnective phi)
+	public ShadedY(ShadedConnective phi)
 	{
 		super();
 		m_phi = phi;
 		m_operand = null;
-		m_seenFirst = false;
+		m_events = new ArrayList<>();
 	}
 	
 	@Override
@@ -54,7 +57,7 @@ public class ShadedX extends ShadedConnective
 	@Override
 	protected void toString(StringBuilder out)
 	{
-		out.append("X" + (getValue() == Color.RED ? "-" : "+"));
+		out.append("Y" + (getValue() == Color.RED ? "-" : "+"));
 		out.append("(");
 		m_operand.toString(out);
 		out.append(")");
@@ -79,21 +82,21 @@ public class ShadedX extends ShadedConnective
 	@Override
 	public String getSymbol()
 	{
-		return "<b>X</b>";
+		return "<b>Y</b>";
 	}
 
 	@Override
 	public boolean sameAs(ShadedFunction f)
 	{
-		if (!(f instanceof ShadedX))
+		if (!(f instanceof ShadedY))
 		{
 			return false;
 		}
 		if (m_operand == null)
 		{
-			return ((ShadedX) f).m_operand == null;
+			return ((ShadedY) f).m_operand == null;
 		}
-		return m_operand.sameAs(((ShadedX) f).m_operand);
+		return m_operand.sameAs(((ShadedY) f).m_operand);
 	}
 
 	@Override
@@ -115,24 +118,26 @@ public class ShadedX extends ShadedConnective
 	@Override
 	public ShadedConnective update(Object event)
 	{
-		if (!m_seenFirst)
+		m_events.add(event);
+		if (m_events.size() == 1)
 		{
-			m_seenFirst = true;
+			// Not enough events to evaluate the Y operator
 			return this;
 		}
-		if (m_operand == null)
+		m_operand = m_phi.duplicate();
+		for (int i = 0; i < m_events.size() - 1; i++) // yes -1, we omit the last event
 		{
-			m_operand = m_phi.duplicate();
+			Object e = m_events.get(i);
+			m_phi.update(e);
 		}
-		m_operand.update(event);
 		m_color = m_operand.getValue();
 		return this;
 	}
 
 	@Override
-	public ShadedX duplicate(boolean with_state)
+	public ShadedY duplicate(boolean with_state)
 	{
-		ShadedX x = new ShadedX(m_phi);
+		ShadedY x = new ShadedY(m_phi);
 		x.m_polarity = m_polarity;
 		if (with_state)
 		{
@@ -140,7 +145,7 @@ public class ShadedX extends ShadedConnective
 			{
 				x.m_operand = m_operand.duplicate(with_state);
 			}
-			x.m_seenFirst = m_seenFirst;
+			x.m_events.addAll(m_events);
 			x.m_color = m_color;
 		}
 		return x;
@@ -149,6 +154,6 @@ public class ShadedX extends ShadedConnective
 	@Override
 	public String toString()
 	{
-		return "X" + (m_color == Color.RED ? "-" : "+") + "(" + m_operand + ")";
+		return "Y" + (m_color == Color.RED ? "-" : "+") + "(" + m_operand + ")";
 	}
 }
