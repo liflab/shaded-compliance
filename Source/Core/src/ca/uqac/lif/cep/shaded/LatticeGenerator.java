@@ -105,7 +105,6 @@ public class LatticeGenerator
 				}
 			}
 		}
-		System.out.println("After exploration");
 		for (int x = 0; x < adj.length; x++)
 		{
 			for (int y = 0; y < adj.length; y++)

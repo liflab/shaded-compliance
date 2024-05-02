@@ -77,14 +77,8 @@ public class FileLogPicker extends MultiLogPicker<XmlElement>
 	{
 		throw new UnsupportedOperationException("This picker cannot be duplicated");
 	}
-
-	/**
-	 * Reads a log file from an input stream.
-	 * @param is The input stream to read from
-	 * @return The list of XML elements in the file
-	 * @throws XmlParseException If the XML could not be parsed
-	 */
-	protected List<XmlElement> readFile(InputStream is)
+	
+	public static List<XmlElement> readFile(InputStream is, String start, String end)
 	{
 		List<XmlElement> log = new ArrayList<XmlElement>();
 		boolean in_event = false;
@@ -93,7 +87,7 @@ public class FileLogPicker extends MultiLogPicker<XmlElement>
 		while (scanner.hasNextLine())
 		{
 			String line = scanner.nextLine();
-			if (line.matches(m_start))
+			if (line.matches(start))
 			{
 				in_event = true;
 			}
@@ -101,7 +95,7 @@ public class FileLogPicker extends MultiLogPicker<XmlElement>
 			{
 				current_event.append(line);
 			}
-			if (line.matches(m_end))
+			if (line.matches(end))
 			{
 				in_event = false;
 				XmlElement event;
@@ -120,6 +114,17 @@ public class FileLogPicker extends MultiLogPicker<XmlElement>
 		}
 		scanner.close();
 		return log;
+	}
+
+	/**
+	 * Reads a log file from an input stream.
+	 * @param is The input stream to read from
+	 * @return The list of XML elements in the file
+	 * @throws XmlParseException If the XML could not be parsed
+	 */
+	protected List<XmlElement> readFile(InputStream is)
+	{
+		return readFile(is, m_start, m_end);
 	}
 
 	@Override

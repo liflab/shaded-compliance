@@ -20,4 +20,13 @@ package ca.uqac.lif.cep.shaded;
 public interface TreeComparator
 {
 	public boolean inRelation(ShadedFunction f1, ShadedFunction f2);
+	
+	/**
+	 * Exception used internally to signal that the container thread running
+	 * the method has been interrupted.
+	 */
+	public static class LoopInterruptedException extends InterruptedException
+	{
+		private static final long serialVersionUID = 1L;
+	}
 }

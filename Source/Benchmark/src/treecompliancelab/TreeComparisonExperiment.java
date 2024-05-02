@@ -21,7 +21,7 @@ import java.util.List;
 
 import ca.uqac.lif.cep.shaded.DotRenderer.Format;
 import ca.uqac.lif.cep.shaded.ShadedConnective;
-import ca.uqac.lif.cep.shaded.TreeComparator;
+import ca.uqac.lif.cep.shaded.Subsumption;
 import ca.uqac.lif.cep.shaded.TreeRenderer;
 import ca.uqac.lif.json.JsonList;
 import ca.uqac.lif.labpal.experiment.Experiment;
@@ -100,7 +100,7 @@ public class TreeComparisonExperiment<T> extends Experiment
 	/**
 	 * The object used to compare evaluation trees.
 	 */
-	protected final TreeComparator m_comparator;
+	protected final Subsumption m_comparator;
 
 	/**
 	 * The condition to evaluate on each log.
@@ -115,10 +115,10 @@ public class TreeComparisonExperiment<T> extends Experiment
 	 * @param comparator
 	 * @param picker
 	 */
-	public TreeComparisonExperiment(String scenario, String condition_name, ShadedConnective condition, TreeComparator comparator, LogPairPicker<T> picker)
+	public TreeComparisonExperiment(String scenario, String condition_name, ShadedConnective condition, Subsumption comparator, LogPairPicker<T> picker)
 	{
 		super();
-		setTimeout(new Second(7));
+		setTimeout(new Second(60));
 		describe(SCENARIO, "The scenario the condition and event traces come from");
 		describe(CONDITION, "The condition evaluated on each event trace");
 		describe(LOG_SIZE_MIN, "The size of the smallest log");
@@ -140,7 +140,7 @@ public class TreeComparisonExperiment<T> extends Experiment
 	}
 
 	@Override
-	public void execute()
+	public void execute() throws InterruptedException
 	{
 		Stopwatch sw = new Stopwatch();
 		int pair_nb = 0;
@@ -153,14 +153,11 @@ public class TreeComparisonExperiment<T> extends Experiment
 		JsonList l_size = (JsonList) read(TREE_SIZE);
 		while (!m_picker.isDone())
 		{
-			if (hasTimedOut())
-			{
-				System.out.println("Shutdown!");
-				break;
-			}
-			if (Thread.currentThread().isInterrupted())
+			// Check if experiment has been interrupted and step out of the loop
+			if (Thread.interrupted())
 			{
 				System.out.println("Interrupted!");
+				Thread.currentThread().interrupt();
 				break;
 			}
 			List<T>[] pair = m_picker.pick();
@@ -188,11 +185,6 @@ public class TreeComparisonExperiment<T> extends Experiment
 			setProgression((float) pair_nb / (float) total_pairs);
 			tree1.trim();
 			tree2.trim();
-			/*if (tree1.getValue() == Color.GREEN && tree2.getValue() == Color.RED)
-			{
-				// No point in comparing them, the result is instantaneous
-				continue;
-			}*/		
 			if (s_drawTrees && pair_nb == 164)
 			{
 				TreeRenderer tr = new TreeRenderer(false);
@@ -201,9 +193,10 @@ public class TreeComparisonExperiment<T> extends Experiment
 			}
 			int size1 = tree1.size(), size2 = tree2.size();
 			l_size.add(size1 + size2);
-			boolean b = m_comparator.inRelation(tree1, tree2);
-			sw.stop();
+			System.err.print("<");
+			boolean b = m_comparator.inRelationInterruptible(tree1, tree2);
 			subsumed += b ? 1 : 0;
+			System.err.print(">");
 			tree_size_min = Math.min(tree_size_min, size1);
 			tree_size_min = Math.min(tree_size_min, size2);
 			tree_size_max = Math.max(tree_size_max, size1);

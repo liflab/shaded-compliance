@@ -37,10 +37,23 @@ public class Subsumption implements TreeComparator
 	{
 		this(false);
 	}
-
+	
 	@Override
 	public boolean inRelation(ShadedFunction f1, ShadedFunction f2)
 	{
+		try
+		{
+			return inRelationInterruptible(f1, f2);
+		}
+		catch (LoopInterruptedException e)
+		{
+			return false;
+		}
+	}
+	
+	public boolean inRelationInterruptible(ShadedFunction f1, ShadedFunction f2) throws LoopInterruptedException
+	{
+		//System.out.println("Subsumption in thread " + Thread.currentThread().getId());
 		if ((f1 instanceof ShadedConnective) != (f2 instanceof ShadedConnective))
 		{
 			// Comparison works only between two connectives or two *non* connectives
@@ -57,14 +70,7 @@ public class Subsumption implements TreeComparator
 				// Comparing trees with different polarity is meaningless
 				return false;
 			}
-			try
-			{
-				return isSubsumed(c1, c2, pol_1);
-			}
-			catch (LoopInterruptedException e)
-			{
-				return false;
-			}
+			return isSubsumed(c1, c2, pol_1);
 		}
 		if (m_compareNonConnectives)
 		{
@@ -107,6 +113,10 @@ public class Subsumption implements TreeComparator
 
 	protected boolean hasMapping(ShadedFunction f1, ShadedFunction f2, Color col, boolean inverted) throws LoopInterruptedException
 	{
+		if (Thread.interrupted())
+		{
+			throw new LoopInterruptedException();
+		}
 		List<EquivalenceClass> children_from = new ArrayList<>();
 		List<EquivalenceClass> children_to = new ArrayList<>();
 		ShadedFunction from = f1, to = f2;
@@ -158,13 +168,19 @@ public class Subsumption implements TreeComparator
 			return true;
 		}
 		InjectionPicker picker = new InjectionPicker(children_from.size(), children_to.size());
+		//System.out.println("Before isdone");
+		//boolean b = picker.isDone();
+		//System.out.println("After isdone");
 		while (!picker.isDone())
 		{
-			if (Thread.currentThread().isInterrupted())
+			if (Thread.interrupted())
 			{
+				//System.exit(0);
 				throw new LoopInterruptedException();
 			}
+			//System.out.println("Before pick");
 			Integer[] mapping = picker.pick();
+			//System.out.println("After pick");
 			boolean subsumed = true;
 			for (int i = 0; i < mapping.length; i++)
 			{
@@ -174,7 +190,9 @@ public class Subsumption implements TreeComparator
 				{
 					subsumed = false;
 					//System.out.println("Forbid " + i + " " + mapping[i]);
-					picker.forbid(i, mapping[i]);
+					//System.out.println("Before forbid");
+					//picker.forbid(i, mapping[i]);
+					//System.out.println("After forbid");
 					break;
 				}
 			}
@@ -252,18 +270,12 @@ public class Subsumption implements TreeComparator
 			m_cardinality++;
 		}
 		
-		public boolean mapsTo(EquivalenceClass c)
+		public boolean mapsTo(EquivalenceClass c) throws LoopInterruptedException
 		{
-			return inRelation(m_representative, c.m_representative);
+			//System.out.println("Before mapsto");
+			boolean b = inRelationInterruptible(m_representative, c.m_representative);
+			//System.out.println("After mapsto");
+			return b;
 		}
-	}
-	
-	/**
-	 * Exception used internally to signal that the container thread running
-	 * the method has been interrupted.
-	 */
-	protected static class LoopInterruptedException extends InterruptedException
-	{
-		private static final long serialVersionUID = 1L;
 	}
 }
