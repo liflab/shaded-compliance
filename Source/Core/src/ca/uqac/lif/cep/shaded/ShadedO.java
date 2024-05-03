@@ -152,4 +152,11 @@ public class ShadedO extends ShadedPastLtlOperator
 	{
 		return "<b>O</b>";
 	}
+	
+	@Override
+	public ShadedO cloneNode()
+	{
+		return duplicate(false);
+	}
 }
+

@@ -19,8 +19,18 @@ package ca.uqac.lif.cep.shaded.abstraction;
 
 import ca.uqac.lif.cep.shaded.ShadedFunction;
 
+/**
+ * Applies another tree abstraction only for nodes situated at a specific
+ * depth. For all other nodes, the tree is left unchanged.
+ * @author Sylvain Hallé
+ */
 public class TriggerAtDepth implements TreeAbstraction
 {
+	public static TriggerAtDepth atDepth(int depth, TreeAbstraction t)
+	{
+		return new TriggerAtDepth(depth, t);
+	}
+	
 	protected final int m_depth;
 	
 	protected final TreeAbstraction m_t;

@@ -142,4 +142,10 @@ public class ShadedF extends ShadedLtlOperator
 	{
 		return "<b>F</b>";
 	}
+
+	@Override
+	public ShadedConnective cloneNode()
+	{
+		return duplicate(false);
+	}
 }

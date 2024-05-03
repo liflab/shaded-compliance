@@ -149,4 +149,10 @@ public class ShadedFetchPath implements ShadedFunction
 		// Do nothing
 		return this;
 	}
+	
+	@Override
+	public ShadedFetchPath cloneNode()
+	{
+		return duplicate(false);
+	}
 }

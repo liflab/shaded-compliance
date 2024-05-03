@@ -23,6 +23,7 @@ import ca.uqac.lif.cep.shaded.DotRenderer.Format;
 import ca.uqac.lif.cep.shaded.ShadedConnective;
 import ca.uqac.lif.cep.shaded.Subsumption;
 import ca.uqac.lif.cep.shaded.TreeRenderer;
+import ca.uqac.lif.cep.shaded.abstraction.TreeAbstraction;
 import ca.uqac.lif.json.JsonList;
 import ca.uqac.lif.labpal.experiment.Experiment;
 import ca.uqac.lif.labpal.util.Stopwatch;
@@ -106,6 +107,11 @@ public class TreeComparisonExperiment<T> extends Experiment
 	 * The condition to evaluate on each log.
 	 */
 	protected final ShadedConnective m_condition;
+	
+	/**
+	 * The tree abstraction to apply to each evaluation tree.
+	 */
+	protected final TreeAbstraction m_abstraction;
 
 	/**
 	 * Creates a new tree comparison experiment.
@@ -115,7 +121,7 @@ public class TreeComparisonExperiment<T> extends Experiment
 	 * @param comparator
 	 * @param picker
 	 */
-	public TreeComparisonExperiment(String scenario, String condition_name, ShadedConnective condition, Subsumption comparator, LogPairPicker<T> picker)
+	public TreeComparisonExperiment(String scenario, String condition_name, ShadedConnective condition, Subsumption comparator, TreeAbstraction abstraction, LogPairPicker<T> picker)
 	{
 		super();
 		setTimeout(new Second(60));
@@ -137,6 +143,7 @@ public class TreeComparisonExperiment<T> extends Experiment
 		m_condition = condition;
 		m_comparator = comparator;
 		m_picker = picker;
+		m_abstraction = abstraction;
 	}
 
 	@Override

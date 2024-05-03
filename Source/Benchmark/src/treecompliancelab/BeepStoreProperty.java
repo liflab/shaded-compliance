@@ -167,9 +167,9 @@ public class BeepStoreProperty
 	
 	protected static ShadedConnective noCartOpBeforeLogin()
 	{
-		return H (implies (
+		return implies (
 				eq(path("Message/Action/text()"), "CartCreate"),
-				(O (eq(path("Message/Action/text()"), "ItemSearch")))));
+				(O (eq(path("Message/Action/text()"), "ItemSearch"))));
 	}
 	
 	protected static ShadedConnective maximumCarts()

@@ -147,4 +147,10 @@ public class ShadedHasPath extends ShadedConnective
 		// Do nothing
 		return this;
 	}
+	
+	@Override
+	public ShadedHasPath cloneNode()
+	{
+		return duplicate(false);
+	}
 }

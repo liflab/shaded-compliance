@@ -162,4 +162,10 @@ public class ShadedX extends ShadedConnective
 		m_operand = (ShadedConnective) f;
 		return this;
 	}
+	
+	@Override
+	public ShadedX cloneNode()
+	{
+		return duplicate(false);
+	}
 }

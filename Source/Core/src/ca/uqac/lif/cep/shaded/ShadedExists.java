@@ -96,4 +96,10 @@ public class ShadedExists extends ShadedQuantifier
 		}
 		return Color.RED;
 	}
+	
+	@Override
+	public ShadedConnective cloneNode()
+	{
+		return duplicate(false);
+	}
 }

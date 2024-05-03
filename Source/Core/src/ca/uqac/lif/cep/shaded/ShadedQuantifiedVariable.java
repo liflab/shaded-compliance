@@ -143,4 +143,10 @@ public class ShadedQuantifiedVariable implements ShadedFunction
 		// Do nothing
 		return this;
 	}
+	
+	@Override
+	public ShadedQuantifiedVariable cloneNode()
+	{
+		return new ShadedQuantifiedVariable(m_name);
+	}
 }

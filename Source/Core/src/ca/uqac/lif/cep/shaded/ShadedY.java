@@ -167,4 +167,10 @@ public class ShadedY extends ShadedConnective
 		m_operand = (ShadedConnective) f;
 		return this;
 	}
+	
+	@Override
+	public ShadedY cloneNode()
+	{
+		return duplicate(false);
+	}
 }

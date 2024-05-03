@@ -96,4 +96,10 @@ public class ShadedForAll extends ShadedQuantifier
 		}
 		return Color.GREEN;
 	}
+	
+	@Override
+	public ShadedConnective cloneNode()
+	{
+		return duplicate(false);
+	}
 }

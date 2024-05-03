@@ -72,6 +72,12 @@ public class ShadedEquivalence extends ShadedConnective
 		}
 		return null;
 	}
+	
+	@Override
+	public ShadedEquivalence cloneNode()
+	{
+		return new ShadedEquivalence(null, null);
+	}
 
 	@Override
 	public String getSymbol()

@@ -160,4 +160,10 @@ public class ShadedH extends ShadedPastLtlOperator
 	{
 		return "<b>H</b>";
 	}
+	
+	@Override
+	public ShadedConnective cloneNode()
+	{
+		return duplicate(false);
+	}
 }

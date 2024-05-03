@@ -137,4 +137,10 @@ public class ShadedFetchAttribute implements ShadedFunction
 		// Do nothing
 		return this;
 	}
+	
+	@Override
+	public ShadedFetchAttribute cloneNode()
+	{
+		return duplicate(false);
+	}
 }

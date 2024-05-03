@@ -169,4 +169,10 @@ public class ShadedNot extends ShadedConnective
 		m_operand = (ShadedConnective) f;
 		return this;
 	}
+	
+	@Override
+	public ShadedNot cloneNode()
+	{
+		return new ShadedNot(null);
+	}
 }
