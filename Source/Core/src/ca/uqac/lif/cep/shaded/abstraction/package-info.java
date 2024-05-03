@@ -15,33 +15,4 @@
     You should have received a copy of the GNU Lesser General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ca.uqac.lif.cep.shaded;
-
-public interface ShadedFunction
-{
-	public ShadedFunction update(Object event);
-	
-	public int getArity();
-	
-	public ShadedFunction getOperand(int index);
-	
-	public ShadedFunction duplicate(boolean with_state);
-	
-	public ShadedFunction addOperand(ShadedFunction f);
-	
-	public ShadedFunction cloneNode();
-	
-	public ShadedFunction duplicate();
-	
-	public String getSymbol();
-	
-	public Object getValue();
-	
-	public boolean sameAs(ShadedFunction f);
-	
-	public void setValue(String name, Object value);
-	
-	public int size();
-	
-	public void trim();
-}
+package ca.uqac.lif.cep.shaded.abstraction;

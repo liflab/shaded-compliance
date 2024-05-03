@@ -42,6 +42,20 @@ public class ShadedConstant implements ShadedFunction
 	}
 	
 	@Override
+	public ShadedConstant cloneNode()
+	{
+		return new ShadedConstant(m_value);
+	}
+	
+	@Override
+	public ShadedConstant addOperand(ShadedFunction f)
+	{
+		// Do nothing
+		return this;
+	}
+	
+	
+	@Override
 	public int size()
 	{
 		return 1;

@@ -41,6 +41,12 @@ public class ShadedOr extends ShadedNaryConnective
   }
 	
 	@Override
+	public ShadedOr cloneNode()
+	{
+		return new ShadedOr();
+	}
+	
+	@Override
 	protected void toString(StringBuilder out)
 	{
 		out.append("|" + (getValue() == Color.RED ? "-" : "+"));

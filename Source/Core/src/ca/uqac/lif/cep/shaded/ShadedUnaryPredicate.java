@@ -24,7 +24,7 @@ public abstract class ShadedUnaryPredicate extends ShadedConnective
 		return new IsEven(ShadedConstant.wrap(argument));
 	}
 
-	protected final ShadedFunction m_argument;
+	protected ShadedFunction m_argument;
 
 	public ShadedUnaryPredicate(ShadedFunction arg)
 	{
@@ -60,6 +60,13 @@ public abstract class ShadedUnaryPredicate extends ShadedConnective
 		}
 		return null;
 	}
+	
+	@Override
+	public ShadedUnaryPredicate addOperand(ShadedFunction f)
+	{
+		m_argument = f;
+		return this;
+	}
 
 	@Override
 	public void setValue(String name, Object value)
@@ -83,6 +90,12 @@ public abstract class ShadedUnaryPredicate extends ShadedConnective
 				ie.m_color = m_color;
 			}
 			return ie;
+		}
+		
+		@Override
+		public IsEven cloneNode()
+		{
+			return new IsEven(null);
 		}
 		
 		@Override

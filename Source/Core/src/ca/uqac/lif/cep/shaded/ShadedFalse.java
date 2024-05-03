@@ -36,6 +36,19 @@ public class ShadedFalse extends ShadedConnective
 	}
 	
 	@Override
+	public ShadedFalse cloneNode()
+	{
+		return new ShadedFalse();
+	}
+	
+	@Override
+	public ShadedFalse addOperand(ShadedFunction f)
+	{
+		// Do nothing
+		return this;
+	}
+	
+	@Override
 	public void trim()
 	{
 		// Do nothing

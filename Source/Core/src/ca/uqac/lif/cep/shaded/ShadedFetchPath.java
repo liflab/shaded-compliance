@@ -142,4 +142,11 @@ public class ShadedFetchPath implements ShadedFunction
 	{
 		return m_value;
 	}
+	
+	@Override
+	public ShadedFetchPath addOperand(ShadedFunction f)
+	{
+		// Do nothing
+		return this;
+	}
 }

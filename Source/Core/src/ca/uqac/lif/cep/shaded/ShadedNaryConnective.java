@@ -36,6 +36,17 @@ public abstract class ShadedNaryConnective extends ShadedConnective
 	}
 	
 	@Override
+	public ShadedNaryConnective addOperand(ShadedFunction f)
+	{
+		if (!(f instanceof ShadedConnective))
+		{
+			throw new IllegalArgumentException("Expected a ShadedFunction");
+		}
+		m_operands.add((ShadedConnective) f);
+		return this;
+	}
+	
+	@Override
 	public void trim()
 	{
 		Color c = getValue();

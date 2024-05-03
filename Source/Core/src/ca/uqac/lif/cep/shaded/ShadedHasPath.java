@@ -140,4 +140,11 @@ public class ShadedHasPath extends ShadedConnective
 	{
 		out.append(m_path);
 	}
+
+	@Override
+	public ShadedHasPath addOperand(ShadedFunction f)
+	{
+		// Do nothing
+		return this;
+	}
 }

@@ -24,15 +24,33 @@ public class ShadedImplies extends ShadedConnective
 		return new ShadedImplies(left, right);
 	}
 	
-	protected final ShadedConnective m_left;
+	protected ShadedConnective m_left;
 
-	protected final ShadedConnective m_right;
+	protected ShadedConnective m_right;
 
 	public ShadedImplies(ShadedConnective left, ShadedConnective right)
 	{
 		super();
 		m_left = left;
 		m_right = right;
+	}
+	
+	@Override
+	public ShadedImplies addOperand(ShadedFunction f)
+	{
+		if (!(f instanceof ShadedConnective))
+		{
+			throw new IllegalArgumentException("Expected a ShadedFunction");
+		}
+		if (m_left == null)
+		{
+			m_left = (ShadedConnective) f;
+		}
+		else
+		{
+			m_right = (ShadedConnective) f;
+		}
+		return this;
 	}
 
 	@Override

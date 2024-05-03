@@ -24,6 +24,10 @@ import ca.uqac.lif.cep.shaded.DotRenderer.Algorithm;
 import ca.uqac.lif.cep.shaded.DotRenderer.Format;
 import ca.uqac.lif.cep.shaded.ShadedConnective.Color;
 
+/**
+ * Renders an evaluation tree as an image, using Graphviz in the background.
+ * @author Sylvain Hallé
+ */
 public class TreeRenderer
 {
 	/**

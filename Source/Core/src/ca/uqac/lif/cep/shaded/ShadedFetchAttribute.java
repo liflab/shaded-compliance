@@ -130,4 +130,11 @@ public class ShadedFetchAttribute implements ShadedFunction
 	{
 		return m_value;
 	}
+
+	@Override
+	public ShadedFetchAttribute addOperand(ShadedFunction f)
+	{
+		// Do nothing
+		return this;
+	}
 }

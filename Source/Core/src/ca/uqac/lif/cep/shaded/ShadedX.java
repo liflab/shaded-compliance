@@ -151,4 +151,15 @@ public class ShadedX extends ShadedConnective
 	{
 		return "X" + (m_color == Color.RED ? "-" : "+") + "(" + m_operand + ")";
 	}
+
+	@Override
+	public ShadedX addOperand(ShadedFunction f)
+	{
+		if (!(f instanceof ShadedConnective))
+		{
+			throw new IllegalArgumentException("Expected a ShadedFunction");
+		}
+		m_operand = (ShadedConnective) f;
+		return this;
+	}
 }

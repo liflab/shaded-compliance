@@ -36,9 +36,22 @@ public class ShadedTrue extends ShadedConnective
 	}
 	
 	@Override
+	public ShadedTrue cloneNode()
+	{
+		return new ShadedTrue();
+	}
+	
+	@Override
 	public void trim()
 	{
 		// Do nothing
+	}
+	
+	@Override
+	public ShadedTrue addOperand(ShadedFunction f)
+	{
+		// Do nothing
+		return this;
 	}
 	
 	@Override

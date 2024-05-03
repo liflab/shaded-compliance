@@ -158,4 +158,15 @@ public class ShadedNot extends ShadedConnective
 	{
 		return "\u00ac";
 	}
+
+	@Override
+	public ShadedNot addOperand(ShadedFunction f)
+	{
+		if (!(f instanceof ShadedConnective))
+		{
+			throw new IllegalArgumentException("Expected a ShadedFunction");
+		}
+		m_operand = (ShadedConnective) f;
+		return this;
+	}
 }

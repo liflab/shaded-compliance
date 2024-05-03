@@ -44,6 +44,20 @@ public abstract class ShadedBinaryFunction implements ShadedFunction
 	}
 	
 	@Override
+	public ShadedBinaryFunction addOperand(ShadedFunction f)
+	{
+		if (m_left == null)
+		{
+			m_left = f;
+		}
+		else
+		{
+			m_right= f;
+		}
+		return this;
+	}
+	
+	@Override
 	public void trim()
 	{
 		m_left.trim();
@@ -114,6 +128,12 @@ public abstract class ShadedBinaryFunction implements ShadedFunction
 				m_value = Math.abs(n_left.doubleValue() - n_right.doubleValue());
 			}
 			return this;
+		}
+		
+		@Override
+		public ShadedAbsoluteDifference cloneNode()
+		{
+			return new ShadedAbsoluteDifference(null, null);
 		}
 		
 		@Override

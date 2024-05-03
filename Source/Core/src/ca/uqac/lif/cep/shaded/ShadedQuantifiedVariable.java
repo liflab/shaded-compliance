@@ -136,4 +136,11 @@ public class ShadedQuantifiedVariable implements ShadedFunction
 			m_value = value;
 		}
 	}
+
+	@Override
+	public ShadedQuantifiedVariable addOperand(ShadedFunction f)
+	{
+		// Do nothing
+		return this;
+	}
 }

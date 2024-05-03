@@ -69,6 +69,20 @@ public abstract class ShadedComparison extends ShadedConnective
 	}
 	
 	@Override
+	public ShadedComparison addOperand(ShadedFunction f)
+	{
+		if (m_left == null)
+		{
+			m_left = f;
+		}
+		else
+		{
+			m_right= f;
+		}
+		return this;
+	}
+	
+	@Override
 	public void trim()
 	{
 		m_left.trim();
@@ -113,6 +127,12 @@ public abstract class ShadedComparison extends ShadedConnective
 		public ShadedLessThanOrEqual(ShadedFunction left, ShadedFunction right)
 		{
 			super(left, right);
+		}
+		
+		@Override
+		public ShadedLessThanOrEqual cloneNode()
+		{
+			return new ShadedLessThanOrEqual(null, null);
 		}
 		
 		@Override
@@ -197,6 +217,12 @@ public abstract class ShadedComparison extends ShadedConnective
 			out.append(m_right);
 			out.append(")");
 		}
+		
+		@Override
+		public ShadedGreaterThanOrEqual cloneNode()
+		{
+			return new ShadedGreaterThanOrEqual(null, null);
+		}
 
 		@Override
 		public boolean sameAs(ShadedFunction f)
@@ -269,6 +295,12 @@ public abstract class ShadedComparison extends ShadedConnective
 			out.append("),(");
 			out.append(m_right);
 			out.append(")");
+		}
+		
+		@Override
+		public ShadedEquals cloneNode()
+		{
+			return new ShadedEquals(null, null);
 		}
 
 		@Override

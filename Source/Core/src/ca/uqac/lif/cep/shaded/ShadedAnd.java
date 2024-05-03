@@ -136,6 +136,12 @@ public class ShadedAnd extends ShadedNaryConnective
 		}
 		return this;
 	}
+	
+	@Override
+	public ShadedAnd cloneNode()
+	{
+		return new ShadedAnd();
+	}
 
 	@Override
 	public String getSymbol()

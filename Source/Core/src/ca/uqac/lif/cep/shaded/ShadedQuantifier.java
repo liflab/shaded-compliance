@@ -45,6 +45,17 @@ public abstract class ShadedQuantifier extends ShadedConnective
 	}
 	
 	@Override
+	public ShadedQuantifier addOperand(ShadedFunction f)
+	{
+		if (!(f instanceof ShadedConnective))
+		{
+			throw new IllegalArgumentException("Expected a ShadedFunction");
+		}
+		m_instances.add((ShadedConnective) f);
+		return this;
+	}
+	
+	@Override
 	public int size()
 	{
 		int size = 1;
