@@ -30,13 +30,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import ca.uqac.lif.azrael.ObjectPrinter;
+import ca.uqac.lif.azrael.PrintException;
+import ca.uqac.lif.azrael.json.JsonPrinter;
 import ca.uqac.lif.cep.shaded.DotRenderer.Format;
-import ca.uqac.lif.cep.shaded.abstraction.Identity;
 import ca.uqac.lif.cep.shaded.abstraction.TreeAbstraction;
-import ca.uqac.lif.cep.shaded.abstraction.TriggerAtDepth;
-import ca.uqac.lif.cep.shaded.abstraction.TruncateRoot;
+import ca.uqac.lif.cep.shaded.abstraction.TreeAbstractionParser;
 import ca.uqac.lif.fs.FileSystemException;
 import ca.uqac.lif.fs.FileUtils;
+import ca.uqac.lif.json.JsonElement;
 import ca.uqac.lif.util.CliParser;
 import ca.uqac.lif.util.CliParser.Argument;
 import ca.uqac.lif.util.CliParser.ArgumentMap;
@@ -268,6 +270,46 @@ public class CommandLine
 		}
 		return 0;
 	}
+	
+	protected static int saveHasse(String[] args)
+	{
+		CliParser parser = new CliParser();
+		parser.addArgument(new Argument().withLongName("property").withArgument("file").withDescription("Evaluate property in file"));
+		parser.addArgument(new Argument().withLongName("in-format").withArgument("f").withDescription("Input traces in format f"));
+		parser.addArgument(new Argument().withLongName("output").withArgument("file").withDescription("Output diagram to file"));
+		parser.addArgument(new Argument().withLongName("abstract").withArgument("t").withDescription("Apply tree abstraction t"));
+		ArgumentMap params = parser.parse(args);
+		ShadedConnective phi = getProperty(params);
+		if (phi == null)
+		{
+			return 2;
+		}
+		if (!params.hasOption("output"))
+		{
+			System.err.println("draw-hasse requires an output file");
+			return 4;
+		}
+		TreeAbstraction abs = params.hasOption("abstract") ? getTreeAbstraction(params.getOptionValue("abstract")) : null;
+		List<String> filenames = params.getOthers();
+		List<ShadedFunction> elements = new ArrayList<>();
+		for (int i = 0; i < filenames.size(); i++)
+		{
+			elements.add(feed(phi, abs, filenames.get(i)));
+		}
+		LatticeGenerator gen = new LatticeGenerator(new Subsumption(true));
+		ShadedGraph g = gen.getLattice(elements);
+		JsonPrinter printer = new JsonPrinter();
+		try
+		{
+			JsonElement j = printer.print(g);
+		}
+		catch (PrintException e)
+		{
+			System.err.println("Could not print lattice to JSON");
+			e.printStackTrace();
+			return 5;
+		}
+	}
 
 	protected static ShadedConnective getProperty(ArgumentMap params)
 	{
@@ -333,15 +375,6 @@ public class CommandLine
 	 */
 	protected static TreeAbstraction getTreeAbstraction(String name)
 	{
-		switch (name)
-        {
-        case "identity":
-            return new Identity();
-        case "truncate-2":
-          return new TriggerAtDepth(2, new TruncateRoot());
-        case "truncate-3":
-            return new TriggerAtDepth(3, new TruncateRoot());
-        }
-        return null;
+		return TreeAbstractionParser.parse(name);
 	}
 }

@@ -1,0 +1,24 @@
+# BNF grammar for tree abstractions
+# This grammar is used to concisely specify a tree abstraction through a
+# command line argument.
+#
+# k       Trim children that do not have the same color as the root
+# t       Truncate the tree at the root
+# d(n,τ)  Apply τ to the tree at depth n
+# (τ1,τ2) Compose τ1 and τ2
+#
+# Examples:
+#
+# d(2,t)  
+#   Truncate the tree at depth 2
+# (d(3,k),d(2,t))
+#   Trim children that do not have the same color as the root at depth 3,
+#   then truncate the tree at depth 2
+
+<tau>       := <compose> | <truncate> | <trimcolor> | <depth> ;
+<compose>   := ( <taulist> ) ;
+<taulist>   := <tau> , <taulist> | <tau> ;
+<truncate>  := t ;
+<trimcolor> := k ;
+<depth>     := d( <int> , <tau> ) ; 
+<int>       := ^[0-9]+;

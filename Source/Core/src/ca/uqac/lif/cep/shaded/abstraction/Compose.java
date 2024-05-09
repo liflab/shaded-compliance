@@ -17,6 +17,8 @@
  */
 package ca.uqac.lif.cep.shaded.abstraction;
 
+import java.util.List;
+
 import ca.uqac.lif.cep.shaded.ShadedFunction;
 
 /**
@@ -51,6 +53,18 @@ public class Compose implements TreeAbstraction
 	{
 		super();
 		m_abstractions = abstractions;
+	}
+	
+	/**
+	 * Creates a new instance of the composition of multiple abstractions.
+	 * 
+	 * @param abstractions
+	 *          The abstractions to compose
+	 */
+	public Compose(List<TreeAbstraction> abstractions)
+	{
+		super();
+		m_abstractions = abstractions.toArray(new TreeAbstraction[abstractions.size()]);
 	}
 
 	@Override

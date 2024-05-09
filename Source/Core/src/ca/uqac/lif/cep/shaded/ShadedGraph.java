@@ -23,6 +23,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ca.uqac.lif.azrael.ObjectPrinter;
+import ca.uqac.lif.azrael.PrintException;
+import ca.uqac.lif.azrael.Printable;
 import ca.uqac.lif.cep.shaded.DotRenderer.Algorithm;
 import ca.uqac.lif.cep.shaded.ShadedConnective.Color;
 
