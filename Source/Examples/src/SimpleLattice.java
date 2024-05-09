@@ -1,11 +1,13 @@
-package tictactoe;
-
 import static ca.uqac.lif.cep.shaded.ShadedAnd.and;
 import static ca.uqac.lif.cep.shaded.ShadedComparison.eq;
 import static ca.uqac.lif.cep.shaded.ShadedF.F;
 import static ca.uqac.lif.cep.shaded.ShadedG.G;
 import static ca.uqac.lif.cep.shaded.ShadedFetchAttribute.fetch;
 import static ca.uqac.lif.cep.shaded.ShadedOr.or;
+import static ca.uqac.lif.cep.shaded.abstraction.Compose.compose;
+import static ca.uqac.lif.cep.shaded.abstraction.TriggerAtDepth.atDepth;
+import static ca.uqac.lif.cep.shaded.abstraction.TrimColor.trimColor;
+import static ca.uqac.lif.cep.shaded.abstraction.TruncateRoot.truncate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,11 +19,14 @@ import ca.uqac.lif.cep.shaded.ShadedConnective;
 import ca.uqac.lif.cep.shaded.ShadedFunction;
 import ca.uqac.lif.cep.shaded.ShadedGraph;
 import ca.uqac.lif.cep.shaded.Subsumption;
+import ca.uqac.lif.cep.shaded.abstraction.Compose;
 import ca.uqac.lif.cep.shaded.abstraction.TreeAbstraction;
 import ca.uqac.lif.cep.shaded.abstraction.TriggerAtDepth;
+import ca.uqac.lif.cep.shaded.abstraction.TrimColor;
 import ca.uqac.lif.cep.shaded.abstraction.TruncateRoot;
 import ca.uqac.lif.cep.shaded.DotRenderer.Format;
 
+@SuppressWarnings("unused")
 public class SimpleLattice
 {
 
@@ -29,7 +34,7 @@ public class SimpleLattice
 	{
 		//ShadedConnective phi = or(G (eq(fetch("a"), 0)), G (and (eq(fetch("a"), 1), eq(fetch("b"), 0))));
 		ShadedConnective phi = or(G (eq(fetch("a"), 0)), G (eq(fetch("b"), 0)));
-		TreeAbstraction abs = new TriggerAtDepth(3, new TruncateRoot());
+		TreeAbstraction abs = compose(atDepth(3, truncate()), atDepth(2, trimColor()));
 		List<ShadedFunction> elements = new ArrayList<>();
 		for (int a1 = 0; a1 <= 2; a1++)
 		{
