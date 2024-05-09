@@ -144,8 +144,10 @@ public class ShadedF extends ShadedLtlOperator
 	}
 
 	@Override
-	public ShadedConnective cloneNode()
+	public ShadedF cloneNode()
 	{
-		return duplicate(false);
+		ShadedF clone = duplicate(false);
+		clone.m_color = m_color;
+		return clone;
 	}
 }

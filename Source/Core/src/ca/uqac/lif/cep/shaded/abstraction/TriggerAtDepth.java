@@ -26,13 +26,28 @@ import ca.uqac.lif.cep.shaded.ShadedFunction;
  */
 public class TriggerAtDepth implements TreeAbstraction
 {
+	/**
+	 * Creates a new instance of this abstraction
+	 * 
+	 * @param depth
+	 *          The depth at which the abstraction should be applied
+	 * @param t
+	 *          The abstraction to apply
+	 * @return The new abstraction
+	 */
 	public static TriggerAtDepth atDepth(int depth, TreeAbstraction t)
 	{
 		return new TriggerAtDepth(depth, t);
 	}
 	
+	/**
+	 * The depth at which the abstraction should be applied.
+	 */
 	protected final int m_depth;
 	
+	/**
+	 * The abstraction to apply.
+	 */
 	protected final TreeAbstraction m_t;
 	
 	public TriggerAtDepth(int depth, TreeAbstraction t)
@@ -43,12 +58,12 @@ public class TriggerAtDepth implements TreeAbstraction
 	}
 	
 	@Override
-	public ShadedFunction abstractify(ShadedFunction f)
+	public ShadedFunction apply(ShadedFunction f)
 	{
-		return abstractify(f, 0);
+		return apply(f, 2);
 	}
 	
-	protected ShadedFunction abstractify(ShadedFunction f, int depth)
+	protected ShadedFunction apply(ShadedFunction f, int depth)
 	{
 		ShadedFunction f_dup = f.cloneNode();
 		if (depth == m_depth)
@@ -56,7 +71,7 @@ public class TriggerAtDepth implements TreeAbstraction
 			for (int i = 0; i < f.getArity(); i++)
 			{
 				ShadedFunction f_op = f.getOperand(i);
-				ShadedFunction f_op_abs = m_t.abstractify(f_op);
+				ShadedFunction f_op_abs = m_t.apply(f_op);
 				f_dup.addOperand(f_op_abs);
 			}
 		}
@@ -65,7 +80,7 @@ public class TriggerAtDepth implements TreeAbstraction
 			for (int i = 0; i < f.getArity(); i++)
 			{
 				ShadedFunction f_op = f.getOperand(i);
-				ShadedFunction f_op_abs = abstractify(f_op);
+				ShadedFunction f_op_abs = apply(f_op, depth + 1);
 				f_dup.addOperand(f_op_abs);
 			}
 		}

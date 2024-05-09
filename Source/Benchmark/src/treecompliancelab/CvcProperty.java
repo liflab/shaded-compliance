@@ -36,20 +36,56 @@ import ca.uqac.lif.cep.shaded.ShadedBinaryFunction.ShadedAbsoluteDifference;
 import ca.uqac.lif.xml.XPathExpression.XPathParseException;
 
 @SuppressWarnings("unused")
-public class CvcProperty
+public class CvcProperty implements PropertyFactory
 {
 	public static final String MAX_DURATION = "Max duration";
 	
 	public static final String LIFECYCLE = "Procedure lifecycle";
 	
-	public static ShadedConnective get(String name)
+	/**
+	 * Gets the properties that this factory can create.
+	 * @return An array of strings representing the names of the properties
+	 */
+	public String[] getProperties()
+	{
+		return new String[] { MAX_DURATION, LIFECYCLE };
+	}
+	
+	@Override
+	public NamedProperty get(String name)
 	{
 		switch (name)
 		{
 			case MAX_DURATION:
-				return maxDuration();
+				return new NamedProperty()
+				{
+					@Override
+					public String getName()
+					{
+						return MAX_DURATION;
+					}
+
+					@Override
+					public ShadedConnective getObject()
+					{
+						return maxDuration();
+					}
+				};
 			case LIFECYCLE:
-				return procedureLifecycle();
+				return new NamedProperty()
+				{
+					@Override
+					public String getName()
+					{
+						return LIFECYCLE;
+					}
+
+					@Override
+					public ShadedConnective getObject()
+					{
+						return procedureLifecycle();
+					}
+				};
 			default:
 				return null;
 		}

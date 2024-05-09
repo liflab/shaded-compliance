@@ -43,7 +43,9 @@ public class ShadedOr extends ShadedNaryConnective
 	@Override
 	public ShadedOr cloneNode()
 	{
-		return new ShadedOr();
+		ShadedOr or = new ShadedOr();
+		or.m_color = m_color;
+		return or;
 	}
 	
 	@Override

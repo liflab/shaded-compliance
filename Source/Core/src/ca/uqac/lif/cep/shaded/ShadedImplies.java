@@ -156,6 +156,8 @@ public class ShadedImplies extends ShadedConnective
 	@Override
 	public ShadedImplies cloneNode()
 	{
-		return new ShadedImplies(null, null);
+		ShadedImplies imp = new ShadedImplies(null, null);
+		imp.m_color = m_color;
+		return imp;
 	}
 }

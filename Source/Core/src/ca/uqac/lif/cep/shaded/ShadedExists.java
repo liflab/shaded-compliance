@@ -98,8 +98,10 @@ public class ShadedExists extends ShadedQuantifier
 	}
 	
 	@Override
-	public ShadedConnective cloneNode()
+	public ShadedExists cloneNode()
 	{
-		return duplicate(false);
+		ShadedExists clone = (ShadedExists) duplicate(false);
+		clone.m_color = m_color;
+		return clone;
 	}
 }

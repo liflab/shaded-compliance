@@ -15,28 +15,41 @@
     You should have received a copy of the GNU Lesser General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ca.uqac.lif.cep.shaded.abstraction;
+package treecompliancelab;
 
-import ca.uqac.lif.cep.shaded.ShadedFunction;
+import ca.uqac.lif.cep.shaded.ShadedConnective;
+import ca.uqac.lif.labpal.Named;
 
 /**
- * A tree abstraction that applies no modification to an evaluation tree.
+ * Factory for creating properties.
  * @author Sylvain Hallé
  */
-public class Identity implements TreeAbstraction
+public interface PropertyFactory
 {
 	/**
-	 * Creates a new instance of the identity abstraction.
-	 * @return The instance
+	 * Gets a property by its name.
+	 * 
+	 * @param name
+	 *          The name of the property
+	 * @return The property
 	 */
-	public static Identity id()
-	{
-		return new Identity();
-	}
+	public Named<ShadedConnective> get(String name);
 	
-	@Override
-	public ShadedFunction apply(ShadedFunction f)
+	/**
+	 * A named property.
+	 */
+	public static class NamedProperty implements Named<ShadedConnective>
 	{
-		return f.duplicate(true);
+		@Override
+		public String getName()
+		{
+			return null;
+		}
+
+		@Override
+		public ShadedConnective getObject()
+		{
+			return null;
+		}
 	}
 }

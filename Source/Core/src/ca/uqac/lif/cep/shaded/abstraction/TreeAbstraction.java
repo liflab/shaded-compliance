@@ -25,5 +25,10 @@ import ca.uqac.lif.cep.shaded.ShadedFunction;
  */
 public interface TreeAbstraction
 {
-	public ShadedFunction abstractify(ShadedFunction f);
+	/**
+	 * Applies the abstraction to a given evaluation tree.
+	 * @param f The evaluation tree
+	 * @return The abstracted tree
+	 */
+	public ShadedFunction apply(ShadedFunction f);
 }

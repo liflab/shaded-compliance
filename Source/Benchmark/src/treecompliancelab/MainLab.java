@@ -64,17 +64,23 @@ public class MainLab extends Laboratory
 
 			// Beep Store
 			{
+				BeepStoreProperty props = new BeepStoreProperty();
+				TreeAbstractionFactory abstractions = new TreeAbstractionFactory();
+				
 				FileSystem fs = new Chroot(main_fs, "data/beepstore");
 				List<String> filenames = FileUtils.ls(fs, "", "log-(\\d|1\\d|2\\d)\\.xml");
 				//List<String> filenames = Arrays.asList("log-5.xml", "log-6.xml");
-				Region big_r = product(extension("Property", 
-						(Object[]) BeepStoreProperty.getProperties()));
-				for (Region r : big_r.all("Property"))
+				Region big_r = product(
+						extension("Property", (Object[]) props.getProperties()),
+						extension("Abstraction", (Object[]) abstractions.getAbstractions())
+				);
+				for (Region r : big_r.all("Property", "Abstraction"))
 				{
 					String property = r.asPoint().getString("Property");
+					String abstraction = r.asPoint().getString("Abstraction");
 					LogPairPicker<XmlElement> picker = new LogPairPicker<XmlElement>(new FileLogPicker("<Message>", "</Message>", fs, filenames));
-					TreeComparisonExperiment<XmlElement> experiment = new TreeComparisonExperiment<>(
-							"Beep Store", property, BeepStoreProperty.get(property), new Subsumption(), picker);
+					TreeComparisonExperiment<XmlElement> experiment = new TreeComparisonExperiment<XmlElement>(
+							"Beep Store", props.get(property), new Subsumption(), abstractions.get(abstraction), picker);
 					add(experiment);
 					results.add(experiment);
 					ExperimentTable et = new ExperimentTable(TREE_SIZE, TIME);
@@ -86,15 +92,21 @@ public class MainLab extends Laboratory
 			}
 			// CVC Procedure
 			{
+				CvcProperty props = new CvcProperty();
+				TreeAbstractionFactory abstractions = new TreeAbstractionFactory();
 				FileSystem fs = new Chroot(main_fs, "data/cvc");
 				List<String> filenames = FileUtils.ls(fs, "", ".*\\.csv");
-				Region big_r = product(extension("Property", CvcProperty.MAX_DURATION, CvcProperty.LIFECYCLE));
-				for (Region r : big_r.all("Property"))
+				Region big_r = product(
+						extension("Property", (Object[]) props.getProperties()),
+						extension("Abstraction", (Object[]) abstractions.getAbstractions())
+				);
+				for (Region r : big_r.all("Property", "Abstraction"))
 				{
 					String property = r.asPoint().getString("Property");
+					String abstraction = r.asPoint().getString("Abstraction");
 					LogPairPicker<Map<String,Object>> picker = new LogPairPicker<>(new CvcLogPicker(fs, filenames));
-					TreeComparisonExperiment<Map<String,Object>> experiment = new TreeComparisonExperiment<>(
-							"CVC Procedure", property, CvcProperty.get(property), new Subsumption(), picker);
+					TreeComparisonExperiment<Map<String,Object>> experiment = new TreeComparisonExperiment<Map<String,Object>>(
+							"CVC Procedure", props.get(property), new Subsumption(), abstractions.get(abstraction), picker);
 					add(experiment);
 					results.add(experiment);
 				}

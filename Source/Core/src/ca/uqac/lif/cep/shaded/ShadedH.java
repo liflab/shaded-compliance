@@ -162,8 +162,10 @@ public class ShadedH extends ShadedPastLtlOperator
 	}
 	
 	@Override
-	public ShadedConnective cloneNode()
+	public ShadedH cloneNode()
 	{
-		return duplicate(false);
+		ShadedH clone = duplicate(false);
+		clone.m_color = m_color;
+		return clone;
 	}
 }

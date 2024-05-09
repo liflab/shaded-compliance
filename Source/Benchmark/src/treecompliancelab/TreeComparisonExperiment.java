@@ -21,6 +21,7 @@ import java.util.List;
 
 import ca.uqac.lif.cep.shaded.DotRenderer.Format;
 import ca.uqac.lif.cep.shaded.ShadedConnective;
+import ca.uqac.lif.cep.shaded.ShadedFunction;
 import ca.uqac.lif.cep.shaded.Subsumption;
 import ca.uqac.lif.cep.shaded.TreeRenderer;
 import ca.uqac.lif.cep.shaded.abstraction.TreeAbstraction;
@@ -28,9 +29,16 @@ import ca.uqac.lif.json.JsonList;
 import ca.uqac.lif.labpal.experiment.Experiment;
 import ca.uqac.lif.labpal.util.Stopwatch;
 import ca.uqac.lif.units.si.Second;
+import treecompliancelab.PropertyFactory.NamedProperty;
+import treecompliancelab.TreeAbstractionFactory.NamedTreeAbstraction;
 
 public class TreeComparisonExperiment<T> extends Experiment
 {
+	/**
+	 * Name of parameter "Abstraction".
+	 */
+	public static final String ABSTRACTION = "Abstraction";
+	
 	/**
 	 * Name of parameter "Average time".
 	 */
@@ -106,12 +114,12 @@ public class TreeComparisonExperiment<T> extends Experiment
 	/**
 	 * The condition to evaluate on each log.
 	 */
-	protected final ShadedConnective m_condition;
+	protected final NamedProperty m_condition;
 	
 	/**
 	 * The tree abstraction to apply to each evaluation tree.
 	 */
-	protected final TreeAbstraction m_abstraction;
+	protected final NamedTreeAbstraction m_abstraction;
 
 	/**
 	 * Creates a new tree comparison experiment.
@@ -121,12 +129,13 @@ public class TreeComparisonExperiment<T> extends Experiment
 	 * @param comparator
 	 * @param picker
 	 */
-	public TreeComparisonExperiment(String scenario, String condition_name, ShadedConnective condition, Subsumption comparator, TreeAbstraction abstraction, LogPairPicker<T> picker)
+	public TreeComparisonExperiment(String scenario, NamedProperty condition, Subsumption comparator, NamedTreeAbstraction abstraction, LogPairPicker<T> picker)
 	{
 		super();
 		setTimeout(new Second(60));
 		describe(SCENARIO, "The scenario the condition and event traces come from");
 		describe(CONDITION, "The condition evaluated on each event trace");
+		describe(ABSTRACTION, "The abstraction applied on evaluation trees");
 		describe(LOG_SIZE_MIN, "The size of the smallest log");
 		describe(LOG_SIZE_MAX, "The size of the largest log");
 		describe(TREE_SIZE_MIN, "The size of the smallest tree");
@@ -137,7 +146,8 @@ public class TreeComparisonExperiment<T> extends Experiment
 		describe(TIME, "The time taken to evaluate each log pair (in ms)");
 		describe(TREE_SIZE, "The cumulative size of each pair of trees (in ms)");
 		writeInput(SCENARIO, scenario);
-		writeInput(CONDITION, condition_name);
+		writeInput(CONDITION, condition.getName());
+		writeInput(ABSTRACTION, abstraction.getName());
 		writeOutput(TIME, new JsonList());
 		writeOutput(TREE_SIZE, new JsonList());
 		m_condition = condition;
@@ -158,6 +168,8 @@ public class TreeComparisonExperiment<T> extends Experiment
 		int total_pairs = 0;
 		JsonList l_time = (JsonList) read(TIME);
 		JsonList l_size = (JsonList) read(TREE_SIZE);
+		ShadedConnective phi = m_condition.getObject();
+		TreeAbstraction tau = m_abstraction.getObject();
 		while (!m_picker.isDone())
 		{
 			// Check if experiment has been interrupted and step out of the loop
@@ -168,7 +180,7 @@ public class TreeComparisonExperiment<T> extends Experiment
 				break;
 			}
 			List<T>[] pair = m_picker.pick();
-			ShadedConnective tree1 = m_condition.duplicate();
+			ShadedFunction tree1 = phi.duplicate();
 			log_size_min = Math.min(log_size_min, pair[0].size());
 			log_size_min = Math.min(log_size_min, pair[1].size());
 			log_size_max = Math.max(log_size_max, pair[0].size());
@@ -178,11 +190,13 @@ public class TreeComparisonExperiment<T> extends Experiment
 			{
 				tree1.update(e);
 			}
-			ShadedConnective tree2 = m_condition.duplicate();
+			tree1 = tau.apply(tree1);
+			ShadedFunction tree2 = phi.duplicate();
 			for (T e : pair[1])
 			{
 				tree2.update(e);
 			}
+			tree2 = tau.apply(tree2);
 			if (total_pairs == 0)
 			{
 				// We count pairs here, since the picker generates the pairs
@@ -200,10 +214,10 @@ public class TreeComparisonExperiment<T> extends Experiment
 			}
 			int size1 = tree1.size(), size2 = tree2.size();
 			l_size.add(size1 + size2);
-			System.err.print("<");
+			//System.err.print("<");
 			boolean b = m_comparator.inRelationInterruptible(tree1, tree2);
 			subsumed += b ? 1 : 0;
-			System.err.print(">");
+			//System.err.print(">");
 			tree_size_min = Math.min(tree_size_min, size1);
 			tree_size_min = Math.min(tree_size_min, size2);
 			tree_size_max = Math.max(tree_size_max, size1);

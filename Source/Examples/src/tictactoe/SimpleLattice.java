@@ -14,8 +14,12 @@ import java.util.Map;
 
 import ca.uqac.lif.cep.shaded.LatticeGenerator;
 import ca.uqac.lif.cep.shaded.ShadedConnective;
+import ca.uqac.lif.cep.shaded.ShadedFunction;
 import ca.uqac.lif.cep.shaded.ShadedGraph;
 import ca.uqac.lif.cep.shaded.Subsumption;
+import ca.uqac.lif.cep.shaded.abstraction.TreeAbstraction;
+import ca.uqac.lif.cep.shaded.abstraction.TriggerAtDepth;
+import ca.uqac.lif.cep.shaded.abstraction.TruncateRoot;
 import ca.uqac.lif.cep.shaded.DotRenderer.Format;
 
 public class SimpleLattice
@@ -23,10 +27,10 @@ public class SimpleLattice
 
 	public static void main(String[] args)
 	{
-		ShadedConnective phi = or(G (eq(fetch("a"), 0)), G (and (eq(fetch("a"), 1), eq(fetch("b"), 0))));
-		//ShadedConnective phi = or(G (eq(fetch("a"), 0)), G (eq(fetch("b"), 0)));
-		
-		List<ShadedConnective> elements = new ArrayList<>();
+		//ShadedConnective phi = or(G (eq(fetch("a"), 0)), G (and (eq(fetch("a"), 1), eq(fetch("b"), 0))));
+		ShadedConnective phi = or(G (eq(fetch("a"), 0)), G (eq(fetch("b"), 0)));
+		TreeAbstraction abs = new TriggerAtDepth(3, new TruncateRoot());
+		List<ShadedFunction> elements = new ArrayList<>();
 		for (int a1 = 0; a1 <= 2; a1++)
 		{
 			for (int b1 = 0; b1 <= 2; b1++)
@@ -39,10 +43,14 @@ public class SimpleLattice
 						{
 							for (int b3 = 0; b3 <= 1; b3++)
 							{
-								ShadedConnective conf = phi.duplicate();
+								ShadedFunction conf = phi.duplicate();
 								conf.update(map("a", a1, "b", b1));
 								conf.update(map("a", a2, "b", b2));
 								conf.update(map("a", a3, "b", b3));
+								if (abs != null)
+								{
+									conf = abs.apply(conf);
+								}
 								elements.add(conf);
 							}
 						}

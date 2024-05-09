@@ -47,7 +47,7 @@ import ca.uqac.lif.xml.XPathExpression.XPathParseException;
  * </blockquote>
  */
 @SuppressWarnings("unused")
-public class BeepStoreProperty
+public class BeepStoreProperty implements PropertyFactory
 {
 	public static final String ONCE_LOGIN = "Once Login";
 	
@@ -67,35 +67,157 @@ public class BeepStoreProperty
 	
 	public static final String NO_LOGIN_TWICE = "No login twice";
 	
-	public static String[] getProperties()
+	/**
+	 * Gets the properties that this factory can create.
+	 * @return An array of strings representing the names of the properties
+	 */
+	public String[] getProperties()
 	{
 		return new String[] { HAS_KEY, MAX_CARTS, NO_CART_BEFORE_LOGIN,
 				NO_DUPLICATE_ITEM, NO_LOGIN_TWICE, ONCE_LOGIN,
 				ONCE_ITEM_SEARCH, PAGE_IF_RESULTS, PAGE_INTERVAL };
 	}
 
-	public static ShadedConnective get(String name)
+	@Override
+	public NamedProperty get(String name)
 	{
 		switch (name)
 		{
 			case HAS_KEY:
-				return hasKey();
+				return new NamedProperty()
+				{
+					@Override
+					public String getName()
+					{
+						return HAS_KEY;
+					}
+					
+					@Override
+					public ShadedConnective getObject()
+					{
+						return hasKey();
+					}
+				};
 			case MAX_CARTS:
-				return maximumCarts();
+				return new NamedProperty()
+				{
+					@Override
+					public String getName()
+					{
+						return MAX_CARTS;
+					}
+
+					@Override
+					public ShadedConnective getObject()
+					{
+						return maximumCarts();
+					}
+				};
 			case NO_CART_BEFORE_LOGIN:
-				return noCartOpBeforeLogin();
+				return new NamedProperty()
+				{
+					@Override
+					public String getName()
+					{
+						return NO_CART_BEFORE_LOGIN;
+					}
+
+					@Override
+					public ShadedConnective getObject()
+					{
+						return noCartOpBeforeLogin();
+					}
+				};
 			case NO_DUPLICATE_ITEM:
-				return noDuplicateItems();
+				return new NamedProperty()
+				{
+					@Override
+					public String getName()
+					{
+						return NO_DUPLICATE_ITEM;
+					}
+
+					@Override
+					public ShadedConnective getObject()
+					{
+						return noDuplicateItems();
+					}
+				};
 			case NO_LOGIN_TWICE:
-				return noLoginTwice();
+				return new NamedProperty()
+				{
+					@Override
+					public String getName()
+					{
+						return NO_LOGIN_TWICE;
+					}
+
+					@Override
+					public ShadedConnective getObject()
+					{
+						return noLoginTwice();
+					}
+				};
 			case ONCE_LOGIN:
-				return onceLogin();
+				return new NamedProperty()
+				{
+					@Override
+					public String getName()
+					{
+						return ONCE_LOGIN;
+					}
+
+					@Override
+					public ShadedConnective getObject()
+					{
+						return onceLogin();
+					}
+				};
 			case ONCE_ITEM_SEARCH:
-				return onceItemSearch();
+				return new NamedProperty()
+				{
+					@Override
+					public String getName()
+					{
+						return ONCE_ITEM_SEARCH;
+					}
+
+					@Override
+					public ShadedConnective getObject()
+					{
+						return onceItemSearch();
+					}
+				};
 			case PAGE_IF_RESULTS:
-				return pageIfResults();
+				return new NamedProperty()
+				{
+					@Override
+					public String getName()
+					{
+						return PAGE_IF_RESULTS;
+					}
+
+					@Override
+					public ShadedConnective getObject()
+					{
+						return pageIfResults();
+					}
+				};
 			case PAGE_INTERVAL:
-				return pageInterval();
+				return new NamedProperty()
+				{
+					@Override
+					public String getName()
+					{
+						return PAGE_INTERVAL;
+					}
+
+					@Override
+					public ShadedConnective getObject()
+					{
+						return pageInterval();
+					}
+				};
 			default:
 				return null;
 		}

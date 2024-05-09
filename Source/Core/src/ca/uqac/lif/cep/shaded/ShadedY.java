@@ -171,6 +171,8 @@ public class ShadedY extends ShadedConnective
 	@Override
 	public ShadedY cloneNode()
 	{
-		return duplicate(false);
+		ShadedY clone = duplicate(false);
+		clone.m_color = m_color;
+		return clone;
 	}
 }

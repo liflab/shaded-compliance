@@ -31,6 +31,10 @@ import java.util.Map;
 import java.util.Scanner;
 
 import ca.uqac.lif.cep.shaded.DotRenderer.Format;
+import ca.uqac.lif.cep.shaded.abstraction.Identity;
+import ca.uqac.lif.cep.shaded.abstraction.TreeAbstraction;
+import ca.uqac.lif.cep.shaded.abstraction.TriggerAtDepth;
+import ca.uqac.lif.cep.shaded.abstraction.TruncateRoot;
 import ca.uqac.lif.fs.FileSystemException;
 import ca.uqac.lif.fs.FileUtils;
 import ca.uqac.lif.util.CliParser;
@@ -60,7 +64,9 @@ public class CommandLine
 		case "draw-hasse":
 			status = drawHasse(Arrays.copyOfRange(args, 1, args.length));
 			break;
-
+		default:
+				System.err.println("Unknown action: " + action);
+				System.exit(9);
 		}
 		if (status != 0)
 		{
@@ -74,6 +80,7 @@ public class CommandLine
 		CliParser parser = new CliParser();
 		parser.addArgument(new Argument().withLongName("property").withArgument("file").withDescription("Evaluate property in file"));
 		parser.addArgument(new Argument().withLongName("in-format").withArgument("f").withDescription("Input traces in format f"));
+		parser.addArgument(new Argument().withLongName("abstract").withArgument("t").withDescription("Apply tree abstraction t"));
 		ArgumentMap params = parser.parse(args);
 		ShadedConnective phi = getProperty(params);
 		if (phi == null)
@@ -86,12 +93,13 @@ public class CommandLine
 			System.err.println("Compare requires at least two filenames");
 			return 1;
 		}
+		TreeAbstraction abs = params.hasOption("abstract") ? getTreeAbstraction(params.getOptionValue("abstract")) : null;
 		boolean[][] matrix = new boolean[filenames.size()][filenames.size()];
 		for (int i = 0; i < filenames.size(); i++)
 		{
 			for (int j = 0; j < filenames.size(); j++)
 			{
-				matrix[i][j] = compareFiles(phi, filenames.get(i), filenames.get(j));
+				matrix[i][j] = compareFiles(phi, abs, filenames.get(i), filenames.get(j));
 			}
 		}
 		printMatrix(matrix, System.out);
@@ -103,37 +111,39 @@ public class CommandLine
 		CliParser parser = new CliParser();
 		parser.addArgument(new Argument().withLongName("property").withArgument("file").withDescription("Evaluate property in file"));
 		parser.addArgument(new Argument().withLongName("in-format").withArgument("f").withDescription("Input traces in format f"));
+		parser.addArgument(new Argument().withLongName("abstract").withArgument("t").withDescription("Apply tree abstraction t"));
 		ArgumentMap params = parser.parse(args);
 		ShadedConnective phi = getProperty(params);
 		if (phi == null)
 		{
 			return 2;
 		}
+		TreeAbstraction abs = params.hasOption("abstract") ? getTreeAbstraction(params.getOptionValue("abstract")) : null;
 		List<String> filenames = params.getOthers();
-		if (filenames.size() < 2)
+		if (filenames.size() < 1)
 		{
-			System.err.println("Compare requires at least two filenames");
+			System.err.println("Draw tree requires at least one filename");
 			return 1;
 		}
 		for (int i = 0; i < filenames.size(); i++)
 		{
-			drawTree(phi, filenames.get(i));
+			drawTree(phi, abs, filenames.get(i));
 		}
 		return 0;
 	}
 
-	protected static void drawTree(ShadedConnective phi, String filename)
+	protected static void drawTree(ShadedConnective phi, TreeAbstraction abs, String filename)
 	{
-		ShadedConnective phi1 = feed(phi, filename);
+		ShadedFunction phi1 = feed(phi, abs, filename);
 		TreeRenderer renderer = new TreeRenderer(false);
 		renderer.toImage(phi1, filename.replaceAll("csv", "png"), Format.PNG);
 	}
 
-	protected static boolean compareFiles(ShadedConnective phi, String filename1, String filename2)
+	protected static boolean compareFiles(ShadedConnective phi, TreeAbstraction abs, String filename1, String filename2)
 	{
 		Subsumption sub = new Subsumption();
-		ShadedConnective phi1 = feed(phi, filename1);
-		ShadedConnective phi2 = feed(phi, filename1);
+		ShadedFunction phi1 = feed(phi, abs, filename1);
+		ShadedFunction phi2 = feed(phi, abs, filename2);
 		return sub.inRelation(phi1, phi2);
 	}
 
@@ -229,6 +239,7 @@ public class CommandLine
 		parser.addArgument(new Argument().withLongName("in-format").withArgument("f").withDescription("Input traces in format f"));
 		parser.addArgument(new Argument().withLongName("output").withArgument("file").withDescription("Output diagram to file"));
 		parser.addArgument(new Argument().withLongName("with-trees").withArgument("prefix").withDescription("Output trees to files with prefix"));
+		parser.addArgument(new Argument().withLongName("abstract").withArgument("t").withDescription("Apply tree abstraction t"));
 		ArgumentMap params = parser.parse(args);
 		ShadedConnective phi = getProperty(params);
 		if (phi == null)
@@ -240,11 +251,12 @@ public class CommandLine
 			System.err.println("draw-hasse requires an output file");
 			return 4;
 		}
+		TreeAbstraction abs = params.hasOption("abstract") ? getTreeAbstraction(params.getOptionValue("abstract")) : null;
 		List<String> filenames = params.getOthers();
-		List<ShadedConnective> elements = new ArrayList<>();
+		List<ShadedFunction> elements = new ArrayList<>();
 		for (int i = 0; i < filenames.size(); i++)
 		{
-			elements.add(feed(phi, filenames.get(i)));
+			elements.add(feed(phi, abs, filenames.get(i)));
 		}
 		LatticeGenerator gen = new LatticeGenerator(new Subsumption(true));
 		ShadedGraph g = gen.getLattice(elements);
@@ -283,13 +295,17 @@ public class CommandLine
 		return phi;
 	}
 
-	protected static ShadedConnective feed(ShadedConnective phi, String filename)
+	protected static ShadedFunction feed(ShadedConnective phi, TreeAbstraction abs, String filename)
 	{
 		List<?> trace = readTrace(filename);
-		ShadedConnective phi1 = phi.duplicate();
+		ShadedFunction phi1 = phi.duplicate();
 		for (Object e : trace)
 		{
 			phi1.update(e);
+		}
+		if (abs != null)
+		{
+			phi1 = abs.apply(phi1);
 		}
 		return phi1;
 	}
@@ -308,5 +324,24 @@ public class CommandLine
 			}
 		}
 		return o;
+	}
+	
+	/**
+	 * Get a tree abstraction from its name.
+	 * @param name The name of the tree abstraction
+	 * @return The tree abstraction
+	 */
+	protected static TreeAbstraction getTreeAbstraction(String name)
+	{
+		switch (name)
+        {
+        case "identity":
+            return new Identity();
+        case "truncate-2":
+          return new TriggerAtDepth(2, new TruncateRoot());
+        case "truncate-3":
+            return new TriggerAtDepth(3, new TruncateRoot());
+        }
+        return null;
 	}
 }

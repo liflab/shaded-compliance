@@ -26,13 +26,27 @@ import ca.uqac.lif.cep.shaded.ShadedFunction;
  */
 public class Compose implements TreeAbstraction
 {
+	/**
+	 * Creates a new instance of the composition of multiple abstractions.
+	 * 
+	 * @param abstractions
+	 *          The abstractions to compose
+	 * @return The instance
+	 */
 	public static Compose compose(TreeAbstraction... abstractions)
 	{
 		return new Compose(abstractions);
 	}
 	
+	/**
+	 * The abstractions to compose.
+	 */
 	protected final TreeAbstraction[] m_abstractions;
 
+	/**
+	 * Creates a new instance of the composition of multiple abstractions.
+	 * @param abstractions The abstractions to compose
+	 */
 	public Compose(TreeAbstraction... abstractions)
 	{
 		super();
@@ -40,12 +54,12 @@ public class Compose implements TreeAbstraction
 	}
 
 	@Override
-	public ShadedFunction abstractify(ShadedFunction f)
+	public ShadedFunction apply(ShadedFunction f)
 	{
 		ShadedFunction out_f = f;
 		for (TreeAbstraction a : m_abstractions)
 		{
-			out_f = a.abstractify(out_f);
+			out_f = a.apply(out_f);
 		}
 		return out_f;
 	}

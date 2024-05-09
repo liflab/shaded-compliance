@@ -166,6 +166,8 @@ public class ShadedX extends ShadedConnective
 	@Override
 	public ShadedX cloneNode()
 	{
-		return duplicate(false);
+		ShadedX clone = duplicate(false);
+		clone.m_color = m_color;
+		return clone;
 	}
 }

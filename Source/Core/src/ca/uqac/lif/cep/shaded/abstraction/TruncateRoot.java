@@ -19,7 +19,10 @@ package ca.uqac.lif.cep.shaded.abstraction;
 
 import ca.uqac.lif.cep.shaded.ShadedConnective;
 import ca.uqac.lif.cep.shaded.ShadedConstant;
+import ca.uqac.lif.cep.shaded.ShadedFalse;
 import ca.uqac.lif.cep.shaded.ShadedFunction;
+import ca.uqac.lif.cep.shaded.ShadedTrue;
+import ca.uqac.lif.cep.shaded.ShadedConnective.Color;
 
 /**
  * Truncates the tree at the root level, i.e. removes all the children of the
@@ -36,13 +39,17 @@ public class TruncateRoot implements TreeAbstraction
 	}
 	
 	@Override
-	public ShadedFunction abstractify(ShadedFunction f)
+	public ShadedFunction apply(ShadedFunction f)
 	{
 		if (!(f instanceof ShadedConnective))
 		{
 			return new ShadedConstant(null);
 		}
 		ShadedConnective f_c = (ShadedConnective) f;
-		return new ShadedConstant(f_c.getValue());
+		if (f_c.getValue() == Color.GREEN)
+		{
+			return new ShadedTrue();
+		}
+		return new ShadedFalse();
 	}
 }

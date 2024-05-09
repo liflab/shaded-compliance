@@ -98,8 +98,10 @@ public class ShadedForAll extends ShadedQuantifier
 	}
 	
 	@Override
-	public ShadedConnective cloneNode()
+	public ShadedForAll cloneNode()
 	{
-		return duplicate(false);
+		ShadedForAll clone = (ShadedForAll) duplicate(false);
+		clone.m_color = m_color;
+		return clone;
 	}
 }

@@ -33,17 +33,17 @@ import ca.uqac.lif.cep.shaded.ShadedConnective.Color;
  */
 public class ShadedGraph
 {
-	protected List<ShadedConnective> m_orderedElements;
+	protected List<ShadedFunction> m_orderedElements;
 
-	protected Map<ShadedConnective,Integer> m_toId;
+	protected Map<ShadedFunction,Integer> m_toId;
 
-	protected Map<Integer,ShadedConnective> m_fromId;
+	protected Map<Integer,ShadedFunction> m_fromId;
 
 	protected Map<Integer,Integer> m_multiplicity;
 
 	protected boolean[][] m_adjacency;
 
-	public ShadedGraph(List<ShadedConnective> elements)
+	public ShadedGraph(List<ShadedFunction> elements)
 	{
 		super();
 		m_orderedElements = elements;
@@ -83,7 +83,7 @@ public class ShadedGraph
 	 * @param from The source connective
 	 * @param to The destination connective
 	 */
-	public void addEdge(ShadedConnective from, ShadedConnective to)
+	public void addEdge(ShadedFunction from, ShadedFunction to)
 	{
 		Integer from_id = m_toId.get(from);
 		Integer to_id = m_toId.get(to);
@@ -147,7 +147,7 @@ public class ShadedGraph
 		TreeRenderer tr = new TreeRenderer(false);
 		for (int i = 0; i < m_orderedElements.size(); i++)
 		{
-			ShadedConnective s = m_orderedElements.get(i);
+			ShadedFunction s = m_orderedElements.get(i);
 			tr.toImage(s, prefix + i + ".png", DotRenderer.Format.PNG);
 		}
 	}
@@ -164,9 +164,9 @@ public class ShadedGraph
 		ps.println("  edge [dir=none];");
 		ps.println("  splines=false;");
 		ps.println("  node [shape=\"circle\",height=0.3,width=0.3,fixedsize=\"true\",style=\"filled\"];");
-		for (ShadedConnective connective : m_orderedElements)
+		for (ShadedFunction connective : m_orderedElements)
 		{
-			Color color = connective.getValue();
+			Color color = connective instanceof ShadedConnective ? ((ShadedConnective) connective).getValue() : null;
 			int id = m_toId.get(connective);
 			int multiplicity = m_multiplicity.get(id);
 			ps.print("  " + id + " [label=<" + id + "\u00d7" + multiplicity + ">,fillcolor=" + (color == Color.GREEN ? "\"green\"" : "\"red\"") + "];\n");

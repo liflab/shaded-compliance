@@ -140,7 +140,9 @@ public class ShadedAnd extends ShadedNaryConnective
 	@Override
 	public ShadedAnd cloneNode()
 	{
-		return new ShadedAnd();
+		ShadedAnd and = new ShadedAnd();
+		and.m_color = m_color;
+		return and;
 	}
 
 	@Override

@@ -156,7 +156,9 @@ public class ShadedO extends ShadedPastLtlOperator
 	@Override
 	public ShadedO cloneNode()
 	{
-		return duplicate(false);
+		ShadedO clone = duplicate(false);
+		clone.m_color = m_color;
+		return clone;
 	}
 }
 

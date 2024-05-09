@@ -25,33 +25,52 @@ import java.util.Map;
 import java.util.Set;
 
 import ca.uqac.lif.cep.shaded.DotRenderer.Format;
+import ca.uqac.lif.cep.shaded.abstraction.TreeAbstraction;
 
 public class LatticeGenerator
 {
 	protected final TreeComparator m_relation;
+	
+	protected final TreeAbstraction m_abstraction;
 
 	protected final Map<Integer,Integer> m_classes;
 
-	public LatticeGenerator(TreeComparator relation)
+	public LatticeGenerator(TreeComparator relation, TreeAbstraction abs)
 	{
 		super();
 		m_relation = relation;
+		m_abstraction = abs;
 		m_classes = new HashMap<>();
 	}
-
-	public ShadedGraph getLattice(List<ShadedConnective> elements)
+	
+	public LatticeGenerator(TreeComparator relation)
 	{
+		this(relation, null);
+	}
+
+	public ShadedGraph getLattice(List<? extends ShadedFunction> elements)
+	{
+		if (m_abstraction != null)
+		{
+			List<ShadedFunction> new_elements = new ArrayList<>();
+			for (ShadedFunction f : elements)
+			{
+				ShadedFunction new_f = m_abstraction.apply(f);
+				new_elements.add(new_f);
+			}
+			elements = new_elements;
+		}
 		ShadedGraph g_unique = createLattice(elements);
 		//System.out.println("Original");
-		g_unique.printMatrix(System.out);
+		//g_unique.printMatrix(System.out);
 		ShadedGraph g_trans = g_unique.getTransitiveClosure();
 		removeTransitiveEdges(g_unique, g_trans);
 		//System.out.println("Edge removal");
-		g_unique.printMatrix(System.out);
+		//g_unique.printMatrix(System.out);
 		return g_unique;
 	}
 
-	protected ShadedGraph createLattice(List<ShadedConnective> elements)
+	protected ShadedGraph createLattice(List<? extends ShadedFunction> elements)
 	{
 		boolean[][] adj = new boolean[elements.size()][elements.size()];
 		Set<Integer> to_remove = new HashSet<>();
@@ -69,15 +88,9 @@ public class LatticeGenerator
 			ShadedFunction f1 = elements.get(i);
 			for (int j = i + 1; j < elements.size(); j++)
 			{
-				/*if (to_remove.contains(j))
-				{
-					continue;
-				}*/
 				ShadedFunction f2 = elements.get(j);
 				adj[i][j] = m_relation.inRelation(f1, f2);
-				//System.out.println(i + "," + j + ":" + adj[i][j]);
 				adj[j][i] = m_relation.inRelation(f2, f1);
-				//System.out.println(j + "," + i + ":" + adj[j][i]);
 				if (adj[i][j] && adj[j][i])
 				{
 					to_remove.add(j);
@@ -88,7 +101,7 @@ public class LatticeGenerator
 			original.put(i, equiv);
 			multiplicity.put(i, mul);
 		}
-		List<ShadedConnective> new_elements = new ArrayList<>();
+		List<ShadedFunction> new_elements = new ArrayList<>();
 		{
 			int i_cnt = 0;
 			for (int i = 0; i < elements.size(); i++)
@@ -105,12 +118,12 @@ public class LatticeGenerator
 				}
 			}
 		}
-		for (int x = 0; x < adj.length; x++)
+		/*for (int x = 0; x < adj.length; x++)
 		{
 			for (int y = 0; y < adj.length; y++)
 				System.out.print(adj[x][y] ? "1 " : "0 ");
 			System.out.println();
-		}
+		}*/
 		ShadedGraph new_g = new ShadedGraph(new_elements);
 		int i_cnt = 0;
 		for (int i = 0; i < elements.size(); i++)
@@ -135,13 +148,13 @@ public class LatticeGenerator
 		return new_g;
 	}
 	
-	public void dumpTrees(String prefix, List<ShadedConnective> elements)
+	public void dumpTrees(String prefix, List<? extends ShadedFunction> elements)
 	{
 		TreeRenderer renderer = new TreeRenderer(false);
 		for (int i = 0; i < elements.size(); i++)
 		{
 			int class_nb = m_classes.get(i);
-			ShadedConnective c = elements.get(i);
+			ShadedFunction c = elements.get(i);
 			renderer.toImage(c, prefix + "_" + i + "_C" + class_nb + ".png", Format.PNG, i + " class " + class_nb);
 		}
 	}

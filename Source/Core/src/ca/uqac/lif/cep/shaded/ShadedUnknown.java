@@ -17,48 +17,41 @@
  */
 package ca.uqac.lif.cep.shaded;
 
-import ca.uqac.lif.cep.shaded.ShadedComparison.ShadedEquals;
-import ca.uqac.lif.cep.shaded.ShadedConnective.Color;
-
-public class ShadedConstant implements ShadedFunction
+/**
+ * A constant connective with no value.
+ * @author Sylvain Hallé
+ */
+public class ShadedUnknown extends ShadedConnective
 {
-	public static ShadedFunction wrap(Object o)
-	{
-		if (o instanceof ShadedFunction)
-		{
-			return (ShadedFunction) o;
-		}
-		else
-		{
-			return new ShadedConstant(o);
-		}
-	}
-	protected final Object m_value;
-	
-	public ShadedConstant(Object value)
+	public ShadedUnknown()
 	{
 		super();
-		m_value = value;
+		m_color = null;
 	}
-	
-	@Override
-	public ShadedConstant cloneNode()
-	{
-		return new ShadedConstant(m_value);
-	}
-	
-	@Override
-	public ShadedConstant addOperand(ShadedFunction f)
-	{
-		// Do nothing
-		return this;
-	}
-	
 	
 	@Override
 	public int size()
 	{
 		return 1;
+	}
+	
+	@Override
+	public ShadedUnknown cloneNode()
+	{
+		return new ShadedUnknown();
+	}
+	
+	@Override
+	public void trim()
+	{
+		// Do nothing
+	}
+	
+	@Override
+	public ShadedUnknown addOperand(ShadedFunction f)
+	{
+		// Do nothing
+		return this;
 	}
 	
 	@Override
@@ -68,26 +61,32 @@ public class ShadedConstant implements ShadedFunction
 	}
 	
 	@Override
-	public boolean sameAs(ShadedFunction o)
-	{
-		if (!(o instanceof ShadedConstant))
-		{
-			return false;
-		}
-		ShadedConstant sfa = (ShadedConstant) o;
-		return ShadedEquals.equals(m_value, sfa.m_value) == Color.GREEN;
-	}
-
-	@Override
-	public ShadedConstant update(Object event)
+	public ShadedUnknown update(Object event)
 	{
 		return this;
+	}
+	
+	@Override
+	protected void toString(StringBuilder out)
+	{
+		out.append("?");
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		return "?".hashCode();
+	}
+	
+	@Override
+	public boolean sameAs(ShadedFunction o)
+	{
+		return o instanceof ShadedUnknown;
 	}
 
 	@Override
 	public int getArity()
 	{
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -98,13 +97,15 @@ public class ShadedConstant implements ShadedFunction
 	}
 
 	@Override
-	public ShadedConstant duplicate(boolean with_state)
+	public ShadedUnknown duplicate(boolean with_state)
 	{
-		return new ShadedConstant(m_value);
+		ShadedUnknown t = new ShadedUnknown();
+		t.setPolarity(m_polarity);
+		return t;
 	}
-
+	
 	@Override
-	public ShadedConstant duplicate()
+	public ShadedUnknown duplicate()
 	{
 		return duplicate(false);
 	}
@@ -112,24 +113,12 @@ public class ShadedConstant implements ShadedFunction
 	@Override
 	public String toString()
 	{
-		return m_value == null ? "null" : m_value.toString();
+		return "?";
 	}
-
+	
 	@Override
 	public String getSymbol()
 	{
-		return m_value == null ? "" : m_value.toString();
-	}
-
-	@Override
-	public Object getValue()
-	{
-		return m_value;
-	}
-
-	@Override
-	public void trim()
-	{
-		// Do nothing
+		return "?";
 	}
 }
