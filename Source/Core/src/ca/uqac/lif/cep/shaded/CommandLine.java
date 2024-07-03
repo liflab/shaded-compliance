@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import ca.uqac.lif.azrael.ObjectPrinter;
 import ca.uqac.lif.azrael.PrintException;
 import ca.uqac.lif.azrael.json.JsonPrinter;
 import ca.uqac.lif.cep.shaded.DotRenderer.Format;
@@ -309,6 +308,7 @@ public class CommandLine
 			e.printStackTrace();
 			return 5;
 		}
+		return 0;
 	}
 
 	protected static ShadedConnective getProperty(ArgumentMap params)
