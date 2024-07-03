@@ -11,7 +11,7 @@ public class ExclusiveGateway<T> implements Bounded<T>
 	
 	protected int m_chosenPicker;
 	
-	@SuppressWarnings("unchecked")
+	@SafeVarargs
 	public ExclusiveGateway(Picker<Float> float_source, Bounded<T>... pickers)
 	{
 		super();
