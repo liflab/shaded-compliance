@@ -59,7 +59,7 @@ public class BankProperty implements PropertyFactory
 	 */
 	public String[] getProperties()
 	{
-		return new String[] { };
+		return new String[] {PAPER_C1, PAPER_C2, PAPER_C3, PAPER_C4};
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public class BankProperty implements PropertyFactory
 					@Override
 					public ShadedConnective getObject()
 					{
-						return paperCondition1();
+						return article11part1();
 					}
 				};
 			case PAPER_C2:

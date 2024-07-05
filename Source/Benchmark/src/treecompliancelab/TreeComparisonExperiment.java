@@ -206,7 +206,7 @@ public class TreeComparisonExperiment<T> extends Experiment
 			setProgression((float) pair_nb / (float) total_pairs);
 			tree1.trim();
 			tree2.trim();
-			if (s_drawTrees && pair_nb == 164)
+			if (s_drawTrees && pair_nb < 10)
 			{
 				TreeRenderer tr = new TreeRenderer(false);
 				tr.toImage(tree1, "/tmp/" + pair_nb + "-1.png", Format.PNG);

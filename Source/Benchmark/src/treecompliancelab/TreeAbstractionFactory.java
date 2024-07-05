@@ -20,6 +20,7 @@ package treecompliancelab;
 import ca.uqac.lif.cep.shaded.abstraction.Identity;
 import ca.uqac.lif.cep.shaded.abstraction.TreeAbstraction;
 import ca.uqac.lif.cep.shaded.abstraction.TriggerAtDepth;
+import ca.uqac.lif.cep.shaded.abstraction.TrimColor;
 import ca.uqac.lif.cep.shaded.abstraction.TruncateRoot;
 import ca.uqac.lif.labpal.Named;
 
@@ -40,9 +41,15 @@ public class TreeAbstractionFactory
 	public static final String TRUNCATE_3 = "Truncate 3";
 	
 	/**
-	 * Name of the tree abstraction that truncates the tree to depth 3.
+	 * Name of the tree abstraction that truncates the tree to depth 5.
 	 */
 	public static final String TRUNCATE_5 = "Truncate 5";
+	
+	/**
+	 * Name of the tree abstraction that removes children of a node
+	 * that have a different color.
+	 */
+	public static final String TRIM_COLOR = "Trim color";
 	
 	/**
 	 * Gets the abstractions that this factory can create.
@@ -50,7 +57,7 @@ public class TreeAbstractionFactory
 	 */
 	public String[] getAbstractions()
 	{
-		return new String[] { IDENTITY, TRUNCATE_3, TRUNCATE_5 };
+		return new String[] { IDENTITY, TRUNCATE_3, TRUNCATE_5, TRIM_COLOR };
 	}
 
 	/**
@@ -105,6 +112,21 @@ public class TreeAbstractionFactory
 							public TreeAbstraction getObject()
 							{
 								return new TriggerAtDepth(5, new TruncateRoot());
+							}
+						};
+					case TRIM_COLOR:
+						return new NamedTreeAbstraction()
+						{
+							@Override
+							public String getName()
+							{
+								return TRIM_COLOR;
+							}
+
+							@Override
+							public TreeAbstraction getObject()
+							{
+								return new TrimColor();
 							}
 						};
 		}

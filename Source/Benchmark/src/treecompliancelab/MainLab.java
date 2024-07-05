@@ -49,7 +49,9 @@ import ca.uqac.lif.labpal.table.ExperimentTable;
 import ca.uqac.lif.spreadsheet.chart.Chart.Axis;
 import ca.uqac.lif.spreadsheet.chart.Scatterplot;
 import ca.uqac.lif.spreadsheet.chart.gnuplot.GnuplotScatterplot;
+import ca.uqac.lif.synthia.random.RandomFloat;
 import ca.uqac.lif.xml.XmlElement;
+import treecompliancelab.data.bank.BankLogPicker;
 import treecompliancelab.data.bank.BankProperty;
 import treecompliancelab.data.beepstore.BeepStoreProperty;
 import treecompliancelab.data.cvc.CvcLogPicker;
@@ -119,8 +121,6 @@ public class MainLab extends Laboratory
 			{
 				BankProperty props = new BankProperty();
 				TreeAbstractionFactory abstractions = new TreeAbstractionFactory();
-				FileSystem fs = new Chroot(main_fs, "data/cvc");
-				List<String> filenames = FileUtils.ls(fs, "", ".*\\.csv");
 				Region big_r = product(
 						extension("Property", (Object[]) props.getProperties()),
 						extension("Abstraction", (Object[]) abstractions.getAbstractions())
@@ -129,7 +129,7 @@ public class MainLab extends Laboratory
 				{
 					String property = r.asPoint().getString("Property");
 					String abstraction = r.asPoint().getString("Abstraction");
-					LogPairPicker<Map<String,Object>> picker = new LogPairPicker<>(new CvcLogPicker(fs, filenames));
+					LogPairPicker<Map<String,Object>> picker = new LogPairPicker<>(new BankLogPicker(10, new RandomFloat()));
 					TreeComparisonExperiment<Map<String,Object>> experiment = new TreeComparisonExperiment<Map<String,Object>>(
 							"Banking process", props.get(property), new Subsumption(), abstractions.get(abstraction), picker);
 					add(experiment);
