@@ -50,6 +50,10 @@ import ca.uqac.lif.spreadsheet.chart.Chart.Axis;
 import ca.uqac.lif.spreadsheet.chart.Scatterplot;
 import ca.uqac.lif.spreadsheet.chart.gnuplot.GnuplotScatterplot;
 import ca.uqac.lif.xml.XmlElement;
+import treecompliancelab.data.bank.BankProperty;
+import treecompliancelab.data.beepstore.BeepStoreProperty;
+import treecompliancelab.data.cvc.CvcLogPicker;
+import treecompliancelab.data.cvc.CvcProperty;
 
 public class MainLab extends Laboratory
 {
@@ -66,14 +70,14 @@ public class MainLab extends Laboratory
 			{
 				BeepStoreProperty props = new BeepStoreProperty();
 				TreeAbstractionFactory abstractions = new TreeAbstractionFactory();
-				
+
 				FileSystem fs = new Chroot(main_fs, "data/beepstore");
 				List<String> filenames = FileUtils.ls(fs, "", "log-(\\d|1\\d|2\\d)\\.xml");
 				//List<String> filenames = Arrays.asList("log-5.xml", "log-6.xml");
 				Region big_r = product(
 						extension("Property", (Object[]) props.getProperties()),
 						extension("Abstraction", (Object[]) abstractions.getAbstractions())
-				);
+						);
 				for (Region r : big_r.all("Property", "Abstraction"))
 				{
 					String property = r.asPoint().getString("Property");
@@ -99,7 +103,7 @@ public class MainLab extends Laboratory
 				Region big_r = product(
 						extension("Property", (Object[]) props.getProperties()),
 						extension("Abstraction", (Object[]) abstractions.getAbstractions())
-				);
+						);
 				for (Region r : big_r.all("Property", "Abstraction"))
 				{
 					String property = r.asPoint().getString("Property");
@@ -107,6 +111,27 @@ public class MainLab extends Laboratory
 					LogPairPicker<Map<String,Object>> picker = new LogPairPicker<>(new CvcLogPicker(fs, filenames));
 					TreeComparisonExperiment<Map<String,Object>> experiment = new TreeComparisonExperiment<Map<String,Object>>(
 							"CVC Procedure", props.get(property), new Subsumption(), abstractions.get(abstraction), picker);
+					add(experiment);
+					results.add(experiment);
+				}
+			}
+			// Banking process
+			{
+				BankProperty props = new BankProperty();
+				TreeAbstractionFactory abstractions = new TreeAbstractionFactory();
+				FileSystem fs = new Chroot(main_fs, "data/cvc");
+				List<String> filenames = FileUtils.ls(fs, "", ".*\\.csv");
+				Region big_r = product(
+						extension("Property", (Object[]) props.getProperties()),
+						extension("Abstraction", (Object[]) abstractions.getAbstractions())
+						);
+				for (Region r : big_r.all("Property", "Abstraction"))
+				{
+					String property = r.asPoint().getString("Property");
+					String abstraction = r.asPoint().getString("Abstraction");
+					LogPairPicker<Map<String,Object>> picker = new LogPairPicker<>(new CvcLogPicker(fs, filenames));
+					TreeComparisonExperiment<Map<String,Object>> experiment = new TreeComparisonExperiment<Map<String,Object>>(
+							"Banking process", props.get(property), new Subsumption(), abstractions.get(abstraction), picker);
 					add(experiment);
 					results.add(experiment);
 				}

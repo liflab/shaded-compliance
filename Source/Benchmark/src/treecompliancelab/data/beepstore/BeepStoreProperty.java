@@ -15,7 +15,7 @@
     You should have received a copy of the GNU Lesser General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package treecompliancelab;
+package treecompliancelab.data.beepstore;
 
 import static ca.uqac.lif.cep.shaded.ShadedAnd.and;
 import static ca.uqac.lif.cep.shaded.ShadedComparison.eq;
@@ -38,6 +38,8 @@ import static ca.uqac.lif.cep.shaded.ShadedX.X;
 
 import ca.uqac.lif.cep.shaded.ShadedConnective;
 import ca.uqac.lif.xml.XPathExpression.XPathParseException;
+import treecompliancelab.PropertyFactory;
+import treecompliancelab.PropertyFactory.NamedProperty;
 
 /**
  * Part of the properties listed here are taken from:

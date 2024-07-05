@@ -8,7 +8,6 @@ import java.util.List;
 import org.junit.Test;
 
 import ca.uqac.lif.synthia.random.RandomFloat;
-import ca.uqac.lif.synthia.sequence.Playback;
 
 public class ParallelGatewayTest
 {
@@ -16,7 +15,7 @@ public class ParallelGatewayTest
 	@Test
 	public void test1()
 	{
-		ParallelGateway<String> interleave = new ParallelGateway<>(new RandomFloat(), new Playback<String>("a", "b", "c").setLoop(false), new Playback<String>("d", "e", "f").setLoop(false));
+		ParallelGateway<String> interleave = new ParallelGateway<>(new RandomFloat(), new ActivitySequence<String>("a", "b", "c").setLoop(false), new ActivitySequence<String>("d", "e", "f").setLoop(false));
 		List<String> interleft = new ArrayList<>();
 		while (!interleave.isDone())
 		{

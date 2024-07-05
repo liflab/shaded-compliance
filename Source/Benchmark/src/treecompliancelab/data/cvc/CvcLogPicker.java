@@ -15,7 +15,7 @@
     You should have received a copy of the GNU Lesser General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package treecompliancelab;
+package treecompliancelab.data.cvc;
 
 import java.io.InputStream;
 import java.util.List;
@@ -24,6 +24,7 @@ import java.util.Map;
 import ca.uqac.lif.cep.shaded.CommandLine;
 import ca.uqac.lif.fs.FileSystem;
 import ca.uqac.lif.synthia.Picker;
+import treecompliancelab.MultiLogPicker;
 
 public class CvcLogPicker extends MultiLogPicker<Map<String,Object>>
 {

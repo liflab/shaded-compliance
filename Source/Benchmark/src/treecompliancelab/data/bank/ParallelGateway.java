@@ -1,20 +1,38 @@
 package treecompliancelab.data.bank;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ca.uqac.lif.synthia.Bounded;
 import ca.uqac.lif.synthia.NoMoreElementException;
 import ca.uqac.lif.synthia.Picker;
 import ca.uqac.lif.synthia.sequence.Knit;
 import ca.uqac.lif.synthia.util.Constant;
 
-public class ParallelGateway<T> extends Knit<T> implements Bounded<T>
+public class ParallelGateway<T> extends Knit<T> implements Gateway<T>
 {
+	protected final List<Gateway<T>> m_originalInstances;
+	
 	@SuppressWarnings("unchecked")
-	public ParallelGateway(Picker<Float> float_source, Bounded<T> ... pickers)
+	public ParallelGateway(Picker<Float> float_source, Gateway<T> ... pickers)
 	{
 		super(new Constant<Picker<T>>(pickers[0]), new Constant<Boolean>(false), new Constant<Boolean>(false), float_source);
-		for (Bounded<T> p : pickers)
+		m_originalInstances = new ArrayList<>(pickers.length);
+		for (Gateway<T> p : pickers)
 		{
-			m_instances.add(p);
+			m_originalInstances.add(p);
+		}
+		m_instances.addAll(m_originalInstances);
+	}
+	
+	@Override
+	public void restart()
+	{
+		m_instances.clear();
+		m_instances.addAll(m_originalInstances);
+		for (Picker<T> g : m_instances)
+		{
+			((Gateway<T>) g).restart();
 		}
 	}
 	

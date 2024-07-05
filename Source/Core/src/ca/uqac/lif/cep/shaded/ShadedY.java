@@ -26,7 +26,7 @@ import java.util.List;
  */
 public class ShadedY extends ShadedConnective
 {
-	public static final ShadedY X(ShadedConnective phi)
+	public static final ShadedY Y(ShadedConnective phi)
 	{
 		return new ShadedY(phi);
 	}

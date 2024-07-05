@@ -1,18 +1,17 @@
 package treecompliancelab.data.bank;
 
-import ca.uqac.lif.synthia.Bounded;
 import ca.uqac.lif.synthia.Picker;
 
-public class ExclusiveGateway<T> implements Bounded<T>
+public class ExclusiveGateway<T> implements Gateway<T>
 {
 	protected final Picker<Float> m_floatSource;
 	
-	protected final Bounded<T>[] m_pickers;
+	protected final Gateway<T>[] m_pickers;
 	
 	protected int m_chosenPicker;
 	
 	@SafeVarargs
-	public ExclusiveGateway(Picker<Float> float_source, Bounded<T>... pickers)
+	public ExclusiveGateway(Picker<Float> float_source, Gateway<T>... pickers)
 	{
 		super();
 		m_floatSource = float_source;
@@ -23,12 +22,22 @@ public class ExclusiveGateway<T> implements Bounded<T>
 	@Override
 	public void reset()
 	{
-		for (Bounded<T> p : m_pickers)
+		for (Gateway<T> p : m_pickers)
 		{
 			p.reset();
 		}
 		m_chosenPicker = -1;
 		m_floatSource.reset();
+	}
+	
+	@Override
+	public void restart()
+	{
+		for (Gateway<T> p : m_pickers)
+		{
+			p.restart();
+		}
+		m_chosenPicker = -1;
 	}
 
 	@Override
@@ -45,10 +54,10 @@ public class ExclusiveGateway<T> implements Bounded<T>
 	@Override
 	public ExclusiveGateway<T> duplicate(boolean with_state)
 	{
-		Bounded<T>[] pickers = new Bounded[m_pickers.length];
+		Gateway<T>[] pickers = new Gateway[m_pickers.length];
 		for (int i = 0; i < m_pickers.length; i++)
 		{
-			pickers[i] = (Bounded<T>) m_pickers[i].duplicate(with_state);
+			pickers[i] = (Gateway<T>) m_pickers[i].duplicate(with_state);
 		}
 		return new ExclusiveGateway<>(m_floatSource.duplicate(with_state), pickers);
 	}

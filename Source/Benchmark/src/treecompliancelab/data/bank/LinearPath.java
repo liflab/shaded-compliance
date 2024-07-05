@@ -4,25 +4,24 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import ca.uqac.lif.synthia.Bounded;
 import ca.uqac.lif.synthia.NoMoreElementException;
 
-public class LinearPath<T> implements Bounded<T>
+public class LinearPath<T> implements Gateway<T>
 {
-	protected List<Bounded<T>> m_list;
+	protected List<Gateway<T>> m_list;
 	
 	protected int m_currentIndex;
 	
 	@SafeVarargs
-	public LinearPath(Bounded<T> ... boundeds)
+	public LinearPath(Gateway<T> ... boundeds)
 	{
 		this(Arrays.asList(boundeds));
 	}
 	
-	public LinearPath(List<Bounded<T>> boundeds)
+	public LinearPath(List<Gateway<T>> boundeds)
 	{
 		super();
-		m_list = new ArrayList<Bounded<T>>();
+		m_list = new ArrayList<Gateway<T>>();
 		m_list.addAll(boundeds);
 		m_currentIndex = 0;
 	}
@@ -31,9 +30,19 @@ public class LinearPath<T> implements Bounded<T>
 	public void reset()
 	{
 		m_currentIndex = 0;
-		for (Bounded<?> b : m_list)
+		for (Gateway<?> b : m_list)
 		{
 			b.reset();
+		}
+	}
+	
+	@Override
+	public void restart()
+	{
+		m_currentIndex = 0;
+		for (Gateway<?> b : m_list)
+		{
+			b.restart();
 		}
 	}
 
@@ -54,10 +63,10 @@ public class LinearPath<T> implements Bounded<T>
 	@Override
 	public LinearPath<T> duplicate(boolean with_state)
 	{
-		List<Bounded<T>> list = new ArrayList<Bounded<T>>();
-		for (Bounded<T> b : m_list)
+		List<Gateway<T>> list = new ArrayList<Gateway<T>>();
+		for (Gateway<T> b : m_list)
 		{
-			list.add((Bounded<T>) b.duplicate(with_state));
+			list.add((Gateway<T>) b.duplicate(with_state));
 		}
 		return new LinearPath<T>(list);
 	}
