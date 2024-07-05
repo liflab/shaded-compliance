@@ -56,7 +56,7 @@ public class ShadedImplies extends ShadedConnective
 	@Override
 	public int getArity()
 	{
-		return 2;
+		return (m_left == null ? 0 : 1) + (m_right == null ? 0 : 1);
 	}
 	
 	@Override

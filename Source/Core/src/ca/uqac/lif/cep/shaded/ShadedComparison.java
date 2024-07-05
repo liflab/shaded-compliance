@@ -132,7 +132,9 @@ public abstract class ShadedComparison extends ShadedConnective
 		@Override
 		public ShadedLessThanOrEqual cloneNode()
 		{
-			return new ShadedLessThanOrEqual(null, null);
+			ShadedLessThanOrEqual lte = new ShadedLessThanOrEqual(null, null);
+			lte.m_color = m_color;
+			return lte;
 		}
 		
 		@Override
@@ -221,7 +223,9 @@ public abstract class ShadedComparison extends ShadedConnective
 		@Override
 		public ShadedGreaterThanOrEqual cloneNode()
 		{
-			return new ShadedGreaterThanOrEqual(null, null);
+			ShadedGreaterThanOrEqual gte = new ShadedGreaterThanOrEqual(null, null);
+			gte.m_color = m_color;
+			return gte;
 		}
 
 		@Override
@@ -300,7 +304,9 @@ public abstract class ShadedComparison extends ShadedConnective
 		@Override
 		public ShadedEquals cloneNode()
 		{
-			return new ShadedEquals(null, null);
+			ShadedEquals eq = new ShadedEquals(null, null);
+			eq.m_color = m_color;
+			return eq;
 		}
 
 		@Override

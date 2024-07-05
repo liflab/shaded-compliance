@@ -20,6 +20,8 @@ package ca.uqac.lif.cep.shaded.abstraction;
 import ca.uqac.lif.cep.shaded.ShadedConnective;
 import ca.uqac.lif.cep.shaded.ShadedConnective.Color;
 import ca.uqac.lif.cep.shaded.ShadedFunction;
+import ca.uqac.lif.cep.shaded.ShadedImplies;
+import ca.uqac.lif.cep.shaded.ShadedNot;
 
 /**
  * Trims a tree by removing all children that do not have the same color as
@@ -37,29 +39,79 @@ public class TrimColor implements TreeAbstraction
 	{
 		return new TrimColor();
 	}
-	
+
 	@Override
 	public ShadedFunction apply(ShadedFunction f)
 	{
 		ShadedFunction clone = f.cloneNode();
-		if (clone instanceof ShadedConnective)
+		if (clone instanceof ShadedConnective && !(clone instanceof ShadedNot))
 		{
-			Color target_color = ((ShadedConnective) clone).getValue();
-			for (int i = 0; i < f.getArity(); i++)
+			if (clone instanceof ShadedImplies)
 			{
-				ShadedFunction f_op = f.getOperand(i);
-				if (f_op instanceof ShadedConnective)
+				Color target_color = ((ShadedConnective) clone).getValue();
+				Color left_color = ((ShadedConnective) f.getOperand(0)).getValue();
+				Color right_color = ((ShadedConnective) f.getOperand(1)).getValue();
+				if (target_color == Color.GREEN)
 				{
-					Color op_color = ((ShadedConnective) f_op).getValue();
-					if (op_color == target_color)
+					if (left_color == Color.RED)
 					{
-						clone.addOperand(f_op.duplicate(true));
+						ShadedFunction dup = apply(f.getOperand(0));
+						if (dup != null)
+							clone.addOperand(dup);
+					}
+					if (right_color == Color.GREEN)
+					{
+						ShadedFunction dup = apply(f.getOperand(1));
+						if (dup != null)
+							clone.addOperand(dup);
 					}
 				}
 				else
 				{
-					clone.addOperand(f_op.duplicate(true));
+					{
+						ShadedFunction dup = apply(f.getOperand(0));
+						if (dup != null)
+							clone.addOperand(dup);
+					}
+					{
+						ShadedFunction dup = apply(f.getOperand(1));
+						if (dup != null)
+							clone.addOperand(dup);
+					}
 				}
+			}
+			else
+			{
+				Color target_color = ((ShadedConnective) clone).getValue();
+				for (int i = 0; i < f.getArity(); i++)
+				{
+					ShadedFunction f_op = f.getOperand(i);
+					if (f_op instanceof ShadedConnective)
+					{
+						Color op_color = ((ShadedConnective) f_op).getValue();
+						if (op_color == target_color)
+						{
+							//clone.addOperand(f_op.duplicate(true));
+							ShadedFunction dup = apply(f_op);
+							if (dup != null)
+							{
+								clone.addOperand(dup);
+							}
+						}
+					}
+					else
+					{
+						clone.addOperand(f_op.duplicate(true));
+					}
+				}
+			}
+		}
+		else
+		{
+			for (int i = 0; i < f.getArity(); i++)
+			{
+				ShadedFunction f_op = f.getOperand(i);
+				clone.addOperand(f_op.duplicate(true));
 			}
 		}
 		return clone;
